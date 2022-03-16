@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/css/dangky.css">
+    <title>Dang ky</title>
+</head>
+<body>
+<div class="container">
+    <h1>Đăng ký</h1>
+    <form method="POST" th:action="@{/register}" th:object="${user}">
+        <div class="form-control">
+            <input type="text" id="username" placeholder="Tên đăng nhập" />
+            <span></span>
+            <small></small>
+        </div>
+        <div class="form-control">
+            <input type="email" id="email" placeholder="Email" />
+            <span></span>
+            <small></small>
+        </div>
+        <div class="form-control">
+            <input type="password" id="password" placeholder="Mật khẩu" />
+            <span></span>
+            <small></small>
+        </div>
+        <!-- <div class="validator">
+            <p class="lowercase">Lower-case</p>
+            <p class="uppercase">Upper-case</p>
+            <p class="number">Number</p>
+            <p class="symbol">At least one special symbol</p>
+            <p class="characters">At least 8 characters</p>
+        </div> -->
+        <div class="form-control">
+            <input
+                    type="password"
+                    id="password2"
+                    placeholder="Nhập lại mật khẩu"
+            />
+            <span></span>
+            <small></small>
+        </div>
+        <input type="submit" value="Đăng ký" />
+        <div class="signup_link">Đã có tài khoản ?<a href="/login">Đăng nhập</a></div>
+        <div class="signup_link"><a href="/home">Về trang chủ</a></div>
+    </form>
+</div>
+
+
+<script src="/js/dangky.js"></script>
+</body>
+</html>
