@@ -20,4 +20,10 @@ public class Users {
     private String email;
     private String phoneNumber;
     private boolean enable;
+
+    public Users(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
 }

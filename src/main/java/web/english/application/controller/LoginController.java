@@ -5,14 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import web.english.application.dao.UserDAO;
 import web.english.application.entity.Users;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
@@ -34,9 +32,20 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute("user") Users user, Model theModel, HttpServletResponse response){
-        Users users = userDAO.save(user);
-        return "dangnhap";
+    public String register(HttpServletRequest request){
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String email = request.getParameter("email");
 
+        Users user = new Users(username,password,email);
+        Users users = userDAO.save(user);
+        log.info("Ko hiendbhvjsbbbbbbb");
+        return "dangnhap";
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestParam("username") String username,@RequestParam("password") String password){
+        String access_token = userDAO.login(username,password);
+        return "dangky";
     }
 }

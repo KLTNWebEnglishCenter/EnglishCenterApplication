@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,19 +11,19 @@
 <body>
 <div class="container">
     <h1>Đăng ký</h1>
-    <form method="POST" th:action="@{/register}" th:object="${user}">
+    <form method="post" th:action="@{/register}">
         <div class="form-control">
-            <input type="text" id="username" placeholder="Tên đăng nhập" />
+            <input type="text" id="username" name="username" placeholder="Tên đăng nhập" />
             <span></span>
             <small></small>
         </div>
         <div class="form-control">
-            <input type="email" id="email" placeholder="Email" />
+            <input type="email" id="email" name="email" placeholder="Email" />
             <span></span>
             <small></small>
         </div>
         <div class="form-control">
-            <input type="password" id="password" placeholder="Mật khẩu" />
+            <input type="password" id="password" name="password" placeholder="Mật khẩu" />
             <span></span>
             <small></small>
         </div>
