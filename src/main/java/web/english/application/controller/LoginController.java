@@ -22,7 +22,9 @@ public class LoginController {
     private UserDAO userDAO;
 
     @GetMapping("/register")
-    public String getRegister(){
+    public String getRegister(Model model){
+        Users users = new Users();
+        model.addAttribute("users",users);
         return "dangky";
     }
 
@@ -32,20 +34,46 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public String register(HttpServletRequest request){
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String email = request.getParameter("email");
+    public String register(@ModelAttribute("users") Users users, @RequestParam("passwordMatch") String passwordMatch, Model model){
+        String checkEmail = userDAO.checkRequired("Email",users.getEmail());
+        String checkLengthUsername = userDAO.checkLength("Username",users.getUsername(),8,20);
+        String checkLengthPassword = userDAO.checkLength("Password",users.getPassword(),6,20);
+        String checkPasswordMatch = userDAO.checkPasswordMatch(users.getPassword(),passwordMatch);
+        String checkRequiredUsername = userDAO.checkRequired("Username",users.getUsername());
+        String checkRequiredPassword = userDAO.checkRequired("Password",users.getPassword());
+        String checkRequiredEmail = userDAO.checkRequired("Email",users.getEmail());
+        String checkRequiredPasswordMatch = userDAO.checkRequired("Password Match",passwordMatch);
 
-        Users user = new Users(username,password,email);
-        Users users = userDAO.save(user);
-        log.info("Ko hiendbhvjsbbbbbbb");
-        return "dangnhap";
+        model.addAttribute("users",users);
+
+        if(checkRequiredUsername.equals("") && checkRequiredEmail.equals("") && checkRequiredPassword.equals("") && checkRequiredPasswordMatch.equals("")){
+            if(checkLengthUsername.equals("") && checkLengthPassword.equals("")){
+                if(checkEmail.equals("") && checkPasswordMatch.equals("")){
+                    Users users1 = userDAO.save(users);
+                    return "dangnhap";
+                }else{
+                    model.addAttribute("errorEmail",checkEmail);
+                    model.addAttribute("errorPasswordMatch",checkPasswordMatch);
+                    return "dangky";
+                }
+            }else {
+                model.addAttribute("errorUsername",checkLengthUsername);
+                model.addAttribute("errorPassword",checkLengthPassword);
+                return "dangky";
+            }
+        }else {
+            model.addAttribute("errorUsername",checkRequiredUsername);
+            model.addAttribute("errorEmail",checkRequiredEmail);
+            model.addAttribute("errorPassword",checkRequiredPassword);
+            model.addAttribute("errorPasswordMatch",checkRequiredPasswordMatch);
+            Users users1 = userDAO.save(users);
+            return "dangky";
+        }
     }
 
     @PostMapping("/login")
     public String login(@RequestParam("username") String username,@RequestParam("password") String password){
-        String access_token = userDAO.login(username,password);
+//        String access_token = userDAO.login(username,password);
         return "dangky";
     }
 }

@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
@@ -11,21 +11,21 @@
 <body>
 <div class="container">
     <h1>Đăng ký</h1>
-    <form method="post" th:action="@{/register}">
+    <form method="post" th:action="@{/register}" th:object="${users}">
         <div class="form-control">
-            <input type="text" id="username" name="username" placeholder="Tên đăng nhập" />
+            <input type="text" id="username" name="username" placeholder="Tên đăng nhập" th:field="*{username}"/>
             <span></span>
-            <small></small>
+            <small th:text="${errorUsername}"></small>
         </div>
         <div class="form-control">
-            <input type="email" id="email" name="email" placeholder="Email" />
+            <input type="email" id="email" name="email" placeholder="Email" th:field="*{email}"/>
             <span></span>
-            <small></small>
+            <small th:text="${errorEmail}"></small>
         </div>
         <div class="form-control">
-            <input type="password" id="password" name="password" placeholder="Mật khẩu" />
+            <input type="password" id="password" name="password" placeholder="Mật khẩu" th:field="*{password}" />
             <span></span>
-            <small></small>
+            <small th:text="${errorPassword}"></small>
         </div>
         <!-- <div class="validator">
             <p class="lowercase">Lower-case</p>
@@ -38,18 +38,17 @@
             <input
                     type="password"
                     id="password2"
+                    name="passwordMatch"
                     placeholder="Nhập lại mật khẩu"
+
             />
             <span></span>
-            <small></small>
+            <small th:text="${errorPasswordMatch}"></small>
         </div>
         <input type="submit" value="Đăng ký" />
         <div class="signup_link">Đã có tài khoản ?<a href="/login">Đăng nhập</a></div>
         <div class="signup_link"><a href="/home">Về trang chủ</a></div>
     </form>
 </div>
-
-
-<script src="/js/dangky.js"></script>
 </body>
 </html>
