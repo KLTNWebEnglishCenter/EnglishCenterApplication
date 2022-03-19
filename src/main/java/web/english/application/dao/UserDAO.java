@@ -2,7 +2,13 @@ package web.english.application.dao;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import web.english.application.entity.Feedback;
 import web.english.application.entity.Users;
@@ -29,9 +35,19 @@ public class UserDAO {
     }
 
     public String login(String username,String password){
-        Feedback feedback = new Feedback(username,password);
-        String access_token = restTemplate.postForObject("localhost:8000/api/login",feedback,String.class);
-        return access_token;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        map.add("username", username);
+        map.add("password", password);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+
+        ResponseEntity<String> response = restTemplate.postForEntity( "http://localhost:8000/api/login", request , String.class );
+//        log.info(response.getBody());
+//        return response.getBody();
+        return response.getHeaders().getFirst("access_token");
     }
 
     public String checkEmail(String email){

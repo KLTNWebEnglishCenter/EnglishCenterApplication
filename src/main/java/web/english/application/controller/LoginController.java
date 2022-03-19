@@ -72,8 +72,11 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam("username") String username,@RequestParam("password") String password){
-//        String access_token = userDAO.login(username,password);
-        return "dangky";
+    public String login(@RequestParam("username") String username,@RequestParam("password") String password, HttpServletResponse response){
+        String access_token = userDAO.login(username,password);
+        log.info(access_token);
+        Cookie cookie=new Cookie("access_token",access_token);
+        response.addCookie(cookie);
+        return "redirect:/register";
     }
 }
