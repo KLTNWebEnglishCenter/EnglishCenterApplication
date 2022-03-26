@@ -1,0 +1,93 @@
+.thu {
+    min-width: 100px;
+    height: 50px;
+    border: 1px solid rgb(151, 170, 212);
+
+    text-align: center;
+    padding-top: 5px;
+
+    background-color: rgb(128, 115, 115);
+}
+
+.thu h5 {
+    color: antiquewhite;
+    margin-bottom: 2px;
+    font-weight: bold;
+}
+
+.buoi {
+    min-width: 100px;
+    min-height: 300px;
+    border: 1px solid rgb(151, 170, 212);  
+}
+
+.buoi h5 {
+    font-weight: bold;
+
+    color: rgb(231, 222, 222);
+   
+}
+
+.sang, .chieu {
+    text-align: center;
+    padding-top: 140px;
+    background-color: #3670c7;
+}
+
+
+.lichhoc{
+    width: 130px;
+    min-height: 100px;
+    
+    border: 1px solid #3670c7;
+    border-radius: 10px;
+
+    padding: 3px;
+
+    margin-top: 5px;
+
+    align-items: center;
+    text-align: justify;
+
+    background-color: #061831;
+}
+
+.lichhoc h3 {
+    font-size: 12px;
+    margin: 0;
+
+    line-height: 20px;
+}
+
+.ten {
+    font-size: 14px;
+    font-weight: bold;
+    color: rgb(34, 20, 223);
+    margin: 0;
+
+    text-transform: uppercase;
+    line-height: 20px;
+}
+
+.chonngay {
+    border-radius: 5px;
+}
+
+.btnlich {
+
+    width: 100px;
+    height: 30px;
+
+    border: none;
+    border-radius: 10px;
+
+    background-color: #3670c7;
+    color: white;
+    font-weight: bold;
+
+    margin-right: 10px;
+}
+
+.btnlich:hover {
+    background-color: aqua;
+}

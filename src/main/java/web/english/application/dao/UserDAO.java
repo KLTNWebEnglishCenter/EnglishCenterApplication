@@ -10,11 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import web.english.application.entity.Feedback;
-import web.english.application.entity.Users;
-
-import java.util.HashMap;
-import java.util.Map;
+import web.english.application.entity.user.Users;
 
 @Service
 @Slf4j

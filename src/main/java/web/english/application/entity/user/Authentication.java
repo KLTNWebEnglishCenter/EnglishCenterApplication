@@ -1,4 +1,4 @@
-package web.english.application.entity;
+package web.english.application.entity.user;
 
 import lombok.*;
 

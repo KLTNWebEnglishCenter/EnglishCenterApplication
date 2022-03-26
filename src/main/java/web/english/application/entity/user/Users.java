@@ -1,7 +1,9 @@
-package web.english.application.entity;
+package web.english.application.entity.user;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Setter
@@ -9,12 +11,13 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class Users {
+public class Users implements Serializable {
 
     private int id;
     private String username;
     private String password;
     private String fullName;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dob;
     private String gender;
     private String email;
@@ -24,6 +27,13 @@ public class Users {
     public Users(String username, String password, String email) {
         this.username = username;
         this.password = password;
+        this.email = email;
+    }
+
+    public Users(String username, String password, String fullName, String email) {
+        this.username = username;
+        this.password = password;
+        this.fullName = fullName;
         this.email = email;
     }
 
