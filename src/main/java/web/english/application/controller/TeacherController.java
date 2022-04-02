@@ -74,8 +74,49 @@ public class TeacherController {
     }
 
     @GetMapping("/editteacher/{id}")
-    public String getEditTeacherPage(@PathVariable("id") int id){
-        log.info(id+"");
+    public String getEditTeacherPage(@PathVariable("id") int id,Model model){
+//        log.info(id+"");
+        Teacher teacher=teacherDAO.findTeacherById(id);
+//        log.info(teacher.toString());
+        model.addAttribute("teacher",teacher);
         return "admin/editgiangvien";
     }
+
+    @PostMapping("/teacher/edit")
+    public String editTeacher(@ModelAttribute Teacher teacher,Model model){
+
+        if(!utils.checkFullNameFormat(teacher.getFullName())){
+            model.addAttribute("errorFullName",Utils.fullNameRequire);
+            return  "admin/addgiangvien";
+        }
+        if(!utils.checkEmailFormat(teacher.getEmail())){
+            model.addAttribute("errorEmail",Utils.emailRequire);
+            return  "admin/addgiangvien";
+        }
+        if(!utils.checkPhoneNumberFormat(teacher.getPhoneNumber())){
+            model.addAttribute("errorPhoneNumber",Utils.phoneNumberRequire);
+            return  "admin/addgiangvien";
+        }
+
+        if(!utils.checkUsernameFormat(teacher.getUsername())){
+            model.addAttribute("errorUsername",Utils.usernameRequire);
+            return  "admin/addgiangvien";
+        }
+
+        if(!utils.checkDob(teacher.getDob())){
+            model.addAttribute("errorDob",Utils.yearRequire);
+            return  "admin/addgiangvien";
+        }
+
+
+        teacher.setEnable(true);
+        log.info(teacher.toString());
+        teacherDAO.saveTeacher(teacher);
+        return "redirect:/admin/teacher";
+    }
+//    @GetMapping("/deleteteacher/{id}")
+//    public String getDeleteTeacher(@PathVariable("id") int id){
+//        log.info(id+"");
+//        return "admin/editgiangvien";
+//    }
 }

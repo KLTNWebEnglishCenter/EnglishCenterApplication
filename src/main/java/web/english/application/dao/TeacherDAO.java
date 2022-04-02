@@ -32,4 +32,9 @@ public class TeacherDAO {
         Teacher teacher1=restTemplate.postForObject("http://localhost:8000/teacher/save",teacher,Teacher.class);
         return  teacher1;
     }
+
+    public Teacher findTeacherById(int id){
+        Teacher teacher=restTemplate.getForObject("http://localhost:8000/teacher/"+id,Teacher.class);
+        return  teacher;
+    }
 }

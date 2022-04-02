@@ -166,7 +166,7 @@
                         <td th:text="${teacher.certificate}"></td>
                         <td th:text="${teacher.enable} ? 'ACTIVE' : 'RETIRED'" ></td>
                         <td>
-                          <button class="btn btn-danger"><a href="">Xóa</a></button>
+<!--                          <button class="btn btn-danger"><a href="@{/admin/deleteteacher/{id}(id=${teacher.id})}">Xóa</a></button>-->
                          
                           <button class="btn btn-success"><a th:href="@{/admin/editteacher/{id}(id=${teacher.id})}">Sửa</a></button>
                         </td>
