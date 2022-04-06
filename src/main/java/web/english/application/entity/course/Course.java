@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
+@AllArgsConstructor
 public class Course {
 
     private int id;
@@ -32,6 +33,18 @@ public class Course {
         this.price = price;
         this.createDate=LocalDate.now();
         this.enable=true;
+    }
+
+    public Course(int id, String name, String description, double price, LocalDate createDate, LocalDate modifiedDate, float discount, Level level, Category category) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.createDate = createDate;
+        this.modifiedDate = modifiedDate;
+        this.discount = discount;
+        this.level = level;
+        this.category = category;
     }
 
     @Override

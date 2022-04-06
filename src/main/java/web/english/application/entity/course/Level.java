@@ -1,9 +1,6 @@
 package web.english.application.entity.course;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -13,6 +10,7 @@ import java.util.List;
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
+@AllArgsConstructor
 public class Level implements Serializable {
 
     private int id;
