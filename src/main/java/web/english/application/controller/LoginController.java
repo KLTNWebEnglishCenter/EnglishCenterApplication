@@ -22,7 +22,7 @@ public class LoginController {
     @GetMapping("/register")
     public String getRegister(Model model){
         Users users = new Users();
-        model.addAttribute("users",users);
+        model.addAttribute("users", users);
         return "dangky";
     }
 

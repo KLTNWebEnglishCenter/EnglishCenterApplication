@@ -1,40 +1,46 @@
 <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <meta name="description" content="" />
-  <meta name="author" content="" />
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <meta name="description" content=""/>
+  <meta name="author" content=""/>
   <title>Admin</title>
 
-  <link href="/admin/assets/css/pace.min.css" rel="stylesheet" />
-  <script src="/admin/assets/js/pace.min.js"></script>
-  <link rel="stylesheet" href="/admin/assets/plugins/summernote/dist/summernote-bs4.css"/>
-  <link rel="icon" href="/admin/assets/images/favicon.ico" type="image/x-icon">
-  <link href="/admin/assets/plugins/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
-  <link href="/admin/assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
-  <link href="/admin/assets/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="/admin/assets/css/animate.css" rel="stylesheet" type="text/css" />
-  <link href="/admin/assets/css/icons.css" rel="stylesheet" type="text/css" />
-  <link href="/admin/assets/css/sidebar-menu.css" rel="stylesheet" />
-  <link href="/admin/assets/css/app-style.css" rel="stylesheet" />
-  
+  <link th:href="@{/admin/assets/css/pace.min.css}" rel="stylesheet"/>
+  <script th:src="@{/admin/assets/js/pace.min.js}"></script>
+  <link rel="stylesheet" th:href="@{/admin/assets/plugins/summernote/dist/summernote-bs4.css}"/>
+  <link rel="icon" th:href="@{/admin/assets/images/favicon.ico}" type="image/x-icon">
+  <link th:href="@{/admin/assets/plugins/vectormap/jquery-jvectormap-2.0.2.css}" rel="stylesheet"/>
+  <link th:href="@{/admin/assets/plugins/simplebar/css/simplebar.css}" rel="stylesheet"/>
+  <link th:href="@{/admin/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+  <link th:href="@{/admin/assets/css/animate.css}" rel="stylesheet" type="text/css"/>
+  <link th:href="@{/admin/assets/css/icons.css}" rel="stylesheet" type="text/css"/>
+  <link th:href="@{/admin/assets/css/sidebar-menu.css}" rel="stylesheet"/>
+  <link th:href="@{/admin/assets/css/app-style.css}" rel="stylesheet"/>
+  <style>
+  .redText {
+    color: red;
+  }
+
+  </style>
 
 </head>
 
 <body class="bg-theme bg-theme1">
 
-  <!-- start loader -->
-  <div id="pageloader-overlay" class="visible incoming">
-    <div class="loader-wrapper-outer">
-      <div class="loader-wrapper-inner">
-        <div class="loader"></div>
-      </div>
+<!-- start loader -->
+<div id="pageloader-overlay" class="visible incoming">
+  <div class="loader-wrapper-outer">
+    <div class="loader-wrapper-inner">
+      <div class="loader"></div>
     </div>
   </div>
-  
- <div id="wrapper">
+</div>
+
+<div id="wrapper">
   <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
     <div class="brand-logo">
       <a href="/admin/index.html">
@@ -49,19 +55,19 @@
           <i class="zmdi zmdi-view-dashboard"></i> <span>Lịch</span>
         </a>
       </li>
-      
-       <li>
-        <a href="/admin/admin.html">
+
+      <li>
+        <a th:href="@{/admin/employee}">
           <i class="zmdi zmdi-account-box"></i> <span>Quản lí Nhân viên</span>
         </a>
       </li>
       <li>
-        <a href="/admin/hocvien.html">
+        <a th:href="@{/admin/student}">
           <i class="zmdi zmdi-accounts"></i> <span>Quản lí Học viên</span>
         </a>
       </li>
       <li>
-        <a href="/admin/giangvien.html">
+        <a th:href="@{/admin/teacher}">
           <i class="zmdi zmdi-accounts"></i> <span>Quản lí Giảng viên</span>
         </a>
       </li>
@@ -75,7 +81,7 @@
           <i class="zmdi zmdi-collection-bookmark"></i> <span>Quản lí Bài đăng</span>
         </a>
       </li>
-      
+
       <li>
         <a href="/admin/duyethocvien.html">
           <i class="zmdi zmdi-assignment-check"></i> <span>Duyệt học viên</span>
@@ -84,140 +90,151 @@
       <li>
         <a href="/admin/duyetbaidang.html">
           <i class="zmdi zmdi-assignment-check"></i> <span>Duyệt bài đăng</span>
-        </a>   
+        </a>
       </li>
     </ul>
   </div>
-    <header class="topbar-nav">
-      <nav class="navbar navbar-expand fixed-top">
-        <ul class="navbar-nav mr-auto align-items-center">
-          <li class="nav-item">
-            <a class="nav-link toggle-menu" href="javascript:void();">
-              <i class="icon-menu menu-icon"></i>
-            </a>
-          </li>
-        </ul>
-		
-        <ul class="navbar-nav align-items-center right-nav-link">
-          <li class="nav-item">
-            <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" href="#">
+  <header class="topbar-nav">
+    <nav class="navbar navbar-expand fixed-top">
+      <ul class="navbar-nav mr-auto align-items-center">
+        <li class="nav-item">
+          <a class="nav-link toggle-menu" href="javascript:void();">
+            <i class="icon-menu menu-icon"></i>
+          </a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav align-items-center right-nav-link">
+        <li class="nav-item">
+          <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" href="#">
               <span class="user-profile"><img src="/admin/assets/images/avatar-admin.png" class="img-circle"
-                  alt="user avatar"></span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-right">
-              <li class="dropdown-item user-details">
-                <a href="javaScript:void();">
-                  <div class="media">
-                    <div class="avatar"><img class="align-self-start mr-3" src="/admin/assets/images/avatar-admin.png"
-                        alt="user avatar"></div>
-                    <div class="media-body">
-                      <h6 class="mt-2 user-title">TopalEnglish</h6>
-                	<b> Admin:  </b>                         
-                    </div>
+                                              alt="user avatar"></span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li class="dropdown-item user-details">
+              <a href="javaScript:void();">
+                <div class="media">
+                  <div class="avatar"><img class="align-self-start mr-3" src="/admin/assets/images/avatar-admin.png"
+                                           alt="user avatar"></div>
+                  <div class="media-body">
+                    <h6 class="mt-2 user-title">TopalEnglish</h6>
+                    <b> Admin: </b>
                   </div>
-                </a>
-              </li>
-            
-              <li class="dropdown-divider"></li>
-			 <li class="dropdown-item"><i class="icon-power mr-2"></i><a href="/admin/logout"> Đăng xuất</a></li>		
-            </ul>
-          </li>
-        </ul>
-      </nav>
-    </header>
-    <div class="clearfix"></div>
+                </div>
+              </a>
+            </li>
 
-    <!-- Body -->
-    <div class="content-wrapper"> 
-      <div class="container-fluid"> 
-        <!--End Row--> 
- 
- 
-        <div class="row"> 
-          <div class="col-lg-12"> 
-            <button class="add-catalog"><a href="/admin/addadmin.html">Thêm nhân viên</a></button> 
-          </div> 
-          <div class="col-lg-12"> 
-            <div class="card"> 
-              <div class="card-body"> 
-                <h5 class="card-title">Danh sách nhân viên</h5> 
-                <div class="table-responsive">              
-                  <table class="table table-striped"> 
-                    <thead> 
-                      <tr> 
-                        <th scope="col">#</th> 
-                        <th scope="col">Tên đăng nhập</th> 
-                        <th scope="col">Tên Nhân viên</th>
-                        <th scope="col">Hành động</th>                        
-                     </tr> 
-                    </thead> 
-                    <tbody> 
-                  <c:forEach items="${adminlist}" var="admin"> 
-                      <tr> 
-                        <td scope="row"></td> 
-                        <td></td> 
-        				        <td></td> 
-        				        <td> 
-                           <button class="btn btn-danger"><a href="#">Xóa</a></button>
-              
-                          <button class="btn btn-success"><a href="/admin/editadmin.html">Sửa</a></button>
-                        </td> 
-                     </tr> 
-                    </c:forEach> 
-                    </tbody> 
-                  </table> 
-                </div> 
-              </div> 
-            </div> 
-          </div> 
-        </div> 
-      </div> 
-    </div> 
-   <!-- Body -->
+            <li class="dropdown-divider"></li>
+            <li class="dropdown-item"><i class="icon-power mr-2"></i><a href="/admin/logout"> Đăng xuất</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <div class="clearfix"></div>
 
-    <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
-    <!-- <div class="right-sidebar">
-      <div class="switcher-icon">
-        <i class="zmdi zmdi-settings zmdi-hc-spin"></i>
+  <!-- Body -->
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <!--End Row-->
+
+
+      <div class="row">
+        <div class="col-lg-12">
+          <button class="add-catalog"><a th:href="@{/admin/addemployee}">Thêm nhân viên</a></button>
+        </div>
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Danh sách nhân viên</h5>
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Tên</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Số điện thoại</th>
+                    <th scope="col">Giới tính</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col">Hành động</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <!--                  <c:forEach items="${adminlist}" var="admin"> -->
+                  <tr th:each="employee,iter : ${employees}">
+                    <td th:text="${iter.index}"></td>
+                    <td th:text="${employee.username}"></td>
+                    <td th:text="${employee.fullName}"></td>
+                    <td th:text="${employee.email}"></td>
+                    <td th:text="${employee.phoneNumber}"></td>
+                    <td th:text="${employee.gender}"></td>
+                    <td th:text="${employee.enable} ? 'ACTIVE' : 'RETIRED'"></td>
+                    <td>
+                      <!--                           <button class="btn btn-danger"><a href="#">Xóa</a></button>-->
+                      <button class="btn btn-success"><a th:href="@{/admin/employeeinfo/{id}(id=${employee.id})}">Chi tiết</a></button>
+
+                      <button class="btn btn-success"><a th:href="@{/admin/editemployee/{id}(id=${employee.id})}">Cập
+                        nhật</a></button>
+                    </td>
+                  </tr>
+                  <!--                    </c:forEach> -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="right-sidebar-content">
-        <p class="mb-0">Màu nền admin</p>
-        <hr>
-        <ul class="switcher">
-          <li id="theme1"></li>
-          <li id="theme2"></li>
-          <li id="theme3"></li>
-          <li id="theme4"></li>
-          <li id="theme5"></li>
-          <li id="theme6"></li>
-        </ul>
-        <p class="mb-0">Màu nền gradient</p>
-        <hr>
-        <ul class="switcher">
-          <li id="theme7"></li>
-          <li id="theme8"></li>
-          <li id="theme9"></li>
-          <li id="theme10"></li>
-          <li id="theme11"></li>
-          <li id="theme12"></li>
-          <li id="theme13"></li>
-          <li id="theme14"></li>
-          <li id="theme15"></li>
-        </ul>
-      </div>
-    </div> -->
+    </div>
   </div>
+  <!-- Body -->
 
-    <script src="/admin/assets/js/jquery.min.js"></script>
-    <script src="/admin/assets/js/popper.min.js"></script>
-    <script src="/admin/assets/js/bootstrap.min.js"></script>
-    <script src="/admin/assets/plugins/simplebar/js/simplebar.js"></script>
-    <script src="/admin/assets/js/sidebar-menu.js"></script>
-    <script src="/admin/assets/js/jquery.loading-indicator.js"></script>
-    <script src="/admin/assets/js/app-script.js"></script>
-    <script src="/admin/assets/plugins/Chart.js/Chart.min.js"></script>
-    <script src="/admin/assets/js/index.js"></script>
-    <script src="/admin/assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
-  </body>
-  
-  </html>
+  <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
+  <!-- <div class="right-sidebar">
+    <div class="switcher-icon">
+      <i class="zmdi zmdi-settings zmdi-hc-spin"></i>
+    </div>
+    <div class="right-sidebar-content">
+      <p class="mb-0">Màu nền admin</p>
+      <hr>
+      <ul class="switcher">
+        <li id="theme1"></li>
+        <li id="theme2"></li>
+        <li id="theme3"></li>
+        <li id="theme4"></li>
+        <li id="theme5"></li>
+        <li id="theme6"></li>
+      </ul>
+      <p class="mb-0">Màu nền gradient</p>
+      <hr>
+      <ul class="switcher">
+        <li id="theme7"></li>
+        <li id="theme8"></li>
+        <li id="theme9"></li>
+        <li id="theme10"></li>
+        <li id="theme11"></li>
+        <li id="theme12"></li>
+        <li id="theme13"></li>
+        <li id="theme14"></li>
+        <li id="theme15"></li>
+      </ul>
+    </div>
+  </div> -->
+</div>
+
+<script src="/admin/assets/js/jquery.min.js"></script>
+<script src="/admin/assets/js/popper.min.js"></script>
+<script src="/admin/assets/js/bootstrap.min.js"></script>
+<script src="/admin/assets/plugins/simplebar/js/simplebar.js"></script>
+<script src="/admin/assets/js/sidebar-menu.js"></script>
+<script src="/admin/assets/js/jquery.loading-indicator.js"></script>
+<script src="/admin/assets/js/app-script.js"></script>
+<script src="/admin/assets/plugins/Chart.js/Chart.min.js"></script>
+<script src="/admin/assets/js/index.js"></script>
+<script src="/admin/assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
+</body>
+
+</html>
+</html>

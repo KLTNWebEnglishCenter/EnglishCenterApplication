@@ -57,17 +57,17 @@
       </li>
 
       <li>
-        <a href="/admin/admin.html">
+        <a th:href="@{/admin/employee}">
           <i class="zmdi zmdi-account-box"></i> <span>Quản lí Nhân viên</span>
         </a>
       </li>
       <li>
-        <a href="/admin/hocvien.html">
+        <a th:href="@{/admin/student}">
           <i class="zmdi zmdi-accounts"></i> <span>Quản lí Học viên</span>
         </a>
       </li>
       <li>
-        <a href="/admin/giangvien.html">
+        <a th:href="@{/admin/teacher}">
           <i class="zmdi zmdi-accounts"></i> <span>Quản lí Giảng viên</span>
         </a>
       </li>
@@ -151,7 +151,7 @@
                 </div>
                 <div class="form-group">
                   <label for="input-1">Họ tên</label>
-                  <input type="text" class="form-control" id="input-2" placeholder="Họ tên" th:field="*{fullName}"
+                  <input type="text" required class="form-control" id="input-2" placeholder="Họ tên" th:field="*{fullName}"
                          value="" name="teacher-name">
                   <small class="redText" th:text="${errorFullName}"></small>
                 </div>
@@ -165,7 +165,7 @@
                 </div>
                 <div class="form-group">
                   <label for="input-2">Email</label>
-                  <input type="text" class="form-control" id="input-3" placeholder="Địa chỉ Email" th:field="*{email}"
+                  <input type="text" required class="form-control" id="input-3" placeholder="Địa chỉ Email" th:field="*{email}"
                          value="" name="teacher-email">
                   <small class="redText" th:text="${errorEmail}"></small>
                 </div>
@@ -177,7 +177,7 @@
                 </div>
                 <div class="form-group">
                   <label for="input-3">UserName</label>
-                  <input type="text" class="form-control" id="input-5" placeholder="Username" th:field="*{username}"
+                  <input type="text" required class="form-control" id="input-5" placeholder="Username" th:field="*{username}"
                          value="" name="teacher-userName">
                   <small class="redText" th:text="${errorUsername}"></small>
                 </div>

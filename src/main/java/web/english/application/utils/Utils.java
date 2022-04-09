@@ -28,7 +28,7 @@ public class Utils {
 
     public boolean checkFullNameFormat(String fullName){
         String reg="^([a-zA-Z]+\\s?)+$";
-        Pattern pattern=Pattern.compile(reg);
+        Pattern pattern=Pattern.compile(reg,Pattern.UNICODE_CHARACTER_CLASS);
         Matcher matcher=pattern.matcher(fullName);
         return matcher.matches();
     }
