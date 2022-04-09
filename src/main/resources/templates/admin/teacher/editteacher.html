@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -8,19 +9,23 @@
   <meta name="author" content="" />
   <title>Admin</title>
 
-  <link href="/admin/assets/css/pace.min.css" rel="stylesheet" />
-  <script src="/admin/assets/js/pace.min.js"></script>
-  <link rel="stylesheet" href="/admin/assets/plugins/summernote/dist/summernote-bs4.css"/>
-  <link rel="icon" href="/admin/assets/images/favicon.ico" type="image/x-icon">
-  <link href="/admin/assets/plugins/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
-  <link href="/admin/assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
-  <link href="/admin/assets/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="/admin/assets/css/animate.css" rel="stylesheet" type="text/css" />
-  <link href="/admin/assets/css/icons.css" rel="stylesheet" type="text/css" />
-  <link href="/admin/assets/css/sidebar-menu.css" rel="stylesheet" />
-  <link href="/admin/assets/css/app-style.css" rel="stylesheet" />
-  
+  <link th:href="@{/admin/assets/css/pace.min.css}" rel="stylesheet" />
+  <script th:src="@{/admin/assets/js/pace.min.js}"></script>
+  <link rel="stylesheet" th:href="@{/admin/assets/plugins/summernote/dist/summernote-bs4.css}"/>
+  <link rel="icon" th:href="@{/admin/assets/images/favicon.ico}" type="image/x-icon">
+  <link th:href="@{/admin/assets/plugins/vectormap/jquery-jvectormap-2.0.2.css}" rel="stylesheet" />
+  <link th:href="@{/admin/assets/plugins/simplebar/css/simplebar.css}" rel="stylesheet" />
+  <link th:href="@{/admin/assets/css/bootstrap.min.css}" rel="stylesheet" />
+  <link th:href="@{/admin/assets/css/animate.css}" rel="stylesheet" type="text/css" />
+  <link th:href="@{/admin/assets/css/icons.css}" rel="stylesheet" type="text/css" />
+  <link th:href="@{/admin/assets/css/sidebar-menu.css}" rel="stylesheet" />
+  <link th:href="@{/admin/assets/css/app-style.css}" rel="stylesheet" />
 
+  <style>
+  .redText {
+    color: red;
+  }
+</style>
 </head>
 
 <body class="bg-theme bg-theme1">
@@ -135,50 +140,70 @@
           <div class="col-lg-12">
             <div class="card">
               <div class="card-body">
-                <div class="card-title">Sửa thông tin học viên</div>
+                <div class="card-title">Sửa thông tin giảng viên</div>
                 <hr>
-                <form action="${pageContext.request.contextPath}/admin/user/edit" method="post">
+                <form th:action="@{/admin/teacher/edit}" method="post" th:object="${teacher}">
                   <div class="form-group">
                     <label for="input-1">ID</label>
-                    <input type="text" class="form-control" id="input-1" readonly="readonly" placeholder="ID" value="" name="user-id">
+                    <input type="text" class="form-control" id="input-1" readonly="readonly" placeholder="ID" th:field="*{id}" value="" name="teacher-id">
                   </div>
                   <div class="form-group">
                     <label for="input-1">Họ tên</label>
-                    <input type="text" class="form-control" id="input-2" placeholder="Họ tên" value="" name="user-name">
+                    <input type="text" class="form-control" id="input-2" placeholder="Họ tên" th:field="*{fullName}" value="" name="teacher-name">
+                    <small class="redText" th:text="${errorFullName}"></small>
+                  </div>
+                  <div class="form-group">
+                    <label>Giới tính</label>
+                    <div>
+                      <input type="radio" name="gender" th:field="*{gender}" value="Nam" style="margin:10px;" >Nam
+                      <input type="radio" name="gender" th:field="*{gender}" value="Nữ" style="margin:10px;" >Nữ
+                    </div>
+
                   </div>
                   <div class="form-group">
                     <label for="input-2">Email</label>
-                    <input type="text" class="form-control" id="input-3" placeholder="Địa chỉ Email" value="" name="user-email">
+                    <input type="text" class="form-control" id="input-3" placeholder="Địa chỉ Email" th:field="*{email}" value="" name="teacher-email">
+                    <small class="redText" th:text="${errorEmail}"></small>
                   </div>
                   <div class="form-group">
                     <label for="input-3">Số điện thoại</label>
-                    <input type="text" class="form-control" id="input-4" placeholder="Số điện thoại" value="" name="user-phone">
+                    <input type="text" class="form-control" id="input-4" placeholder="Số điện thoại" th:field="*{phoneNumber}" value="" name="teacher-phone">
+                    <small class="redText" th:text="${errorPhoneNumber}"></small>
                   </div>
                   <div class="form-group">
                     <label for="input-3">UserName</label>
-                    <input type="text" class="form-control" id="input-5" placeholder="Username" value="" name="user-userName">
+                    <input type="text" class="form-control" id="input-5" placeholder="Username" th:field="*{username}" value="" name="teacher-userName">
+                    <small class="redText" th:text="${errorUsername}"></small>
                   </div>
                   <div class="form-group">
-                    <label for="input-4">Mật khẩu</label>
-                    <input type="password" class="form-control" id="myinput" placeholder="Mật khẩu" value="" name="user-password">
-                    <input type="checkbox" onclick="myFunction1()">Hiển thị mật khẩu
-                    <script>function myFunction1() {
-                                  var x = document.getElementById("myinput");
-                                  if (x.type === "password") {
-                                    x.type = "text";
-                                  } else {
-                                    x.type = "password";
-                                  }
-                                }
-                    </script>                   
+<!--                    <label for="input-4">Mật khẩu</label>-->
+                    <input type="password" class="form-control" id="myinput" placeholder="Mật khẩu" hidden th:field="*{password}" value="" name="teacher-password">
+<!--                    <input type="checkbox" onclick="myFunction1()">Hiển thị mật khẩu-->
+<!--                    <script>function myFunction1() {-->
+<!--                                  var x = document.getElementById("myinput");-->
+<!--                                  if (x.type === "password") {-->
+<!--                                    x.type = "text";-->
+<!--                                  } else {-->
+<!--                                    x.type = "password";-->
+<!--                                  }-->
+<!--                                }-->
+<!--                    </script>                   -->
                   </div>
                   <div class="form-group">
-                    <label for="input-5">Date</label>
-                    <input type="date" class="form-control" id="input-6" placeholder="Ngày tạo" value="" name="user-created">
+                    <label for="input-5">Ngày sinh</label>
+                    <input type="date" class="form-control" id="input-6" placeholder="Ngày tạo" th:field="*{dob}" value="" name="teacher-created">
+                    <small class="redText" th:text="${errorDob}"></small>
                   </div>
-                  
                   <div class="form-group">
-                    <button class="btn btn-danger"><a href="#">Hủy</a></button>
+                    <label for="input-5">Trạng thái</label>
+                    <div>
+                      <input type="radio" name="enable" th:field="*{enable}" value="true" style="margin:10px;"  >Enable
+                      <input type="radio" name="enable" th:field="*{enable}" value="false" style="margin:10px;" >Disable
+                    </div>
+
+                  </div>
+                  <div class="form-group">
+                    <button class="btn btn-danger"><a th:href="@{/admin/teacher}">Hủy</a></button>
                          
                      <button type="submit" class="btn btn-success">Cập nhật</button>
                   </div>
