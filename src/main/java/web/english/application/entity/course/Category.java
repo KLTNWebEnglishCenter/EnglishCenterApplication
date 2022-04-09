@@ -1,11 +1,12 @@
 package web.english.application.entity.course;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
-
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 public class Category {
 
     private int id;
