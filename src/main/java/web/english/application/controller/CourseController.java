@@ -27,6 +27,8 @@ public class CourseController {
     @Autowired
     private CategoryDAO categoryDAO;
 
+
+
     @GetMapping("/courses")
     public String getCourse(Model model){
         List<Course> courses = courseDAO.findAllCourse();

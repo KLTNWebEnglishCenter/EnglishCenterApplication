@@ -2,10 +2,7 @@ package web.english.application.dao;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -30,6 +27,11 @@ public class UserDAO {
         return users;
     }
 
+    public Users getUser(int id){
+        Users users = restTemplate.getForObject("http://localhost:8000/user/"+id,Users.class);
+        return users;
+    }
+
     public String login(String username,String password){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -44,6 +46,16 @@ public class UserDAO {
 //        log.info(response.getBody());
 //        return response.getBody();
         return response.getHeaders().getFirst("access_token");
+    }
+
+    public Users getUserFromToken(String token){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.setBearerAuth(token);
+        headers.set("Authentication",token);
+        HttpEntity request = new HttpEntity(headers);
+        Users users = restTemplate.postForObject("http://localhost:8000/user/fromToken/",request,Users.class);
+        return users;
     }
 
     public String checkEmail(String email){

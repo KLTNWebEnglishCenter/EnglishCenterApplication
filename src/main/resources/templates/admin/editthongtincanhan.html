@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Admin</title>
+
+    <link th:href="@{/admin/assets/css/pace.min.css}" rel="stylesheet" />
+    <script th:src="@{/admin/assets/js/pace.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/admin/assets/plugins/summernote/dist/summernote-bs4.css}"/>
+    <link rel="icon" th:href="@{/admin/assets/images/favicon.ico}" type="image/x-icon}">
+    <link th:href="@{/admin/assets/plugins/vectormap/jquery-jvectormap-2.0.2.css}" rel="stylesheet" />
+    <link th:href="@{/admin/assets/plugins/simplebar/css/simplebar.css}" rel="stylesheet" />
+    <link th:href="@{/admin/assets/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/admin/assets/css/animate.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/admin/assets/css/icons.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/admin/assets/css/sidebar-menu.css}" rel="stylesheet" />
+    <link th:href="@{/admin/assets/css/app-style.css}" rel="stylesheet" />
+
+    <style>
+    .avatar-upload {
+        position: relative;
+        max-width: 205px;
+        margin: 50px auto;
+    }
+    .avatar-edit {
+        position: absolute;
+        right: 12px;
+        z-index: 1;
+        top: 10px;
+    }
+    .avatar-edit input {
+        display: none;
+    }
+    .avatar-edit label{
+        display: inline-block;
+        width: 34px;
+        height: 34px;
+        margin-bottom: 0;
+        border-radius: 100%;
+        background: #FFFFFF;
+        border: 1px solid transparent;
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+        cursor: pointer;
+        font-weight: normal;
+        transition: all .2s ease-in-out;
+    }
+    .avatar-edit label:hover {
+                    background: #f1f1f1;
+                    border-color: #d6d6d6;
+    }
+    .avatar-edit label:after {
+        content: "\f040";
+        font-family: 'FontAwesome';
+        color: #757575;
+        position: absolute;
+        top: 10px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        margin: auto;
+    }
+
+    .avatar-preview {
+        width: 192px;
+        height: 192px;
+        position: relative;
+        border-radius: 100%;
+        border: 6px solid #F8F8F8;
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+    }
+    .avatar-preview div {
+        width: 100%;
+        height: 100%;
+        border-radius: 100%;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+  </style>
+
+</head>
+
+<body class="bg-theme bg-theme1">
+
+<!-- start loader -->
+<div id="pageloader-overlay" class="visible incoming">
+    <div class="loader-wrapper-outer">
+        <div class="loader-wrapper-inner">
+            <div class="loader"></div>
+        </div>
+    </div>
+</div>
+
+<div id="wrapper">
+    <header class="topbar-nav">
+        <nav class="navbar navbar-expand fixed-top">
+            <ul class="navbar-nav mr-auto align-items-center">
+                <!-- <li class="nav-item">
+                  <a class="nav-link toggle-menu" href="javascript:void();">
+                    <i class="icon-menu menu-icon"></i>
+                  </a>
+                </li> -->
+            </ul>
+
+            <ul class="navbar-nav align-items-center right-nav-link">
+                <li class="nav-item">
+                    <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" href="#">
+              <span class="user-profile"><img src="/admin/assets/images/avatar-admin.png" class="img-circle"
+                                              alt="user avatar"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li class="dropdown-item user-details">
+                            <a href="javaScript:void();">
+                                <div class="media">
+                                    <div class="avatar"><img class="align-self-start mr-3" src="/admin/assets/images/avatar-admin.png"
+                                                             alt="user avatar"></div>
+                                    <div class="media-body">
+                                        <h6 class="mt-2 user-title">TopalEnglish</h6>
+                                        <b> Admin:  </b>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-item"><i class="icon-power mr-2"></i><a href="/admin/logout"> Đăng xuất</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <div class="clearfix"></div>
+
+    <!-- Body -->
+    <div class="content-wrapper" style="margin-right:250px;">
+        <div class="container-fluid">
+
+            <div class="row mt-3">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title">Cập nhật thông tin cá nhân</div>
+                            <hr>
+                            <form action="${pageContext.request.contextPath}/admin/user/edit" method="post">
+                                <div class="form-group">
+                                    <div class="avatar-upload">
+                                        <div class="avatar-edit">
+                                            <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
+                                            <label for="imageUpload"></label>
+                                        </div>
+                                        <div class="avatar-preview">
+                                            <div id="imagePreview" style="background-image: url(http://i.pravatar.cc/500?img=7);">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-2">Họ tên</label>
+                                    <input type="text" class="form-control" id="input-2" placeholder="Họ tên" value="" name="teacher-name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-2">Email</label>
+                                    <input type="text" class="form-control" id="input-3" placeholder="Địa chỉ Email" value="" name="teacher-email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-3">Số điện thoại</label>
+                                    <input type="text" class="form-control" id="input-4" placeholder="Số điện thoại" value="" name="teacher-phone">
+                                </div>
+                                <!-- <div class="form-group">
+                                  <label for="input-3">UserName</label>
+                                  <input type="text" class="form-control" id="input-5" placeholder="Username" value="" name="teacher-userName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-4">Mật khẩu</label>
+                                    <input type="password" class="form-control" id="myinput" placeholder="Mật khẩu" value="" name="teacher-password">
+                                    <input type="checkbox" onclick="myFunction1()">Hiển thị mật khẩu
+                                    <script>
+                                        function myFunction1() {
+                                            var x = document.getElementById("myinput");
+                                            if (x.type === "password") {
+                                                x.type = "text";
+                                            } else {
+                                                x.type = "password";
+                                            }
+                                        }
+                                    </script>
+                                </div> -->
+
+                                <div class="form-group">
+                                    <label for="input-6">Ngày sinh</label>
+                                    <input type="date" class="form-control" id="input-6" >
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-danger"><a href="#">Hủy</a></button>
+                                    <button class="btn btn-info"><a href="#"></a>Đổi mật khẩu</button>
+                                    <button type="submit" class="btn btn-success">Cập nhật</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="overlay toggle-menu"></div>
+        </div>
+    </div>
+    <!-- Body -->
+
+    <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
+    <!-- <div class="right-sidebar">
+      <div class="switcher-icon">
+        <i class="zmdi zmdi-settings zmdi-hc-spin"></i>
+      </div>
+      <div class="right-sidebar-content">
+        <p class="mb-0">Màu nền admin</p>
+        <hr>
+        <ul class="switcher">
+          <li id="theme1"></li>
+          <li id="theme2"></li>
+          <li id="theme3"></li>
+          <li id="theme4"></li>
+          <li id="theme5"></li>
+          <li id="theme6"></li>
+        </ul>
+        <p class="mb-0">Màu nền gradient</p>
+        <hr>
+        <ul class="switcher">
+          <li id="theme7"></li>
+          <li id="theme8"></li>
+          <li id="theme9"></li>
+          <li id="theme10"></li>
+          <li id="theme11"></li>
+          <li id="theme12"></li>
+          <li id="theme13"></li>
+          <li id="theme14"></li>
+          <li id="theme15"></li>
+        </ul>
+      </div>
+    </div> -->
+</div>
+
+<script src="/admin/assets/js/jquery.min.js"></script>
+<script src="/admin/assets/js/popper.min.js"></script>
+<script src="/admin/assets/js/bootstrap.min.js"></script>
+<script src="/admin/assets/plugins/simplebar/js/simplebar.js"></script>
+<script src="/admin/assets/js/sidebar-menu.js"></script>
+<script src="/admin/assets/js/jquery.loading-indicator.js"></script>
+<script src="/admin/assets/js/app-script.js"></script>
+<script src="/admin/assets/plugins/Chart.js/Chart.min.js"></script>
+<script src="/admin/assets/js/index.js"></script>
+<script src="/admin/assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
+<script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#imagePreview').css('background-image', 'url('+e.target.result +')');
+                    $('#imagePreview').hide();
+                    $('#imagePreview').fadeIn(650);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#imageUpload").change(function() {
+            readURL(this);
+        });
+    </script>
+</body>
+
+</html>

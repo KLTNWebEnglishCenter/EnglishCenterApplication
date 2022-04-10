@@ -75,6 +75,6 @@ public class LoginController {
         log.info(access_token);
         Cookie cookie=new Cookie("access_token",access_token);
         response.addCookie(cookie);
-        return "redirect:/register";
+        return "redirect:/admin/home";
     }
 }
