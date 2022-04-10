@@ -30,6 +30,12 @@ public class UserDAO {
         return users;
     }
 
+    /**
+     * @author VQKHANH
+     * @param username
+     * @param password
+     * @return access_token(jwt)
+     */
     public String login(String username,String password){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -41,7 +47,6 @@ public class UserDAO {
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
         ResponseEntity<String> response = restTemplate.postForEntity( "http://localhost:8000/api/login", request , String.class );
-//        log.info(response.getBody());
 //        return response.getBody();
         return response.getHeaders().getFirst("access_token");
     }

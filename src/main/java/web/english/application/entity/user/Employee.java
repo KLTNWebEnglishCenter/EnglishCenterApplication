@@ -9,6 +9,13 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class Employee extends Users implements Serializable {
 
+    /**
+     *
+     * @param username
+     * @param password
+     * @param fullName
+     * @param email
+     */
     public Employee( String username,  String password,String fullName, String email) {
         super(username, password, fullName, email);
     }

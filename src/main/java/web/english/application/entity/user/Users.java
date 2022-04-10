@@ -24,12 +24,25 @@ public class Users implements Serializable {
     private String phoneNumber;
     private boolean enable;
 
+    /**
+     *
+     * @param username
+     * @param password
+     * @param email
+     */
     public Users(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
     }
 
+    /**
+     *
+     * @param username
+     * @param password
+     * @param fullName
+     * @param email
+     */
     public Users(String username, String password, String fullName, String email) {
         this.username = username;
         this.password = password;

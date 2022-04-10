@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import web.english.application.dao.TeacherDAO;
 import web.english.application.dao.UserDAO;
+import web.english.application.entity.Classroom;
 import web.english.application.entity.user.Teacher;
 import web.english.application.utils.Utils;
 
@@ -26,6 +27,12 @@ public class TeacherController {
 
     private Utils utils=new Utils();
 
+    /**
+     * get the teacher management page
+     * @author VQKHANH
+     * @param model
+     * @return
+     */
     @GetMapping("/teacher")
     public String getTeacher(Model model){
         List<Teacher> teachers=teacherDAO.findAllTeacher();
@@ -33,6 +40,12 @@ public class TeacherController {
         return "admin/teacher/teacher";
     }
 
+    /**
+     * get add teacher page
+     * @author VQKHANH
+     * @param model
+     * @return
+     */
     @GetMapping("/addteacher")
     public String getAddTeacherPage(Model model){
         Teacher teacher=new Teacher();
@@ -40,6 +53,14 @@ public class TeacherController {
         model.addAttribute("teacher",teacher);
         return  "admin/teacher/addteacher";
     }
+
+    /**
+     * save new teacher
+     * @author VQKHANH
+     * @param teacher
+     * @param model
+     * @return
+     */
     @PostMapping("/teacher/add")
     public String saveTeacher(@ModelAttribute Teacher teacher,Model model){
 
@@ -66,22 +87,34 @@ public class TeacherController {
             return  "admin/teacher/addteacher";
         }
 
-
         teacher.setEnable(true);
-        log.info(teacher.toString());
+//        log.info(teacher.toString());
         teacherDAO.saveTeacher(teacher);
         return "redirect:/admin/teacher";
     }
 
+    /**
+     * get teacher info editing page
+     * @author VQKHANH
+     * @param id
+     * @param model
+     * @return
+     */
     @GetMapping("/editteacher/{id}")
     public String getEditTeacherPage(@PathVariable("id") int id,Model model){
-//        log.info(id+"");
         Teacher teacher=teacherDAO.findTeacherById(id);
 //        log.info(teacher.toString());
         model.addAttribute("teacher",teacher);
         return "admin/teacher/editteacher";
     }
 
+    /**
+     * save teacher info after editing
+     * @author VQKHANH
+     * @param teacher
+     * @param model
+     * @return
+     */
     @PostMapping("/teacher/edit")
     public String editTeacher(@ModelAttribute Teacher teacher,Model model){
 
@@ -110,23 +143,48 @@ public class TeacherController {
 
 
         teacher.setEnable(true);
-        log.info(teacher.toString());
+//        log.info(teacher.toString());
         teacherDAO.saveTeacher(teacher);
         return "redirect:/admin/teacher";
     }
 
+    /**
+     * get teacher info page
+     * @author VQKHANH
+     * @param id
+     * @param model
+     * @return
+     */
     @GetMapping("/teacherinfo/{id}")
     public String getTeacherInfoPage(@PathVariable("id") int id,Model model){
-//        log.info(id+"");
         Teacher teacher=teacherDAO.findTeacherById(id);
 //        log.info(teacher.toString());
         model.addAttribute("teacher",teacher);
         return "admin/teacher/teacherinfo";
     }
 
-//    @GetMapping("/deleteteacher/{id}")
-//    public String getDeleteTeacher(@PathVariable("id") int id){
-//        log.info(id+"");
-//        return "admin/editteacher";
-//    }
+    /**
+     * search teacher by id or username or full_name
+     * @author VQKHANH
+     * @param idOrUsername
+     * @param fullName
+     * @param model
+     * @return
+     */
+    @PostMapping("/teacher/search")
+    public String searchTeacher(@RequestParam String idOrUsername, @RequestParam String fullName,Model model){
+
+        List<Teacher> teachers=teacherDAO.searchUser(idOrUsername,fullName);
+
+        model.addAttribute("teachers",teachers);
+        return "admin/teacher/teacher";
+    }
+
+    @GetMapping("/teacher/classrooms/{teacherid}")
+    public String getListClassroomOfTeacher(@PathVariable int teacherid,Model model){
+        List<Classroom> classrooms=teacherDAO.getAllClassroomOfTeacher(teacherid);
+        log.info(classrooms.toString());
+        model.addAttribute("classrooms",classrooms);
+        return "admin/lophoc";
+    }
 }

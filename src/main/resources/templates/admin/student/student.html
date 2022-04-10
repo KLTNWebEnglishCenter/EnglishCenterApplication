@@ -132,8 +132,25 @@
   <div class="content-wrapper">
     <div class="container-fluid">
       <div class="row mt-3">
-        <div class="col-lg-12">
-          <button class="add-catalog"><a th:href="@{/admin/addstudent}">Thêm học viên</a></button>
+        <form th:action="@{/admin/student/search}" method="post" class="col-12" style="display:flex; align-items: top; ">
+          <div class="col-lg-11 col-sm-9 col-xs-6">
+            <div class="form-group col-12">
+              <input type="text" name="idOrUsername" class="form-control" placeholder="ID/Username" >
+            </div>
+            <div class="form-group col-12">
+              <input type="text" name="fullName" class="form-control" placeholder="Tên" >
+            </div>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-light" >Search</button>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12 mb-3" style="display:flex; justify-content: right;">
+          <button class="btn btn-light"><a th:href="@{/admin/addstudent}">Thêm học viên</a></button>
         </div>
         <div class="col-lg-12">
           <div class="card">

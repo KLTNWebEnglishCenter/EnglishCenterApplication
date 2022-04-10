@@ -25,6 +25,12 @@ public class StudentController {
 
     private Utils utils=new Utils();
 
+    /**
+     * get the student management page
+     * @author VQKHANH
+     * @param model
+     * @return
+     */
     @GetMapping("/student")
     public String getStudent(Model model){
         List<Student> students=studentDAO.findAllStudent();
@@ -32,6 +38,12 @@ public class StudentController {
         return "admin/student/student";
     }
 
+    /**
+     * get add student page
+     * @author VQKHANH
+     * @param model
+     * @return
+     */
     @GetMapping("/addstudent")
     public String getAddStudentPage(Model model){
         Student student=new Student();
@@ -39,7 +51,14 @@ public class StudentController {
         model.addAttribute("student",student);
         return  "admin/student/addstudent";
     }
-    
+
+    /**
+     * save new student
+     * @author VQKHANH
+     * @param student
+     * @param model
+     * @return
+     */
     @PostMapping("/student/add")
     public String saveStudent(@ModelAttribute Student student, Model model){
 
@@ -73,9 +92,15 @@ public class StudentController {
         return "redirect:/admin/student";
     }
 
+    /**
+     * get student info editing page
+     * @author VQKHANH
+     * @param id
+     * @param model
+     * @return
+     */
     @GetMapping("/editstudent/{id}")
     public String getEditStudentPage(@PathVariable("id") int id, Model model){
-//        log.info(id+"");
         Student student=studentDAO.findStudentById(id);
         if(student.getGender()==null)student.setGender("Nam");
 //        log.info(teacher.toString());
@@ -83,6 +108,13 @@ public class StudentController {
         return "admin/student/editstudent";
     }
 
+    /**
+     * save student info after editing
+     * @author VQKHANH
+     * @param student
+     * @param model
+     * @return
+     */
     @PostMapping("/student/edit")
     public String editStudent(@ModelAttribute Student student,Model model){
 
@@ -117,12 +149,34 @@ public class StudentController {
         return "redirect:/admin/student";
     }
 
+    /**
+     * get student info page
+     * @author VQKHANH
+     * @param id
+     * @param model
+     * @return
+     */
     @GetMapping("/studentinfo/{id}")
     public String getStudentInfoPage(@PathVariable("id") int id,Model model){
-//        log.info(id+"");
         Student student=studentDAO.findStudentById(id);
 //        log.info(teacher.toString());
         model.addAttribute("student",student);
         return "admin/student/studentinfo";
+    }
+
+    /**
+     * search student by id or username or full_name
+     * @author VQKHANH
+     * @param idOrUsername
+     * @param fullName
+     * @param model
+     * @return
+     */
+    @PostMapping("/student/search")
+    public String searchStudent(@RequestParam String idOrUsername, @RequestParam String fullName,Model model){
+        List<Student> students=studentDAO.searchUser(idOrUsername,fullName);
+
+        model.addAttribute("students",students);
+        return "admin/student/student";
     }
 }

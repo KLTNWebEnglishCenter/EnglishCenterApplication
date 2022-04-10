@@ -27,6 +27,12 @@ public class EmployeeController {
 
     private Utils utils=new Utils();
 
+    /**
+     * get the employee management page
+     * @author VQKHANH
+     * @param model
+     * @return
+     */
     @GetMapping("/employee")
     public String getEmployee(Model model){
         List<Employee> employees=employeeDAO.findAllEmployee();
@@ -34,6 +40,12 @@ public class EmployeeController {
         return "admin/employee/employee";
     }
 
+    /**
+     * get add employee page
+     * @author VQKHANH
+     * @param model
+     * @return
+     */
     @GetMapping("/addemployee")
     public String getAddEmployeePage(Model model){
         Employee employee=new Employee();
@@ -42,6 +54,13 @@ public class EmployeeController {
         return  "admin/employee/addemployee";
     }
 
+    /**
+     * save new employee
+     * @author VQKHANH
+     * @param employee
+     * @param model
+     * @return
+     */
     @PostMapping("/employee/add")
     public String saveEmployee(@ModelAttribute Employee employee, Model model){
 
@@ -75,6 +94,13 @@ public class EmployeeController {
         return "redirect:/admin/employee";
     }
 
+    /**
+     * get employee info editing page
+     * @author VQKHANH
+     * @param id
+     * @param model
+     * @return
+     */
     @GetMapping("/editemployee/{id}")
     public String getEditEmployeePage(@PathVariable("id") int id, Model model){
 //        log.info(id+"");
@@ -85,6 +111,13 @@ public class EmployeeController {
         return "admin/employee/editemployee";
     }
 
+    /**
+     * save employee info after editing
+     * @author VQKHANH
+     * @param employee
+     * @param model
+     * @return
+     */
     @PostMapping("/employee/edit")
     public String editEmployee(@ModelAttribute Employee employee,Model model){
 
@@ -118,6 +151,13 @@ public class EmployeeController {
         return "redirect:/admin/employee";
     }
 
+    /**
+     * get employee info page
+     * @author VQKHANH
+     * @param id
+     * @param model
+     * @return
+     */
     @GetMapping("/employeeinfo/{id}")
     public String getStudentInfoPage(@PathVariable("id") int id,Model model){
 //        log.info(id+"");
@@ -125,5 +165,23 @@ public class EmployeeController {
 //        log.info(teacher.toString());
         model.addAttribute("employee",employee);
         return "admin/employee/employeeinfo";
+    }
+
+    /**
+     * search employee by id or username or full_name
+     * @author VQKHANH
+     * @param idOrUsername
+     * @param fullName
+     * @param model
+     * @return
+     */
+    @PostMapping("/employee/search")
+    public String searchEmployee(@RequestParam String idOrUsername, @RequestParam String fullName,Model model){
+//        log.info(idOrUsername);
+//        log.info(fullName);
+        List<Employee> employees=employeeDAO.searchUser(idOrUsername,fullName);
+
+        model.addAttribute("employees",employees);
+        return "admin/employee/employee";
     }
 }
