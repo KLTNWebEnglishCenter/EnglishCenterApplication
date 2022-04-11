@@ -37,7 +37,7 @@
  <div id="wrapper">
   <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
     <div class="brand-logo">
-      <a href="/admin/admin.html">
+      <a th:href="@{/admin/employee}">
         <img src="/admin/assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
         <h5 class="logo-text">TOPAL</h5>
       </a>
@@ -51,17 +51,17 @@
       </li>
       
        <li>
-        <a href="/admin/admin.html">
+        <a th:href="@{/admin/employee}">
           <i class="zmdi zmdi-account-box"></i> <span>Quản lí Nhân viên</span>
         </a>
       </li>
       <li>
-        <a href="/admin/hocvien.html">
+        <a th:href="@{/admin/student}">
           <i class="zmdi zmdi-accounts"></i> <span>Quản lí Học viên</span>
         </a>
       </li>
       <li>
-        <a href="/admin/giangvien.html">
+        <a th:href="@{/admin/teacher}">
           <i class="zmdi zmdi-accounts"></i> <span>Quản lí Giảng viên</span>
         </a>
       </li>

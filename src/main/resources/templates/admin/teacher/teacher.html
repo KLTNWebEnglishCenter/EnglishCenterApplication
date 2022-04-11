@@ -1,24 +1,25 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <meta name="description" content="" />
-  <meta name="author" content="" />
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <meta name="description" content=""/>
+  <meta name="author" content=""/>
   <title>Admin</title>
 
-  <link th:href="@{/admin/assets/css/pace.min.css}" rel="stylesheet" />
+  <link th:href="@{/admin/assets/css/pace.min.css}" rel="stylesheet"/>
   <script th:src="@{/admin/assets/js/pace.min.js}"></script>
-  <link rel="stylesheet" th:href="@{/admin/assets/plugins/summernote/dist/summernote-bs4.css}"/>
-  <link rel="icon" th:href="@{/admin/assets/images/favicon.ico}" type="image/x-icon}">
-  <link th:href="@{/admin/assets/plugins/vectormap/jquery-jvectormap-2.0.2.css}" rel="stylesheet" />
-  <link th:href="@{/admin/assets/plugins/simplebar/css/simplebar.css}" rel="stylesheet" />
-  <link th:href="@{/admin/assets/css/bootstrap.min.css}" rel="stylesheet" />
-  <link th:href="@{/admin/assets/css/animate.css}" rel="stylesheet" type="text/css" />
-  <link th:href="@{/admin/assets/css/icons.css}" rel="stylesheet" type="text/css" />
-  <link th:href="@{/admin/assets/css/sidebar-menu.css}" rel="stylesheet" />
-  <link th:href="@{/admin/assets/css/app-style.css}" rel="stylesheet" />
+  <link th:rel="stylesheet" href="@{/admin/assets/plugins/summernote/dist/summernote-bs4.css}"/>
+  <link th:rel="icon" href="@{/admin/assets/images/favicon.ico}" type="image/x-icon">
+  <link th:href="@{/admin/assets/plugins/vectormap/jquery-jvectormap-2.0.2.css}" rel="stylesheet"/>
+  <link th:href="@{/admin/assets/plugins/simplebar/css/simplebar.css}" rel="stylesheet"/>
+  <link th:href="@{/admin/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+  <link th:href="@{/admin/assets/css/animate.css}" rel="stylesheet" type="text/css"/>
+  <link th:href="@{/admin/assets/css/icons.css}" rel="stylesheet" type="text/css"/>
+  <link th:href="@{/admin/assets/css/sidebar-menu.css}" rel="stylesheet"/>
+  <link th:href="@{/admin/assets/css/app-style.css}" rel="stylesheet"/>
 
 
 </head>
@@ -49,15 +50,9 @@
           <i class="zmdi zmdi-view-dashboard"></i> <span>Lịch</span>
         </a>
       </li>
-<<<<<<< HEAD
-      
-       <li>
-        <a th:href="@{/admin/employee}">
-=======
 
       <li>
-        <a href="/admin/admin.html">
->>>>>>> e4dfd25a1eb17846e64b4478efa36afc01a1e9c2
+        <a th:href="@{/admin/employee}">
           <i class="zmdi zmdi-account-box"></i> <span>Quản lí Nhân viên</span>
         </a>
       </li>
@@ -118,7 +113,7 @@
                                            alt="user avatar"></div>
                   <div class="media-body">
                     <h6 class="mt-2 user-title">TopalEnglish</h6>
-                    <b> Admin:  </b>
+                    <b> Admin: </b>
                   </div>
                 </div>
               </a>
@@ -136,54 +131,68 @@
   <!-- Body -->
   <div class="content-wrapper">
     <div class="container-fluid">
-
       <div class="row mt-3">
-        <div class="col-lg-8">
+        <form th:action="@{/admin/teacher/search}" method="post" class="col-12" style="display:flex; align-items: top; ">
+          <div class="col-lg-11 col-sm-9 col-xs-6">
+            <div class="form-group col-12">
+              <input type="text" name="idOrUsername" class="form-control" placeholder="ID/Username" >
+            </div>
+            <div class="form-group col-12">
+              <input type="text" name="fullName" class="form-control" placeholder="Tên" >
+              </div>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-light" >Search</button>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12 mb-3" style="display:flex; justify-content: right;">
+          <button class="btn btn-light"><a th:href="@{/admin/addteacher}">Thêm giảng viên</a></button>
+        </div>
+        <div class="col-lg-12">
           <div class="card">
             <div class="card-body">
-              <div class="card-title">Cập nhật khóa học</div>
-              <hr>
-              <form th:action="@{/admin/course/update}" method="post" th:object="${course}" enctype="application/json;charset=UTF-8">
-                <input type="hidden" th:field="*{id}" class="form-control">
-                <div class="form-group">
-                  <label for="input-1">Tên khóa học</label>
-                  <input type="text" th:field="*{name}" class="form-control" id="input-1" placeholder="Tên chuyên mục" name="course-name">
-                </div>
-                <div class="form-group">
-                  <label for="input-2">Nội dung</label>
-                  <textarea class="form-control" th:field="*{description}" rows="4" id="input-2" name="course-content"></textarea>
-                </div>
-                <div class="form-group">
-                  <label for="input-4">Giá</label>
-                  <input type="number" class="form-control" th:field="*{price}" id="input-4" placeholder="Giá" name="course-price">
-                </div>
-                <div class="form-group">
-                  <label for="input-0">Cấp độ</label>
-                  <div>
-                    <select id="input-0" class="form-control valid" th:name="level_id" required aria-invalid="false">
-                      <option value=""> -- </option>
-                      <option th:each="level : ${levels}"
-                              th:value="${level.id}"
-                              th:utext="${level.name}"></option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="input-6">Loại</label>
-                  <div>
-                    <select id="input-6" class="form-control valid" th:name="category_id" required aria-invalid="false">
-                      <option value=""> -- </option>
-                      <option th:each="category : ${categories}"
-                              th:value="${category.id}"
-                              th:utext="${category.name}"></option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-footer">
-                  <a type="submit" class="btn btn-danger px-5" th:href="@{/admin/courses}"><i class="icon-lock"></i>Hủy</a>
-                  <button type="submit" class="btn btn-success"><i class="fa fa-check-square-o"></i> Cập nhật</button>
-                </div>
-              </form>
+              <h5 class="card-title">Danh sách Giảng viên</h5>
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Tên</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Số điện thoại</th>
+<!--                    <th scope="col">Giới tính</th>-->
+<!--                    <th scope="col">Bằng cấp</th>-->
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col">Hành động</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <!--                  <th:forEach items="${teachers}" var="teacher">-->
+                  <tr th:each="teacher,iter : ${teachers}">
+                    <td th:text="${iter.index}"></td>
+                    <td th:text="${teacher.username}"></td>
+                    <td th:text="${teacher.fullName}"></td>
+                    <td th:text="${teacher.email}"></td>
+                    <td th:text="${teacher.phoneNumber}"></td>
+<!--                    <td th:text="${teacher.gender}"></td>-->
+<!--                    <td th:text="${teacher.certificate}"></td>-->
+                    <td th:text="${teacher.enable} ? 'ACTIVE' : 'RETIRED'"></td>
+                    <td>
+                      <!--                          <button class="btn btn-danger"><a href="@{/admin/deleteteacher/{id}(id=${teacher.id})}">Xóa</a></button>-->
+                      <button class="btn btn-success"><a th:href="@{/admin/teacherinfo/{id}(id=${teacher.id})}">Chi tiết</a></button>
+                      <button class="btn btn-success"><a th:href="@{/admin/editteacher/{id}(id=${teacher.id})}">Cập
+                        nhật</a></button>
+                    </td>
+                  </tr>
+                  <!--                    </th:forEach>-->
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -191,21 +200,6 @@
       <div class="overlay toggle-menu"></div>
     </div>
   </div>
-  <script>
-      var date = new Date();
-
-      var day = date.getDate();
-      var month = date.getMonth() + 1;
-      var year = date.getFullYear();
-
-      if (month < 10) month = "0" + month;
-      if (day < 10) day = "0" + day;
-
-      var today = year + "-" + month + "-" + day;
-
-
-      document.getElementById('input-7').value = today;
-      </script>
   <!-- Body -->
 
   <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
@@ -253,4 +247,5 @@
 <script src="/admin/assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
 </body>
 
+</html>
 </html>

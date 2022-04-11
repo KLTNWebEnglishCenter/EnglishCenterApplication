@@ -42,7 +42,7 @@ public class ClassroomController {
         List<Course> courses = courseDAO.findAllCourse();
         List<Teacher> teachers = teacherDAO.findAllTeacher();
         model.addAttribute("classroom",classroom);
-        model.addAttribute("courses",courses);
+        model.addAttribute("courses", courses);
         model.addAttribute("teachers",teachers);
         return "admin/addlophoc";
     }

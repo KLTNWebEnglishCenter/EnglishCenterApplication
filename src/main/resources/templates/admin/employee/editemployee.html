@@ -1,25 +1,33 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
     <title>Admin</title>
 
-    <link th:href="@{/admin/assets/css/pace.min.css}" rel="stylesheet" />
+    <link th:href="@{/admin/assets/css/pace.min.css}" rel="stylesheet"/>
     <script th:src="@{/admin/assets/js/pace.min.js}"></script>
     <link rel="stylesheet" th:href="@{/admin/assets/plugins/summernote/dist/summernote-bs4.css}"/>
-    <link rel="icon" th:href="@{/admin/assets/images/favicon.ico}" type="image/x-icon}">
-    <link th:href="@{/admin/assets/plugins/vectormap/jquery-jvectormap-2.0.2.css}" rel="stylesheet" />
-    <link th:href="@{/admin/assets/plugins/simplebar/css/simplebar.css}" rel="stylesheet" />
-    <link th:href="@{/admin/assets/css/bootstrap.min.css}" rel="stylesheet" />
-    <link th:href="@{/admin/assets/css/animate.css}" rel="stylesheet" type="text/css" />
-    <link th:href="@{/admin/assets/css/icons.css}" rel="stylesheet" type="text/css" />
-    <link th:href="@{/admin/assets/css/sidebar-menu.css}" rel="stylesheet" />
-    <link th:href="@{/admin/assets/css/app-style.css}" rel="stylesheet" />
+    <link rel="icon" th:href="@{/admin/assets/images/favicon.ico}" type="image/x-icon">
+    <link th:href="@{/admin/assets/plugins/vectormap/jquery-jvectormap-2.0.2.css}" rel="stylesheet"/>
+    <link th:href="@{/admin/assets/plugins/simplebar/css/simplebar.css}" rel="stylesheet"/>
+    <link th:href="@{/admin/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/admin/assets/css/animate.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/admin/assets/css/icons.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/admin/assets/css/sidebar-menu.css}" rel="stylesheet"/>
+    <link th:href="@{/admin/assets/css/app-style.css}" rel="stylesheet"/>
 
+    <style>
+  .redText {
+    color: red;
+  }
+
+
+    </style>
 
 </head>
 
@@ -71,11 +79,6 @@
                 </a>
             </li>
             <li>
-                <a href="/admin/lophoc.html">
-                    <i class="zmdi zmdi-widgets"></i> <span>Quản lí Lớp học</span>
-                </a>
-            </li>
-            <li>
                 <a href="/admin/baidang.html">
                     <i class="zmdi zmdi-collection-bookmark"></i> <span>Quản lí Bài đăng</span>
                 </a>
@@ -113,18 +116,20 @@
                         <li class="dropdown-item user-details">
                             <a href="javaScript:void();">
                                 <div class="media">
-                                    <div class="avatar"><img class="align-self-start mr-3" src="/admin/assets/images/avatar-admin.png"
+                                    <div class="avatar"><img class="align-self-start mr-3"
+                                                             src="/admin/assets/images/avatar-admin.png"
                                                              alt="user avatar"></div>
                                     <div class="media-body">
                                         <h6 class="mt-2 user-title">TopalEnglish</h6>
-                                        <b> Admin:  </b>
+                                        <b> Admin: </b>
                                     </div>
                                 </div>
                             </a>
                         </li>
 
                         <li class="dropdown-divider"></li>
-                        <li class="dropdown-item"><i class="icon-power mr-2"></i><a href="/admin/logout"> Đăng xuất</a></li>
+                        <li class="dropdown-item"><i class="icon-power mr-2"></i><a href="/admin/logout"> Đăng xuất</a>
+                        </li>
                     </ul>
                 </li>
             </ul>
@@ -133,6 +138,7 @@
     <div class="clearfix"></div>
 
     <!-- Body -->
+
     <div class="content-wrapper">
         <div class="container-fluid">
 
@@ -140,60 +146,93 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <div class="card-title">Thêm lớp học</div>
+                            <div class="card-title">Chuyên mục: Sửa</div>
                             <hr>
-                            <form th:action="@{/admin/classroom/add}" method="post" th:object="${classroom}" enctype="application/json;charset=UTF-8">
+
+                            <form th:action="@{/admin/employee/edit}" method="post" th:object="${employee}">
                                 <div class="form-group">
-                                    <label for="input-0">Khóa học</label>
+                                    <label for="input-1">ID</label>
+                                    <input type="text" class="form-control" id="input-1" readonly="readonly"
+                                           placeholder="ID"
+                                           th:field="*{id}" value="" name="teacher-id">
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-1">Họ tên</label>
+                                    <input type="text" required class="form-control" id="input-2" placeholder="Họ tên"
+                                           th:field="*{fullName}"
+                                           value="" name="teacher-name">
+                                    <small class="redText" th:text="${errorFullName}"></small>
+                                </div>
+                                <div class="form-group">
+                                    <label>Giới tính</label>
                                     <div>
-                                        <select id="input-0" class="form-control valid" th:name="course_id" required aria-invalid="false">
-                                            <option value=""> -- </option>
-                                            <option th:each="course : ${courses}"
-                                                    th:value="${course.id}"
-                                                    th:utext="${course.name}"></option>
-                                        </select>
+                                        <input type="radio" name="gender" th:field="*{gender}" value="Nam"
+                                               style="margin:10px;">Nam
+                                        <input type="radio" name="gender" th:field="*{gender}" value="Nữ"
+                                               style="margin:10px;">Nữ
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-2">Email</label>
+                                    <input type="text" required class="form-control" id="input-3" placeholder="Địa chỉ Email"
+                                           th:field="*{email}"
+                                           value="" name="teacher-email">
+                                    <small class="redText" th:text="${errorEmail}"></small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-3">Số điện thoại</label>
+                                    <input type="text" class="form-control" id="input-4" placeholder="Số điện thoại"
+                                           th:field="*{phoneNumber}" value="" name="teacher-phone">
+                                    <small class="redText" th:text="${errorPhoneNumber}"></small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-3">UserName</label>
+                                    <input type="text" required class="form-control" id="input-5" placeholder="Username"
+                                           th:field="*{username}"
+                                           value="" name="teacher-userName">
+                                    <small class="redText" th:text="${errorUsername}"></small>
+                                </div>
+                                <div class="form-group">
+                                    <!--                    <label for="input-4">Mật khẩu</label>-->
+                                    <input type="password" class="form-control" id="myinput" placeholder="Mật khẩu"
+                                           hidden
+                                           th:field="*{password}" value="" name="teacher-password">
+                                    <!--                    <input type="checkbox" onclick="myFunction1()">Hiển thị mật khẩu-->
+                                    <!--                    <script>function myFunction1() {-->
+                                    <!--                                  var x = document.getElementById("myinput");-->
+                                    <!--                                  if (x.type === "password") {-->
+                                    <!--                                    x.type = "text";-->
+                                    <!--                                  } else {-->
+                                    <!--                                    x.type = "password";-->
+                                    <!--                                  }-->
+                                    <!--                                }-->
+                                    <!--                    </script>                   -->
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-5">Ngày sinh</label>
+                                    <input type="date" class="form-control" id="input-6" placeholder="Ngày tạo"
+                                           th:field="*{dob}" value=""
+                                           name="teacher-created">
+                                    <small class="redText" th:text="${errorDob}"></small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-5">Trạng thái</label>
+                                    <div>
+                                        <input type="radio" name="enable" th:field="*{enable}" value="true"
+                                               style="margin:10px;">Enable
+                                        <input type="radio" name="enable" th:field="*{enable}" value="false"
+                                               style="margin:10px;">Disable
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="input-1">Tên lớp học</label>
-                                    <input type="text" th:field="*{classname}" class="form-control" id="input-1" placeholder="Nhập tên lớp" name="user-name" >
+                                <div class="form-footer">
+                                    <button class="btn btn-danger"><a th:href="@{/admin/employee}">Hủy</a></button>
+
+                                    <button type="submit" class="btn btn-success">Cập nhật</button>
                                 </div>
-                                <div class="form-group">
-                                    <label for="input-2">Số lượng học viên tối đa</label>
-                                    <input type="number" th:field="*{maxMember}" class="form-control" id="input-2" placeholder="Nhập số lượng học viên tối đa" name="user-email">
-                                </div>
-                                <div class="form-group">
-                                    <label for="the-date1">Ngày bắt đầu</label>
-                                    <input type="date" th:field="*{startDate}" class="form-control" id="the-date1" placeholder="Ngày bắt đầu học" name="user-created">
-                                </div>
-                                <div class="form-group">
-                                    <label for="the-date3">Ngày kết thúc</label>
-                                    <input type="date" th:field="*{endDate}" class="form-control" id="the-date3" placeholder="Ngày kết thúc lớp học" name="user-created">
-                                </div>
-                                <div class="form-group">
-                                    <label for="the-date2">Ngày tạo</label>
-                                    <input type="date" th:field="*{createDate}" class="form-control" id="the-date2" placeholder="Ngày tạo" name="user-created">
-                                </div>
-                                <div class="form-group">
-                                    <label for="input-6">Giảng viên phụ trách</label>
-                                    <div>
-                                        <select id="input-6" class="form-control valid" th:name="teacher_id" required aria-invalid="false">
-                                            <option value=""> -- </option>
-                                            <option th:each="teacher : ${teachers}"
-                                                    th:value="${teacher.id}"
-                                                    th:utext="${teacher.fullName}"></option>
-                                        </select>
-                                        <!--                                        <select class="form-control valid" id="input-6" name="course-catogary" required aria-invalid="false">-->
-                                        <!--                                            <option value="0">Toeic</option>-->
-                                        <!--                                            <option value="1">Toeic 200</option>-->
-                                        <!--                                        </select>-->
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <a type="submit" class="btn btn-danger px-5" th:href="@{/admin/classrooms}"><i class="icon-lock"></i>Hủy</a>
-                                    <button type="submit" class="btn btn-light px-5"><i class="icon-lock"></i>Tạo lớp học</button>
-                                </div>
+
                             </form>
+
                         </div>
                     </div>
                 </div>
@@ -201,23 +240,6 @@
             <div class="overlay toggle-menu"></div>
         </div>
     </div>
-    <script>
-		var date = new Date();
-
-		var day = date.getDate();
-		var month = date.getMonth() + 1;
-		var year = date.getFullYear();
-
-		if (month < 10) month = "0" + month;
-		if (day < 10) day = "0" + day;
-
-		var today = year + "-" + month + "-" + day;
-
-
-		document.getElementById('the-date1').value = today;
-        document.getElementById('the-date2').value = today;
-        document.getElementById('the-date3').value = today;
-    </script>
     <!-- Body -->
 
     <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
@@ -265,4 +287,5 @@
 <script src="/admin/assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
 </body>
 
+</html>
 </html>

@@ -22,10 +22,15 @@ public class LoginController {
     @GetMapping("/register")
     public String getRegister(Model model){
         Users users = new Users();
-        model.addAttribute("users",users);
+        model.addAttribute("users", users);
         return "dangky";
     }
 
+    /**
+     * get logging page
+     * @author VQKHANH
+     * @return
+     */
     @GetMapping("/login")
     public String getLogin(){
         return "dangnhap";
@@ -69,10 +74,18 @@ public class LoginController {
         }
     }
 
+    /**
+     * login to the system, get access_token(jwt) and save it in the cookie
+     * @author VQKHANH
+     * @param username
+     * @param password
+     * @param response
+     * @return
+     */
     @PostMapping("/login")
     public String login(@RequestParam("username") String username,@RequestParam("password") String password, HttpServletResponse response){
         String access_token = userDAO.login(username,password);
-        log.info(access_token);
+//        log.info(access_token);
         Cookie cookie=new Cookie("access_token",access_token);
         response.addCookie(cookie);
         return "redirect:/admin/home";

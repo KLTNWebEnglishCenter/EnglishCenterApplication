@@ -14,10 +14,11 @@ import java.util.List;
 @Service
 @Slf4j
 public class CourseDAO {
+
     @Autowired
     private RestTemplate restTemplate;
 
-    public List<Course> findAllCourse(){
+    public List<Course> findAllCourse() {
         ResponseEntity<List<Course>> responseEntity =
                 restTemplate.exchange("http://localhost:8000/course/",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Course>>() {
@@ -27,8 +28,8 @@ public class CourseDAO {
         return courses;
     }
 
-    public Course getCourse(int id){
-        Course course = restTemplate.getForObject(("http://localhost:8000/course/"+id),Course.class);
+    public Course getCourse(int id) {
+        Course course = restTemplate.getForObject(("http://localhost:8000/course/" + id), Course.class);
         return course;
     }
 

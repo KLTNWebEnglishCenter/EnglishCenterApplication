@@ -16,7 +16,14 @@ public class Student extends Users implements Serializable {
     private List<UsersCourseRequest> userRequestCourses;
     private List<Classroom> classrooms;
 
-    public Student(@NonNull String username, @NonNull String password, @NonNull String fullName, @NonNull String email) {
+    /**
+     *
+     * @param username
+     * @param password
+     * @param fullName
+     * @param email
+     */
+    public Student(String username,  String password, String fullName, String email) {
         super(username, password, fullName, email);
     }
 }
