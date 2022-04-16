@@ -76,7 +76,7 @@
                 </a>
             </li>
             <li>
-                <a href="/admin/baidang.html">
+                <a th:href="@{/admin/notification}">
                     <i class="zmdi zmdi-collection-bookmark"></i> <span>Quản lí Bài đăng</span>
                 </a>
             </li>
@@ -177,24 +177,13 @@
                                        value="" name="teacher-userName">
                             </div>
                             <div class="form-group">
-                                <!--                    <label for="input-4">Mật khẩu</label>-->
                                 <input type="password" class="form-control" id="myinput" placeholder="Mật khẩu" hidden
                                        th:field="*{password}" value="" name="teacher-password">
-                                <!--                    <input type="checkbox" onclick="myFunction1()">Hiển thị mật khẩu-->
-                                <!--                    <script>function myFunction1() {-->
-                                <!--                                  var x = document.getElementById("myinput");-->
-                                <!--                                  if (x.type === "password") {-->
-                                <!--                                    x.type = "text";-->
-                                <!--                                  } else {-->
-                                <!--                                    x.type = "password";-->
-                                <!--                                  }-->
-                                <!--                                }-->
-                                <!--                    </script>                   -->
                             </div>
                             <div class="form-group">
                                 <label for="input-5">Ngày sinh</label>
-                                <input type="date" class="form-control" id="input-6" placeholder="Ngày tạo" th:field="*{dob}" value=""
-                                       name="teacher-created">
+                                <input type="text"  class="form-control" readonly="readonly" placeholder="Ngày sinh" th:value="${#temporals.format(teacher.dob, 'dd-MM-yyyy')}"
+                                       name="dob">
                             </div>
                             <div class="form-group">
                                 <label for="input-7">Bằng cấp</label>

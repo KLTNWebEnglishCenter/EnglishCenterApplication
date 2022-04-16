@@ -58,6 +58,10 @@ public class Classroom implements Serializable {
         this.course = course;
     }
 
+    public Classroom(int id) {
+        this.id=id;
+    }
+
     @Override
     public String toString() {
         return "Classroom{" +

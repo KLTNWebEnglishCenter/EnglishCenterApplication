@@ -58,8 +58,8 @@ public class UserDAO {
 
     public Users getUserFromToken(String token){
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authentication",token);
-        HttpEntity<String> request = new HttpEntity<>("body",headers);
+        headers.set("Authorization",token);
+        HttpEntity<Void> request = new HttpEntity<>(headers);
         Users users = restTemplate.postForObject("http://localhost:8000/user/fromToken/",request,Users.class);
         return users;
     }

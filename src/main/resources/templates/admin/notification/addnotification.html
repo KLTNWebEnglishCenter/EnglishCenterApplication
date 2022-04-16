@@ -20,43 +20,6 @@
   <link th:href="@{/admin/assets/css/icons.css}" rel="stylesheet" type="text/css"/>
   <link th:href="@{/admin/assets/css/sidebar-menu.css}" rel="stylesheet"/>
   <link th:href="@{/admin/assets/css/app-style.css}" rel="stylesheet"/>
-
-<!--  <script th:src="@{/admin/assets/js/jquery.min.js}"></script>-->
-<!--  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>-->
-<!--  <link-->
-<!--          href="https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css"-->
-<!--          rel="stylesheet"-->
-<!--  />-->
-<!--  <script-->
-<!--          src="https://code.jquery.com/jquery-3.6.0.min.js"-->
-<!--  ></script>-->
-
-  <!-- ✅ load jquery UI ✅ -->
-<!--  <script-->
-<!--          src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"-->
-<!--  ></script>-->
-<!--  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>-->
-<!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>-->
-<!--  <script th:inline="javascript">-->
-
-<!--  $(document).ready(function (){-->
-<!--      console.log("XXXXXXXX");-->
-<!--      $("#the-date").datepicker({-->
-<!--        "dateFormat": "dd-MM-yyyy"-->
-<!--        });-->
-<!--    });-->
-<!--                      console.log("XXXXXXXX");-->
-<!--                      function changeDateFormat(){-->
-<!--                      console.log("AAA");-->
-<!--                        $("#the-date").datepicker()-->
-<!--                         {-->
-<!--                            "dateFormat" : "dd-mm-yyyy" //any valid format that you want to have-->
-<!--                         });-->
-<!--                         console.log("CCC");-->
-<!--                      };-->
-<!--                      console.log("BBB");-->
-<!--                   window.onload = changeDateFormat;-->
-<!--  </script>-->
   <style>
   .redText {
     color: red;
@@ -183,68 +146,46 @@
         <div class="col-lg-12">
           <div class="card">
             <div class="card-body">
-              <div class="card-title">Thêm Học Viên</div>
+              <div class="card-title">Đăng thông báo</div>
               <hr>
-              <form th:action="@{/admin/student/add}" method="post" th:object="${student}">
+              <form th:action="@{/admin/notification/add}" method="post" th:object="${notification}" >
 
                 <div class="form-group">
-                  <label for="input-2">Họ tên</label>
-                  <input type="text" required class="form-control" id="input-2" placeholder="Nhập họ tên" th:field="*{fullName}"
-                         name="user-name">
-                  <small class="redText" th:text="${errorFullName}"></small>
+                  <label for="input-1">Tiêu đề</label>
+                  <input type="text" required class="form-control" id="input-1" placeholder="Nhập tiêu đề" th:field="*{title}"
+                         name="title">
                 </div>
                 <div class="form-group">
-                  <label>Giới tính</label>
-                  <div>
-                    <input type="radio" name="gender" value="Nam" style="margin:10px;" th:field="*{gender}">Nam
-                    <input type="radio" name="gender" value="Nữ" style="margin:10px;" th:field="*{gender}">Nữ
-                  </div>
-
+                  <label>Nội dung thông báo</label>
+                  <textarea rows="5" cols="50" required class="form-control" id="input-2" placeholder="Nhập nội dung thông báo" th:field="*{content}"
+                         name="content"></textarea>
                 </div>
                 <div class="form-group">
-                  <label for="input-2">Email</label>
-                  <input type="email" required class="form-control" id="input-3" placeholder="Nhập địa chỉ Email"
-                         th:field="*{email}" name="email">
-                  <small class="redText" th:text="${errorEmail}"></small>
+                  <label>Lớp học</label>
+                  <table class="table table-striped">
+                    <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">ID</th>
+                      <th scope="col">Tên lớp học</th>
+                      <th scope="col">Thuộc khóa học</th>
+                      <th scope="col">Trạng thái</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      <tr th:each="classroom: ${classrooms}">
+                        <td scope="rows"><input type="checkbox" th:value="${classroom.id}" name="selectedClassroom"></td>
+                        <td th:text="${classroom.id}"></td>
+                        <td th:text="${classroom.classname}"></td>
+                        <td th:text="${classroom.course.name}"></td>
+                        <td th:text="${classroom.status}"></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
                 <div class="form-group">
-                  <label for="input-3">Số Điện Thoại</label>
-                  <input type="text" required class="form-control" id="input-4" placeholder="Nhập số điện thoại"
-                         th:field="*{phoneNumber}" name="phoneNumber">
-                  <small class="redText" th:text="${errorPhoneNumber}"></small>
-                </div>
-                <div class="form-group">
-                  <label for="input-3">UserName</label>
-                  <input type="text" required class="form-control" id="input-5" placeholder="Nhập User Name"
-                         th:field="*{username}" name="username">
-                  <small class="redText" th:text="${errorUsername}"></small>
-                </div>
-                <div class="form-group">
-                  <label for="input-4">Mật khẩu</label>
-                  <input type="password" required class="form-control" id="myinput" placeholder="Nhập mật khẩu"
-                         th:field="*{password}" name="password">
-                  <input type="checkbox" onclick="myFunction1()">Hiển thị mật khẩu
-                  <script>function myFunction1() {
-                    	  var x = document.getElementById("myinput");
-                    	  if (x.type === "password") {
-                    	    x.type = "text";
-                    	  } else {
-                    	    x.type = "password";
-                    	  }
-                    	}
-
-                  </script>
-                </div>
-                <div class="form-group">
-                  <label for="input-5">Ngày sinh</label>
-                  <input type="date" class="form-control" id="the-date" placeholder="Ngày sinh" name="dob"
-                         th:field="*{dob}" >
-
-                  <small class="redText" th:text="${errorDob}"></small>
-                </div>
-                <div class="form-group">
-                  <button class="btn btn-danger"><a th:href="@{/admin/student}">Hủy</a></button>
-                  <button type="submit" class="btn btn-light px-5"><i class="icon-lock"></i> Thêm</button>
+                  <button class="btn btn-danger"><a th:href="@{/admin/notification}">Hủy</a></button>
+                  <button type="submit" class="btn btn-light px-5"><i class="icon-lock"></i>Đăng</button>
                 </div>
               </form>
             </div>
@@ -254,22 +195,22 @@
       <div class="overlay toggle-menu"></div>
     </div>
   </div>
-<!--  <script>-->
-<!--		var date = new Date();-->
-<!--		-->
-<!--		var day = date.getDate();-->
-<!--		var month = date.getMonth() + 1;-->
-<!--		var year = date.getFullYear();-->
-<!--		-->
-<!--		if (month < 10) month = "0" + month;-->
-<!--		if (day < 10) day = "0" + day;-->
-<!--		-->
-<!--		var today = year + "-" + month + "-" + day;-->
-<!--		-->
-<!--		-->
-<!--		document.getElementById('the-date').value = today;-->
+  <script>
+		var date = new Date();
+		
+		var day = date.getDate();
+		var month = date.getMonth() + 1;
+		var year = date.getFullYear();
+		
+		if (month < 10) month = "0" + month;
+		if (day < 10) day = "0" + day;
+		
+		var today = year + "-" + month + "-" + day;
+		
+		
+		document.getElementById('the-date').value = today;
 
-<!--  </script>-->
+  </script>
   <!-- Body -->
 
   <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
