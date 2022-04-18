@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import web.english.application.entity.course.Course;
+import web.english.application.entity.course.UsersCourseRequest;
 
 import java.util.List;
 
@@ -42,5 +43,10 @@ public class CourseDAO {
     public Course deleteCourse(int id){
         Course course = restTemplate.getForObject("http://localhost:8000/course/delete/"+id,Course.class);
         return course;
+    }
+
+    public UsersCourseRequest signupCourse(UsersCourseRequest usersCourseRequest){
+        UsersCourseRequest request = restTemplate.postForObject("http://localhost:8000/user/signup/course",usersCourseRequest,UsersCourseRequest.class);
+        return request;
     }
 }

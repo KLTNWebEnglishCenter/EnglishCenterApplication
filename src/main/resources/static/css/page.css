@@ -1,0 +1,53 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,900;1,700&display=swap");
+@import url('https://css.gg/sun.css');
+@import url('https://css.gg/moon.css');
+
+/* CSS Variables */
+:root {
+    --normal-font: 400;
+    --bold-font: 600;
+    --bolder-font: 900;
+    --primary-color: #0652dd;
+    --secondary-color: #ea2027;
+    --line-height: 1.7rem;
+    --transition: 0.4s ease-in;
+    --background-color: #ffffff;
+    --box-color: #3b3a3b;
+    --text-color: #fff;
+    --btn-color: rgb(18, 145, 196);
+  }
+
+  /* Smooth scroll effect */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Resets */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: var(--transition);
+  }
+
+  body {
+    font-family: "Roboto", sans-serf;
+  }
+  body.dark {
+    --primary-color: #4daf54;
+    --secondary-color: #20aaea;
+    --background-color: #2d2c2d;
+    background-color: var(--background-color);
+  }
+  ul li {
+    list-style-type: none;
+  }
+
+  a {
+    text-decoration: none;
+    color: var(--primary-color);
+  }
+
+  a:hover {
+    color: var(--secondary-color);
+  }

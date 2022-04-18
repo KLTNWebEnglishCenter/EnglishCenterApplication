@@ -10,8 +10,8 @@ import lombok.*;
 public class Authentication {
 
     private int id;
-    private String role;
     private boolean enable;
+    private String role;
 
     /**
      *
@@ -20,4 +20,6 @@ public class Authentication {
     public Authentication(String role) {
         this.role = role;
     }
+
+
 }

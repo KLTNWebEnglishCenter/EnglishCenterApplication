@@ -18,10 +18,10 @@ public class UserController {
     @Autowired
     private UserDAO userDAO;
 
-    @GetMapping("/profile/{id}")
+    @GetMapping("/info/{id}")
     public String getProfilePage(@PathVariable("id") int id, Model model){
         Users users = userDAO.getUser(id);
         model.addAttribute("users",users);
-        return "thongtincanhan";
+        return "admin/thongtincanhan";
     }
 }

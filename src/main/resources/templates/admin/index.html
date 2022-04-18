@@ -66,12 +66,12 @@
         </a>
       </li>
       <li>
-        <a href="/admin/khoahoc.html">
+        <a th:href="@{/admin/courses}">
           <i class="zmdi zmdi-widgets"></i> <span>Quản lí Khóa học</span>
         </a>
       </li>
       <li>
-        <a href="/admin/baidang.html">
+        <a th:href="@{/admin/posts}">
           <i class="zmdi zmdi-collection-bookmark"></i> <span>Quản lí Bài đăng</span>
         </a>
       </li>
@@ -104,7 +104,7 @@
               <span class="user-profile"><img src="/admin/assets/images/avatar-admin.png" class="img-circle"
                   alt="user avatar"></span>
             </a>
-            <ul th:fragment="admin-fragment(fullName,userId)" class="dropdown-menu dropdown-menu-right">
+            <ul th:fragment="admin-fragment" class="dropdown-menu dropdown-menu-right">
               <li class="dropdown-item user-details">
                 <a href="javaScript:void();">
                   <div class="media">
@@ -112,14 +112,14 @@
                         alt="user avatar"></div>
                     <div class="media-body">
                       <h6 class="mt-2 user-title">Webnongsan</h6>
-                	<b> Admin:  ${fullName}</b>
+                	<b> Admin: </b><b th:text="${users.fullName}"></b>
                     </div>
                   </div>
                 </a>
               </li>
             
               <li class="dropdown-divider"></li>
-              <li class="dropdown-item"><i class="icon-power mr-2"></i><a th:href="@{/admin/info/{id}(id=${userId})}">Thông tin cá nhân</a></li>
+              <li class="dropdown-item"><i class="icon-power mr-2"></i><a th:href="@{/admin/info/{id}(id=${users.id})}">Thông tin cá nhân</a></li>
               <li class="dropdown-item"><i class="icon-power mr-2"></i><a href=""> Đăng xuất</a></li>
             </ul>
           </li>

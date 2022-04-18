@@ -2,12 +2,18 @@ package web.english.application.dao;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import web.english.application.entity.course.UsersCourseRequest;
+import web.english.application.entity.user.Authentication;
+import web.english.application.entity.user.Teacher;
 import web.english.application.entity.user.Users;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -58,10 +64,18 @@ public class UserDAO {
 
     public Users getUserFromToken(String token){
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authentication",token);
+        headers.set("Authorization",token);
         HttpEntity<String> request = new HttpEntity<>("body",headers);
-        Users users = restTemplate.postForObject("http://localhost:8000/user/fromToken/",request,Users.class);
+        Users users= restTemplate.postForObject("http://localhost:8000/user/fromToken/",request,Users.class);
         return users;
+    }
+
+    public String getAuthorFromToken(String token){
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization",token);
+        HttpEntity<String> request = new HttpEntity<>("body",headers);
+        String author= restTemplate.postForObject("http://localhost:8000/user/author/",request,String.class);
+        return author;
     }
 
     public String checkEmail(String email){

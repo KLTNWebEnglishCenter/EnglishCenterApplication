@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Admin</title>
+
+    <link th:href="@{/admin/assets/css/pace.min.css}" rel="stylesheet" />
+    <script th:src="@{/admin/assets/js/pace.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/admin/assets/plugins/summernote/dist/summernote-bs4.css}"/>
+    <link rel="icon" th:href="@{/admin/assets/images/favicon.ico}" type="image/x-icon}">
+    <link th:href="@{/admin/assets/plugins/vectormap/jquery-jvectormap-2.0.2.css}" rel="stylesheet" />
+    <link th:href="@{/admin/assets/plugins/simplebar/css/simplebar.css}" rel="stylesheet" />
+    <link th:href="@{/admin/assets/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/admin/assets/css/animate.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/admin/assets/css/icons.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/admin/assets/css/sidebar-menu.css}" rel="stylesheet" />
+    <link th:href="@{/admin/assets/css/app-style.css}" rel="stylesheet" />
+
+    <style>
+      .info-name {
+        position: absolute;
+        top: 250px;
+        left: 200px;
+      }
+      .info-name h1 {
+        font-size: 80px;
+        font-family:  'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: rgb(126, 222, 176);
+        margin-bottom: 40px;
+      }
+
+      .info-image {
+        position: absolute;
+        top: 250px;
+        left: 1100px;
+      }
+
+      .info-image img {
+          width: 350px;
+          height: 500px;
+
+          border: 3px solid white;
+          border-radius: 10px;
+      }
+
+      .info-image h4 {
+          text-align: center;
+          color: black;
+      }
+
+      .info-introduces {
+        position: absolute;
+        top: 400px;
+        left: 200px;
+      }
+
+      .info-introduces span {
+          font-size: 28px;
+          color: white;
+      }
+
+      .info-button {
+        position: absolute;
+        top: 550px;
+        left: 200px;
+      }
+  </style>
+
+</head>
+
+<body class="bg-theme bg-theme1">
+
+<!-- start loader -->
+<div id="pageloader-overlay" class="visible incoming">
+    <div class="loader-wrapper-outer">
+        <div class="loader-wrapper-inner">
+            <div class="loader"></div>
+        </div>
+    </div>
+</div>
+
+<div id="wrapper">
+    <header class="topbar-nav">
+        <nav class="navbar navbar-expand fixed-top">
+            <ul class="navbar-nav mr-auto align-items-center">
+                <!-- <li class="nav-item">
+                  <a class="nav-link toggle-menu" href="javascript:void();">
+                    <i class="icon-menu menu-icon"></i>
+                  </a>
+                </li> -->
+            </ul>
+
+            <ul class="navbar-nav align-items-center right-nav-link">
+                <li class="nav-item">
+                    <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" href="#">
+              <span class="user-profile"><img src="/admin/assets/images/avatar-admin.png" class="img-circle"
+                                              alt="user avatar"></span>
+                    </a>
+                    <ul th:replace="~{admin/index::admin-fragment}">
+
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <div class="clearfix"></div>
+
+    <!-- Body -->
+    <div class="wrapper">
+        <div class="container-fluid">
+            <div class="row mt-3">
+                <div class="col-lg-12">
+                    <button class="add-catalog"></button>
+                </div>
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="info-name">
+                            <h1 th:text="${users.fullName}"></h1>
+                            <h3>IT developer</h3>
+                        </div>
+                        <div class="info-image">
+                            <img th:src="@{/admin/assets/images/anhbia2.jpg}" alt="" >
+                            <h4 th:text="${users.dob}"></h4>
+                        </div>
+                        <div class="info-introduces">
+                            <span th:text="${users.phoneNumber}"><i class="icon-phone mr-2"> </i></span><br>
+                            <span th:text="${users.email}"><i class="fa fa-mail-forward mr-2"> </i></span>
+                        </div>
+                        <div class="info-button">
+                            <button class="btn btn-info"><a href="">Chỉnh sửa thông tin cá nhân</a></button>
+
+                            <button class="btn btn-success"><a href="">Quay lại</a></button>
+                        </div>
+                        <img th:src="@{/admin/assets/images/anhbia.png}" alt="anhbia">
+                    </div>
+                </div>
+            </div>
+            <div class="overlay toggle-menu"></div>
+        </div>
+    </div>
+    <!-- Body -->
+
+    <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
+    <!-- <div class="right-sidebar">
+      <div class="switcher-icon">
+        <i class="zmdi zmdi-settings zmdi-hc-spin"></i>
+      </div>
+      <div class="right-sidebar-content">
+        <p class="mb-0">Màu nền admin</p>
+        <hr>
+        <ul class="switcher">
+          <li id="theme1"></li>
+          <li id="theme2"></li>
+          <li id="theme3"></li>
+          <li id="theme4"></li>
+          <li id="theme5"></li>
+          <li id="theme6"></li>
+        </ul>
+        <p class="mb-0">Màu nền gradient</p>
+        <hr>
+        <ul class="switcher">
+          <li id="theme7"></li>
+          <li id="theme8"></li>
+          <li id="theme9"></li>
+          <li id="theme10"></li>
+          <li id="theme11"></li>
+          <li id="theme12"></li>
+          <li id="theme13"></li>
+          <li id="theme14"></li>
+          <li id="theme15"></li>
+        </ul>
+      </div>
+    </div> -->
+</div>
+
+<script src="/admin/assets/js/jquery.min.js"></script>
+<script src="/admin/assets/js/popper.min.js"></script>
+<script src="/admin/assets/js/bootstrap.min.js"></script>
+<script src="/admin/assets/plugins/simplebar/js/simplebar.js"></script>
+<script src="/admin/assets/js/sidebar-menu.js"></script>
+<script src="/admin/assets/js/jquery.loading-indicator.js"></script>
+<script src="/admin/assets/js/app-script.js"></script>
+<script src="/admin/assets/plugins/Chart.js/Chart.min.js"></script>
+<script src="/admin/assets/js/index.js"></script>
+<script src="/admin/assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
+</body>
+
+</html>

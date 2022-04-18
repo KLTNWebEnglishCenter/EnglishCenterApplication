@@ -1,0 +1,95 @@
+.container-course-web {
+    display: flex;
+    justify-content: space-between;
+
+    font-family: Arial, sans-serif;;
+}
+
+.navigation-course {
+    width: 20%;
+    height: 200px;
+    margin-left: 100px;
+    background-color: rgb(228, 247, 247);
+    padding: 30px;
+}
+
+.navigation-course h3 {
+    font-size: 20px;
+    font-weight: normal;
+    margin-bottom: 20px;
+}
+
+.navigation-course li {
+    font-size: 18px;
+    font-weight: normal;
+    margin-bottom: 10px;
+
+}
+
+
+
+.list-course-web {
+    width: 70%;
+}
+
+.list-course-web h1{
+    font-size: 30px;
+    display: block;
+}
+
+.list-course-web hr {
+    height: 10px;
+    background-color: rgb(117, 113, 113);
+}
+
+.list-course-grid {
+    display: grid;
+    grid-template-columns: auto auto auto;
+}
+
+.course-box {
+    width: 300px;
+    background-color: rgb(216, 238, 231);
+
+    padding: 5px;
+    margin: 20px;
+
+
+}
+
+.course-box img {
+    width: 290px;
+    height: 160px;
+    margin-bottom: 10px;
+}
+.course-box h3 {
+    font-weight: normal;
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+.course-box h5 {
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+.course-box h6 {
+    font-weight: normal;
+    margin-bottom: 10px;
+    margin-left: 10px;
+
+    color: rgb(141, 136, 136);
+}
+
+.btn-dangkyhoc {
+    width: 120px;
+    height: 50px;
+
+    border: 1px solid red;
+    border-radius: 30px;
+
+    margin-left: 90px;
+
+    color: red;
+
+    cursor: pointer;
+}

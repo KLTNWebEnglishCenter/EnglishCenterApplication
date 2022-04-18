@@ -28,4 +28,12 @@ public class UsersCourseRequestKey implements Serializable {
     public int hashCode() {
         return Objects.hash(studentId, courseId);
     }
+
+    @Override
+    public String toString() {
+        return "UsersCourseRequestKey{" +
+                "studentId=" + studentId +
+                ", courseId=" + courseId +
+                '}';
+    }
 }

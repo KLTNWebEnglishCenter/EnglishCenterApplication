@@ -5,12 +5,14 @@ import web.english.application.entity.Classroom;
 import web.english.application.entity.course.UsersCourseRequest;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
+@AllArgsConstructor
 public class Student extends Users implements Serializable {
 
     private List<UsersCourseRequest> userRequestCourses;
@@ -25,5 +27,9 @@ public class Student extends Users implements Serializable {
      */
     public Student(String username,  String password, String fullName, String email) {
         super(username, password, fullName, email);
+    }
+
+    public Student(int id, String username, String password, String fullName, LocalDate dob, String gender, String email, String phoneNumber, boolean enable) {
+        super(id, username, password, fullName, dob, gender, email, phoneNumber, enable);
     }
 }

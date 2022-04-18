@@ -1,0 +1,26 @@
+.tailieu-color {
+    height: 200px;
+    background-color: #a71e23;
+}
+
+.document-container {
+    margin-inline: 350px;
+    display: grid;
+    grid-template-columns: auto auto;
+
+    padding-top: 30px;
+}
+
+.document-item {
+    width: 350px;
+    height: 600px;
+}
+
+.document-item img {
+    width: 350px;
+    height: 220px;
+}
+
+.document-item h1 {
+    font-size: 23px;
+}
