@@ -77,8 +77,13 @@
         </a>
       </li>
       <li>
-        <a href="/admin/baidang.html">
+        <a th:href="@{/admin/notification}">
           <i class="zmdi zmdi-collection-bookmark"></i> <span>Quản lí Bài đăng</span>
+        </a>
+      </li>
+      <li>
+        <a th:href="@{/admin/notification}">
+          <i class="zmdi zmdi-collection-bookmark"></i> <span>Quản lí Thông báo</span>
         </a>
       </li>
 
@@ -147,7 +152,7 @@
             </div>
           </div>
           <div class="form-group">
-            <button type="submit" class="btn btn-light" >Search</button>
+            <button type="submit" class="btn btn-light" >Tìm kiếm</button>
           </div>
 
         </form>
@@ -166,6 +171,7 @@
                   <thead>
                   <tr>
                     <th scope="col">#</th>
+                    <th scope="col">ID</th>
                     <th scope="col">Username</th>
                     <th scope="col">Tên</th>
                     <th scope="col">Email</th>
@@ -179,6 +185,7 @@
                   <!--                  <c:forEach items="${adminlist}" var="admin"> -->
                   <tr th:each="employee,iter : ${employees}">
                     <td th:text="${iter.index}"></td>
+                    <td th:text="${employee.id}"></td>
                     <td th:text="${employee.username}"></td>
                     <td th:text="${employee.fullName}"></td>
                     <td th:text="${employee.email}"></td>
@@ -187,7 +194,7 @@
                     <td th:text="${employee.enable} ? 'ACTIVE' : 'RETIRED'"></td>
                     <td>
                       <!--                           <button class="btn btn-danger"><a href="#">Xóa</a></button>-->
-                      <button class="btn btn-success"><a th:href="@{/admin/employeeinfo/{id}(id=${employee.id})}">Chi tiết</a></button>
+                      <button class="btn btn-info"><a th:href="@{/admin/employeeinfo/{id}(id=${employee.id})}">Chi tiết</a></button>
 
                       <button class="btn btn-success"><a th:href="@{/admin/editemployee/{id}(id=${employee.id})}">Cập
                         nhật</a></button>

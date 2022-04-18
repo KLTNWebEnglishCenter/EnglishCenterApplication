@@ -11,8 +11,8 @@
 
   <link th:href="@{/admin/assets/css/pace.min.css}" rel="stylesheet"/>
   <script th:src="@{/admin/assets/js/pace.min.js}"></script>
-  <link th:rel="stylesheet" href="@{/admin/assets/plugins/summernote/dist/summernote-bs4.css}"/>
-  <link th:rel="icon" href="@{/admin/assets/images/favicon.ico}" type="image/x-icon">
+  <link rel="stylesheet" th:href="@{/admin/assets/plugins/summernote/dist/summernote-bs4.css}"/>
+  <link rel="icon" th:href="@{/admin/assets/images/favicon.ico}" type="image/x-icon">
   <link th:href="@{/admin/assets/plugins/vectormap/jquery-jvectormap-2.0.2.css}" rel="stylesheet"/>
   <link th:href="@{/admin/assets/plugins/simplebar/css/simplebar.css}" rel="stylesheet"/>
   <link th:href="@{/admin/assets/css/bootstrap.min.css}" rel="stylesheet"/>
@@ -72,8 +72,13 @@
         </a>
       </li>
       <li>
-        <a href="/admin/baidang.html">
+        <a th:href="@{/admin/notification}">
           <i class="zmdi zmdi-collection-bookmark"></i> <span>Quản lí Bài đăng</span>
+        </a>
+      </li>
+      <li>
+        <a th:href="@{/admin/notification}">
+          <i class="zmdi zmdi-collection-bookmark"></i> <span>Quản lí Thông báo</span>
         </a>
       </li>
 
@@ -142,7 +147,7 @@
               </div>
           </div>
           <div class="form-group">
-            <button type="submit" class="btn btn-light" >Search</button>
+            <button type="submit" class="btn btn-light" >Tìm kiếm</button>
           </div>
 
         </form>
@@ -161,6 +166,7 @@
                   <thead>
                   <tr>
                     <th scope="col">#</th>
+                    <th scope="col">ID</th>
                     <th scope="col">Username</th>
                     <th scope="col">Tên</th>
                     <th scope="col">Email</th>
@@ -175,6 +181,7 @@
                   <!--                  <th:forEach items="${teachers}" var="teacher">-->
                   <tr th:each="teacher,iter : ${teachers}">
                     <td th:text="${iter.index}"></td>
+                    <td th:text="${teacher.id}"></td>
                     <td th:text="${teacher.username}"></td>
                     <td th:text="${teacher.fullName}"></td>
                     <td th:text="${teacher.email}"></td>
@@ -184,7 +191,7 @@
                     <td th:text="${teacher.enable} ? 'ACTIVE' : 'RETIRED'"></td>
                     <td>
                       <!--                          <button class="btn btn-danger"><a href="@{/admin/deleteteacher/{id}(id=${teacher.id})}">Xóa</a></button>-->
-                      <button class="btn btn-success"><a th:href="@{/admin/teacherinfo/{id}(id=${teacher.id})}">Chi tiết</a></button>
+                      <button class="btn btn-info"><a th:href="@{/admin/teacherinfo/{id}(id=${teacher.id})}">Chi tiết</a></button>
                       <button class="btn btn-success"><a th:href="@{/admin/editteacher/{id}(id=${teacher.id})}">Cập
                         nhật</a></button>
                     </td>
