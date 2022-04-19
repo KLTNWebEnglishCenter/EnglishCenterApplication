@@ -33,7 +33,7 @@ public class CourseController {
     public String getCourse(Model model){
         List<Course> courses = courseDAO.findAllCourse();
         model.addAttribute("courses",courses);
-        return "admin/khoahoc";
+        return "admin/course/khoahoc";
     }
 
     @GetMapping("/course/addCourse")
@@ -44,7 +44,7 @@ public class CourseController {
         model.addAttribute("course",course);
         model.addAttribute("levels",levels);
         model.addAttribute("categories",categories);
-        return "admin/addkhoahoc";
+        return "admin/course/addkhoahoc";
     }
 
     @GetMapping("/course/updateCourse/{courseId}")
@@ -55,7 +55,7 @@ public class CourseController {
         model.addAttribute("course",course);
         model.addAttribute("levels",levels);
         model.addAttribute("categories",categories);
-        return "admin/editkhoahoc";
+        return "admin/course/editkhoahoc";
     }
 
     @GetMapping("/course/deleteCourse/{courseId}")

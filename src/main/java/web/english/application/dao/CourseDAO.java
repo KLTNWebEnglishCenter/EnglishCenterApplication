@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import web.english.application.entity.course.Course;
 import web.english.application.entity.course.UsersCourseRequest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -48,5 +49,28 @@ public class CourseDAO {
     public UsersCourseRequest signupCourse(UsersCourseRequest usersCourseRequest){
         UsersCourseRequest request = restTemplate.postForObject("http://localhost:8000/user/signup/course",usersCourseRequest,UsersCourseRequest.class);
         return request;
+    }
+
+    public List<UsersCourseRequest> getAllSignupCourse(){
+        ResponseEntity<List<UsersCourseRequest>> responseEntity =
+                restTemplate.exchange("http://localhost:8000/user/signup/course/list",
+                        HttpMethod.GET, null, new ParameterizedTypeReference<List<UsersCourseRequest>>() {
+                        });
+        List<UsersCourseRequest> courseRequests = responseEntity.getBody();
+
+        return courseRequests;
+    }
+
+    public List<Course> getListCourseFromUserCourseRequest(int studentId,List<UsersCourseRequest> usersCourseRequests){
+        List<Course> courses = new ArrayList<>();
+        usersCourseRequests.forEach(usersCourseRequest -> {
+            int stuId = usersCourseRequest.getUserRequestCourseKey().getStudentId();
+            int couId = usersCourseRequest.getUserRequestCourseKey().getCourseId();
+            if (stuId == studentId){
+                Course course = getCourse(couId);
+                courses.add(course);
+            }
+        });
+        return courses;
     }
 }

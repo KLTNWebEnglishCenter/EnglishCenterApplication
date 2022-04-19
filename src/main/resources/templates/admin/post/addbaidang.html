@@ -100,10 +100,10 @@
                     <label for="input-4">Người đăng</label>
                     <input type="text" class="form-control" id="input-4" th:name="username" th:value="${users.username}" readonly>
                   </div>
-<!--                  <div class="form-group">-->
-<!--                    <label for="input-5">Ngày đăng</label>-->
-<!--                    <input type="date" class="form-control" id="input-5" name="new-created">-->
-<!--                  </div>-->
+                  <div class="form-group">
+                    <label for="input-5">Ngày đăng</label>
+                    <input type="date" class="form-control" id="input-5" name="new-created" th:field="*{createDate}">
+                  </div>
                  <div class="form-footer">
                     <button class="btn btn-danger"><i class="fa fa-times"></i><a th:href="@{/admin/posts}">Hủy</a></button>
                     <button type="submit" class="btn btn-success"><i class="fa fa-check-square-o"></i> Thêm</button>

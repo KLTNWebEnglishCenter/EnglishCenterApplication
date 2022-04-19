@@ -86,27 +86,25 @@
                       <tr>
                         <th scope="col">#</th>
                         <th scope="col">Tên bài đăng</th>
-                        <th scope="col">Người đăng</th>
-<!--                        <th scope="col">Chức vụ</th>-->
-<!--                        <th scope="col">Ngày đăng</th>-->
+                        <th scope="col">Nội dung</th>
+<!--                        <th scope="col">Người đăng</th>-->
+                        <th scope="col">Ngày đăng</th>
                         <th scope="col">Hành động</th>
                       </tr>
                     </thead>
                     <tbody>
 
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-<!--                        <td></td>-->
-<!--                        <td></td>-->
-                        
+                      <tr th:each="post,iter : ${posts}">
+                        <td th:text="${iter.index}"></td>
+                        <td th:text="${post.title}"></td>
+                        <td th:text="${post.content}"></td>
+                        <td th:text="${#temporals.format(post.createDate, 'dd-MM-yyyy')}"></td>
                         <td>
-                          <button class="btn btn-success"><a href="">Cho phép</a></button>
+                          <button class="btn btn-success"><a th:href="@{/admin/post/accept/yes/{id}(id=${post.id})}">Duyệt</a></button>
                          
-                          <button class="btn btn-danger"><a href="">Hủy</a></button>
+                          <button class="btn btn-danger"><a th:href="@{/admin/post/accept/never/{id}(id=${post.id})}">Hủy</a></button>
                         
-                          <button class="btn btn-info"><a href="/admin/chitietbaidang.html">Xem chi tiết</a></button>
+<!--                          <button class="btn btn-info"><a href="">Xem chi tiết</a></button>-->
                         
                         </td>
                      </tr>

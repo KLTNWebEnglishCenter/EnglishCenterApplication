@@ -12,6 +12,7 @@ import web.english.application.utils.RoleType;
 import web.english.application.utils.UsersType;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
@@ -100,5 +101,15 @@ public class LoginController {
         }else {
             return "redirect:/admin/home";
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response){
+        Cookie cookie = new Cookie("access_token", null);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return "redirect:/login";
     }
 }

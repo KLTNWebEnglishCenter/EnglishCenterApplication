@@ -42,4 +42,13 @@ public class PostDAO {
         Post post = restTemplate.getForObject("http://localhost:8000/post/delete/"+id,Post.class);
         return post;
     }
+
+    public List<Post> getAllPostWithStatusNoAccept(){
+        ResponseEntity<List<Post>> responseEntity =
+                restTemplate.exchange("http://localhost:8000/post/status/no/accept",
+                        HttpMethod.GET, null, new ParameterizedTypeReference<List<Post>>() {
+                        });
+        List<Post> posts = responseEntity.getBody();
+        return posts;
+    }
 }
