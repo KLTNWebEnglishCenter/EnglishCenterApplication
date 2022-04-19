@@ -6,10 +6,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import web.english.application.entity.course.Course;
+import web.english.application.entity.user.Student;
 import web.english.application.entity.user.Teacher;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -35,6 +37,8 @@ public class Classroom implements Serializable {
 
     private Teacher teacher;
     private Course course;
+
+    private List<Student> students;
 
     public Classroom(LocalDate startDate, LocalDate endDate, String status, String classname, int maxMember, LocalDate createDate, LocalDate modifiedDate) {
         this.startDate = startDate;

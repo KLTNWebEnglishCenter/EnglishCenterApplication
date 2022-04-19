@@ -7,6 +7,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.RestTemplate;
 import web.english.application.entity.user.Student;
 import web.english.application.entity.user.Teacher;
@@ -76,5 +77,32 @@ public class StudentDAO {
         });
         List<Student> students = responseEntity.getBody();
         return students;
+    }
+
+    public List<Student> findStudentRequestToJoinByCourseId(int courseId){
+        ResponseEntity<List<Student>> responseEntity =
+                restTemplate.exchange("http://localhost:8000/student/course/"+courseId,
+                        HttpMethod.GET, null, new ParameterizedTypeReference<List<Student>>() {
+                        });
+        List<Student> students=responseEntity.getBody();
+        return  students;
+    }
+
+    /**
+     * @author VQKHANH
+     * @param studentId
+     * @param courseId
+     * @return
+     */
+    public String updateStudentRequestCourseStatus(int studentId, int courseId){
+//        /student/requestcourse/status/{studentId}/{courseId}
+        try{
+           restTemplate.put("http://localhost:8000/student/requestcourse/status/"+studentId+"/"+courseId,null);
+           return "Cập nhật thành công";
+        }catch (Exception exception){
+            log.info("addStudentToClassroom Error:"+ exception.getMessage());
+            return "Cập nhật không thành công";
+        }
+
     }
 }

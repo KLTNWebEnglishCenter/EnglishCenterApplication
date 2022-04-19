@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title>Admin</title>
+
+  <link th:href="@{/admin/assets/css/pace.min.css}" rel="stylesheet"/>
+  <script th:src="@{/admin/assets/js/pace.min.js}"></script>
+  <link rel="stylesheet" th:href="@{/admin/assets/plugins/summernote/dist/summernote-bs4.css}"/>
+  <link rel="icon" th:href="@{/admin/assets/images/favicon.ico}" type="image/x-icon">
+  <link th:href="@{/admin/assets/plugins/vectormap/jquery-jvectormap-2.0.2.css}" rel="stylesheet"/>
+  <link th:href="@{/admin/assets/plugins/simplebar/css/simplebar.css}" rel="stylesheet"/>
+  <link th:href="@{/admin/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+  <link th:href="@{/admin/assets/css/animate.css}" rel="stylesheet" type="text/css"/>
+  <link th:href="@{/admin/assets/css/icons.css}" rel="stylesheet" type="text/css"/>
+  <link th:href="@{/admin/assets/css/sidebar-menu.css}" rel="stylesheet"/>
+  <link th:href="@{/admin/assets/css/app-style.css}" rel="stylesheet"/>
+
+  <script th:src="@{/admin/assets/js/jquery.min.js}"></script>
+  <script th:src="@{/admin/assets/js/sweetalert2.all.js}"></script>
+  <link rel="stylesheet" th:href="@{/admin/assets/css/sweetalert2.min.css}">
+
+  <style>
+    .check-style {
+      width: 20px;
+      height: 20px;
+    }
+
+    .btnLayout {
+<!--      min-height: 500px;-->
+      flex:1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .btnLayout button {
+      width: 100%;
+      margin-block: 10px;
+    }
+
+    .btnLayout-classroom {
+<!--      width: 100%;-->
+      flex:1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .btnLayout-classroom button {
+      width: 33%;
+      margin-inline: 5px;
+    }
+  </style>
+
+  <script th:src="@{/admin/assets/js/jquery.min.js}"></script>
+  <script th:src="@{/admin/assets/js/sweetalert2.all.js}"></script>
+  <link rel="stylesheet" th:href="@{/admin/assets/css/sweetalert2.min.css}">
+
+  <script th:inline="javascript">
+  /*<![CDATA[*/
+
+    var msg = /*[[${msg}]]*/ '';
+
+    function yourfunction() {
+      if(msg!=""&&msg!=null){
+        Swal.fire({
+          text: msg,
+         })
+      }
+    }
+
+    window.onload = yourfunction;
+
+  /*]]>*/
+  </script>
+
+  <script th:inline="javascript">
+
+      function post(path, params, method='post') {
+
+      // The rest of this code assumes you are not using a library.
+      // It can be made less verbose if you use one.
+      const form = document.createElement('form');
+      form.method = method;
+      form.action = path;
+
+      for (const key in params) {
+        if (params.hasOwnProperty(key)) {
+          const hiddenField = document.createElement('input');
+          hiddenField.type = 'hidden';
+          hiddenField.name = key;
+          hiddenField.value = params[key];
+
+          form.appendChild(hiddenField);
+        }
+      }
+
+      document.body.appendChild(form);
+      form.submit();
+    }
+
+    var students=[[${students}]]
+
+    var classrooms=[[${classrooms}]]
+
+    var studentsInClassroom=[]
+    var selectedClassroom=0
+
+    var map={
+      classroomId: selectedClassroom,
+      students: studentsInClassroom
+    }
+
+    function openEditClassroomPage(path){
+      var id = document.getElementsByName('selectedClassroom');
+      var id_value;
+      for(var i = 0; i < id.length; i++){
+          if(id[i].checked){
+              id_value = id[i].value;
+              break;
+          }
+      }
+      if(id_value==null || id_value=='undefined'){
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: "Hãy chọn lớp bạn muốn cập nhật",
+         })
+      }
+
+      else{
+<!--        window.location.href=path+id_value;-->
+         window.open(path+id_value);
+      }
+    }
+
+
+    // check if an element exists in array using a comparer function
+    // comparer : function(currentElement)
+    Array.prototype.inArray = function(comparer) {
+        for(var i=0; i < this.length; i++) {
+            if(comparer(this[i])) return true;
+        }
+        return false;
+    };
+
+    // adds an element to the array if it does not already exist using a comparer
+    // function
+    Array.prototype.pushIfNotExist = function(element, comparer) {
+        if (!this.inArray(comparer)) {
+            this.push(element);
+            return true;
+        }else return false;
+    };
+
+    function addStudentToClassroom(){
+
+      var id = document.getElementsByName('selectedClassroom');
+      var id_value;
+      for(var i = 0; i < id.length; i++){
+          if(id[i].checked){
+              id_value = id[i].value;
+              break;
+          }
+      }
+      if(id_value==null || id_value=='undefined'){
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: "Vui lòng chọn lớp học để thêm học viên",
+         })
+         return
+      }
+
+<!--      selectedClassroom=id_value;-->
+      map.classroomId=id_value;
+
+<!--      var student = document.getElementsByName('selectedStudent');-->
+<!--      var student_value;-->
+<!--      for(var i = 0; i < student.length; i++){-->
+<!--          if(student[i].checked){-->
+<!--            var flag=studentsInClassroom.pushIfNotExist(students[i], function(e) {-->
+<!--                return e.id === students[i].id;-->
+<!--            });-->
+<!--            if(flag){-->
+<!--              student[i].parentNode.parentNode.hidden = true;-->
+<!--            }-->
+<!--          }-->
+<!--      }-->
+
+      if(studentsInClassroom.length>0){
+        var currentMember=classrooms.find(x => x.id == map.classroomId).students.length;
+<!--        console.log(currentMember)-->
+        var maxMember=classrooms.find(x => x.id == map.classroomId).maxMember;
+<!--        console.log(maxMember)-->
+        if(studentsInClassroom.length+currentMember>maxMember){
+          Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: "Chỗ trống còn lại không đủ",
+         })
+         return
+        }
+        map.students=JSON.stringify(studentsInClassroom);
+        post('/admin/approvestudent/addstudenttoclassroom', map);
+
+<!--        location.replace(document.referrer);-->
+
+      }else{
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: "Vui lòng chọn học viên để thêm vào lớp",
+         })
+         return
+      }
+
+    }
+
+    function handleCheckbox(checkboxElem,index,id){
+      if (checkboxElem.checked) {
+        var flag=studentsInClassroom.pushIfNotExist(students[index], function(e) {
+            return e.id === students[index].id;
+        });
+      } else {
+        var indexInClassroom=studentsInClassroom.findIndex(v => v.id == id)
+        studentsInClassroom.splice(indexInClassroom, 1);
+      }
+    }
+
+    function addAllStudentToClassroom(){
+
+        var id = document.getElementsByName('selectedClassroom');
+        var id_value;
+        for(var i = 0; i < id.length; i++){
+            if(id[i].checked){
+                id_value = id[i].value;
+                break;
+            }
+        }
+        if(id_value==null || id_value=='undefined'){
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: "Vui lòng chọn lớp học để thêm học viên",
+           })
+           return
+        }
+
+        map.classroomId=id_value;
+
+        var currentMember=classrooms.find(x => x.id == map.classroomId).students.length;
+<!--        console.log(currentMember)-->
+        var maxMember=classrooms.find(x => x.id == map.classroomId).maxMember;
+<!--        console.log(maxMember)-->
+
+        if(currentMember==maxMember){
+          Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: "Lớp đã hết chỗ trống",
+          })
+         return
+        }
+
+        var endPoint;
+        if(maxMember-currentMember<=students.length)endPoint=maxMember-currentMember;
+        else endPoint=students.length;
+
+        studentsInClassroom=[];
+        for(var i=0;i<endPoint;i++){
+<!--          console.log(students[i])-->
+          var flag=studentsInClassroom.pushIfNotExist(students[i], function(e) {
+            return e.id === students[i].id;
+          });
+        }
+
+        map.students=JSON.stringify(studentsInClassroom);
+        console.log(map);
+        post('/admin/approvestudent/addstudenttoclassroom', map);
+    }
+
+  </script>
+
+</head>
+
+<body class="bg-theme bg-theme1">
+
+  <!-- start loader -->
+  <div id="pageloader-overlay" class="visible incoming">
+    <div class="loader-wrapper-outer">
+      <div class="loader-wrapper-inner">
+        <div class="loader"></div>
+      </div>
+    </div>
+  </div>
+  
+ <div id="wrapper">
+   <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
+     <div class="brand-logo">
+       <a href="/admin/index.html">
+         <img src="/admin/assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
+         <h5 class="logo-text">TOPAL</h5>
+       </a>
+     </div>
+     <ul class="sidebar-menu do-nicescrol">
+       <li class="sidebar-header">MENU ADMIN</li>
+       <li>
+         <a href="/admin/index.html">
+           <i class="zmdi zmdi-view-dashboard"></i> <span>Lịch</span>
+         </a>
+       </li>
+
+       <li>
+         <a th:href="@{/admin/employee}">
+           <i class="zmdi zmdi-account-box"></i> <span>Quản lí Nhân viên</span>
+         </a>
+       </li>
+       <li>
+         <a th:href="@{/admin/student}">
+           <i class="zmdi zmdi-accounts"></i> <span>Quản lí Học viên</span>
+         </a>
+       </li>
+       <li>
+         <a th:href="@{/admin/teacher}">
+           <i class="zmdi zmdi-accounts"></i> <span>Quản lí Giảng viên</span>
+         </a>
+       </li>
+       <li>
+         <a href="/admin/khoahoc.html">
+           <i class="zmdi zmdi-widgets"></i> <span>Quản lí Khóa học</span>
+         </a>
+       </li>
+       <li>
+         <a th:href="@{/admin/notification}">
+           <i class="zmdi zmdi-collection-bookmark"></i> <span>Quản lí Bài đăng</span>
+         </a>
+       </li>
+       <li>
+         <a th:href="@{/admin/notification}">
+           <i class="zmdi zmdi-collection-bookmark"></i> <span>Quản lí Thông báo</span>
+         </a>
+       </li>
+
+       <li>
+         <a href="/admin/duyethocvien.html">
+           <i class="zmdi zmdi-assignment-check"></i> <span>Duyệt học viên</span>
+         </a>
+       </li>
+       <li>
+         <a href="/admin/duyetbaidang.html">
+           <i class="zmdi zmdi-assignment-check"></i> <span>Duyệt bài đăng</span>
+         </a>
+       </li>
+     </ul>
+   </div>
+    <header class="topbar-nav">
+      <nav class="navbar navbar-expand fixed-top">
+        <ul class="navbar-nav mr-auto align-items-center">
+          <li class="nav-item">
+            <a class="nav-link toggle-menu" href="javascript:void();">
+              <i class="icon-menu menu-icon"></i>
+            </a>
+          </li>
+        </ul>
+		
+        <ul class="navbar-nav align-items-center right-nav-link">
+          <li class="nav-item">
+            <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" href="#">
+              <span class="user-profile"><img src="/admin/assets/images/avatar-admin.png" class="img-circle"
+                  alt="user avatar"></span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li class="dropdown-item user-details">
+                <a href="javaScript:void();">
+                  <div class="media">
+                    <div class="avatar"><img class="align-self-start mr-3" src="/admin/assets/images/avatar-admin.png"
+                        alt="user avatar"></div>
+                    <div class="media-body">
+                      <h6 class="mt-2 user-title">TopalEnglish</h6>
+                	<b> Admin:  </b>                         
+                    </div>
+                  </div>
+                </a>
+              </li>
+            
+              <li class="dropdown-divider"></li>
+			        <li class="dropdown-item"><i class="icon-power mr-2"></i><a href="/admin/logout"> Đăng xuất</a></li>		
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <div class="clearfix"></div>
+    
+    <!-- Body -->
+    <div class="content-wrapper">
+      <div class="container-fluid">
+        <div class="row mt-3">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Danh sách khóa học</h5>
+                <form th:action="@{/admin/approvestudent/course/search}" method="post" class="col-12" style="display:flex; align-items: center;">
+                  <div style="flex:1">
+                    <div class="form-group col-12">
+                      <input type="text" name="idOrCourseName" class="form-control" placeholder="ID hoặc tên khóa học" >
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-light" >Tìm kiếm</button>
+                  </div>
+                </form>
+                <div class="table-responsive " style="max-height:250px;">
+                  <table class="table table-striped">
+                    <thead>
+                    <tr>
+                      <th scope="col"></th>
+                      <th scope="col">ID</th>
+                      <th scope="col">Tên khóa học</th>
+                      <th scope="col">Cấp độ</th>
+                      <th scope="col">Loại</th>
+                      <th scope="col">Trạng thái</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                      <tr  th:each="course : ${courses}">
+                        <td>
+                            <button class="btn btn-light" style="color: white; width:100%;" th:onclick="post('/admin/approvestudent/search', {id: [[${course.id}]]} );">Duyệt</button>
+                        </td>
+                        <td th:text="${course.id}"></td>
+                        <td th:text="${course.name}"></td>
+                        <td th:text="${course.level.name}"></td>
+                        <td th:text="${course.category.name}"></td>
+                        <td th:text="${course.enable}"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="row mt-3">
+          <div class="col-lg-5">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Danh sách cần duyệt</h5>
+                <div class="table-responsive" style="max-height:400px;">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th scope="col">ID</th>
+                        <th scope="col">Tên học viên</th>
+                        <th scope="col">Số điện thoại</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr th:each="student,iter : ${students}">
+                        <td><input type="checkbox" th:value="${student.id}" class="check-style" name="selectedStudent" th:onchange="handleCheckbox(this,[[${iter.index}]],[[${student.id}]])"></td>
+                        <td th:text="${student.id}"></td>
+                        <td th:text="${student.fullName}"></td>
+                        <td th:text="${student.phoneNumber}"></td>
+                        <!-- <td>
+                          <button class="btn btn-success"  data-toggle="modal" data-target="#exampleModal">Thêm vào lớp học</button>
+                        </td> -->
+                     </tr>
+                    </tbody>
+                  </table>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2">
+            <div class="card">
+              <div class="card-body">
+                <div class="btnLayout">
+                  <button class="btn btn-light" style="color: white;" th:onclick="addStudentToClassroom()">Thêm</button>
+                  <button class="btn btn-light" style="color: white;" th:onclick="addAllStudentToClassroom()">Thêm tất cả</button>
+<!--                  <button class="btn btn-light" style="color: white;">Xóa</button>-->
+<!--                  <button class="btn btn-light" style="color: white;">Xóa tất cả</button>-->
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-5">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Danh sách lớp học</h5>
+                <div class="table-responsive" style="max-height:400px;">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr >
+                        <th scope="col"></th>
+                        <th scope="col">ID</th>
+                        <th scope="col">Tên lớp học</th>
+                        <th scope="col">Giảng viên</th>
+                        <th scope="col">Số lượng tối đa</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr th:each="classroom : ${classrooms}">
+                        <td><input type="radio" th:value="${classroom.id}" class="check-style" name="selectedClassroom"></td>
+                        <td th:text="${classroom.id}"></td>
+                        <td th:text="${classroom.classname}"></td>
+                        <td th:text="${classroom.teacher.fullName}"></td>
+                        <td th:text="${#lists.size(classroom.students)}  + '/' + ${classroom.maxMember}"></td>
+                        <!-- <td>
+                          <button class="btn btn-success"  data-toggle="modal" data-target="#exampleModal">Thêm vào lớp học</button>        
+                        </td> -->
+                     </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="btnLayout-classroom">
+                  <button class="btn btn-success" style="color: white;"><a th:href="@{/admin/addClassroom}">Thêm</a></button>
+                  <button class="btn btn-success" style="color: white;" th:onclick="'openEditClassroomPage(\''+@{/admin/updateClassroom/}+'\')'">Cập nhật</button>
+<!--                  <button class="btn btn-success" style="color: white;" th:onclick="'openEditClassroomPage(\''+@{/admin/updateClassroom/}+'\')'">Cập nhật</button>-->
+<!--                  <button class="btn btn-success" style="color: white;">Lưu</button>-->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="overlay toggle-menu"></div>
+      </div>
+    </div>
+   <!-- Body -->
+   <!-- Modal -->
+   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
+    <!-- <div class="right-sidebar">
+      <div class="switcher-icon">
+        <i class="zmdi zmdi-settings zmdi-hc-spin"></i>
+      </div>
+      <div class="right-sidebar-content">
+        <p class="mb-0">Màu nền admin</p>
+        <hr>
+        <ul class="switcher">
+          <li id="theme1"></li>
+          <li id="theme2"></li>
+          <li id="theme3"></li>
+          <li id="theme4"></li>
+          <li id="theme5"></li>
+          <li id="theme6"></li>
+        </ul>
+        <p class="mb-0">Màu nền gradient</p>
+        <hr>
+        <ul class="switcher">
+          <li id="theme7"></li>
+          <li id="theme8"></li>
+          <li id="theme9"></li>
+          <li id="theme10"></li>
+          <li id="theme11"></li>
+          <li id="theme12"></li>
+          <li id="theme13"></li>
+          <li id="theme14"></li>
+          <li id="theme15"></li>
+        </ul>
+      </div>
+    </div> -->
+  </div>
+
+<!--    <script src="/admin/assets/js/jquery.min.js"></script>-->
+    <script src="/admin/assets/js/popper.min.js"></script>
+    <script src="/admin/assets/js/bootstrap.min.js"></script>
+    <script src="/admin/assets/plugins/simplebar/js/simplebar.js"></script>
+    <script src="/admin/assets/js/sidebar-menu.js"></script>
+    <script src="/admin/assets/js/jquery.loading-indicator.js"></script>
+    <script src="/admin/assets/js/app-script.js"></script>
+    <script src="/admin/assets/plugins/Chart.js/Chart.min.js"></script>
+    <script src="/admin/assets/js/index.js"></script>
+    <script src="/admin/assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
+
+  </body>
+  
+  </html>
