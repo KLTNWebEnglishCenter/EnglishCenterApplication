@@ -23,4 +23,14 @@ public class UsersCourseRequest {
         this.course = course;
         this.status="requesting";
     }
+
+    @Override
+    public String toString() {
+        return "UsersCourseRequest{" +
+                "userRequestCourseKey=" + userRequestCourseKey +
+                ", student=" + student +
+                ", course=" + course +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }

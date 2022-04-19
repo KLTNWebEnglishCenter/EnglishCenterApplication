@@ -33,15 +33,17 @@ public class HomeController {
         }
 //        log.info(token);
         String token_valid = "Bearer "+token;
-        log.info(token_valid);
+//        log.info(token_valid);
         if(token != ""){
             user = userDAO.getUserFromToken(token_valid);
         }
-        log.info(user.toString());
+
         if(user == null){
             return "redirect:/login";
         }
-
+//        log.info(user.toString());
+        model.addAttribute("users",user);
         return "admin/index";
     }
+
 }

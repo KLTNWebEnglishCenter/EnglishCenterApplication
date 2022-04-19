@@ -1,0 +1,48 @@
+.footer-infor {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: rgb(188, 236, 234);
+    height: 500px;
+
+    padding: 100px;
+}
+
+.copyright {
+   text-align: center;
+}
+
+.infor {
+    margin-top: 20px;
+}
+
+.intro {
+    margin-top: 20px;
+}
+
+.info-row1 {
+    width: 35%;
+    margin-left: 10px;
+}
+
+.support {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.support a {
+    color: black;
+    margin-top: 5px;
+}
+
+.support a:hover {
+    color: rgb(241, 133, 9);
+}
+
+img {
+   border-radius: 10px;
+}
+
+

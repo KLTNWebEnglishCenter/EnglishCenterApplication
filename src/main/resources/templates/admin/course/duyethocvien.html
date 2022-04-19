@@ -19,8 +19,8 @@
   <link th:href="@{/admin/assets/css/icons.css}" rel="stylesheet" type="text/css" />
   <link th:href="@{/admin/assets/css/sidebar-menu.css}" rel="stylesheet" />
   <link th:href="@{/admin/assets/css/app-style.css}" rel="stylesheet" />
+  
 
-  <link th:href="@{/admin/assets/css/thoikhoabieu.css}" rel="stylesheet" >
 </head>
 
 <body class="bg-theme bg-theme1">
@@ -37,12 +37,12 @@
  <div id="wrapper">
   <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
     <div class="brand-logo">
-      <a th:href="@{/admin/employee}">
+      <a href="/admin/index.html">
         <img src="/admin/assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
         <h5 class="logo-text">TOPAL</h5>
       </a>
     </div>
-    <ul th:fragment="menu-fragment" class="sidebar-menu do-nicescrol">
+    <ul class="sidebar-menu do-nicescrol">
       <li class="sidebar-header">MENU ADMIN</li>
       <li>
         <a href="/admin/index.html">
@@ -66,12 +66,12 @@
         </a>
       </li>
       <li>
-        <a th:href="@{/admin/courses}">
+        <a href="/admin/khoahoc.html">
           <i class="zmdi zmdi-widgets"></i> <span>Quản lí Khóa học</span>
         </a>
       </li>
       <li>
-        <a th:href="@{/admin/posts}">
+        <a th:href="@{/admin/notification}">
           <i class="zmdi zmdi-collection-bookmark"></i> <span>Quản lí Bài đăng</span>
         </a>
       </li>
@@ -87,7 +87,7 @@
         </a>
       </li>
       <li>
-        <a th:href="@{/admin/post/accept}">
+        <a href="/admin/duyetbaidang.html">
           <i class="zmdi zmdi-assignment-check"></i> <span>Duyệt bài đăng</span>
         </a>   
       </li>
@@ -109,23 +109,22 @@
               <span class="user-profile"><img src="/admin/assets/images/avatar-admin.png" class="img-circle"
                   alt="user avatar"></span>
             </a>
-            <ul th:fragment="admin-fragment" class="dropdown-menu dropdown-menu-right">
+            <ul class="dropdown-menu dropdown-menu-right">
               <li class="dropdown-item user-details">
                 <a href="javaScript:void();">
                   <div class="media">
                     <div class="avatar"><img class="align-self-start mr-3" src="/admin/assets/images/avatar-admin.png"
                         alt="user avatar"></div>
                     <div class="media-body">
-                      <h6 class="mt-2 user-title">Webnongsan</h6>
-                	<b> Admin: </b><b th:text="${users.fullName}"></b>
+                      <h6 class="mt-2 user-title">TopalEnglish</h6>
+                	<b> Admin:  </b>                         
                     </div>
                   </div>
                 </a>
               </li>
             
               <li class="dropdown-divider"></li>
-              <li class="dropdown-item"><i class="icon-power mr-2"></i><a th:href="@{/admin/info/{id}(id=${users.id})}">Thông tin cá nhân</a></li>
-              <li class="dropdown-item"><i class="icon-power mr-2"></i><a href=""> Đăng xuất</a></li>
+			 <li class="dropdown-item"><i class="icon-power mr-2"></i><a href="/admin/logout"> Đăng xuất</a></li>		
             </ul>
           </li>
         </ul>
@@ -136,168 +135,52 @@
     <!-- Body -->
     <div class="content-wrapper">
       <div class="container-fluid">
-       <div class="row">
-         <h3>Lịch theo tuần</h3>
-       </div>
-       <div class="row">
-          <div class="col" style="width: 255px;float: right;padding: 5px 0px 0px 0px;">
-            <label class="" style="padding-left: 25px;margin-bottom: 0px;">
-                <input checked="checked" id="rdoLoaiLich1" name="rdoLoaiLich" type="radio" value="0"> <label lang="lichtheotuan-tatca">Tất cả</label>
-                <span></span>
-            </label>
-            <label class="" style="padding-left: 25px;margin-bottom: 0px;">
-                <input id="rdoLoaiLich2" name="rdoLoaiLich" type="radio" value="1"> <label lang="lichtheotuan-lichhoc">Lịch học</label>
-                <span></span>
-            </label>
-            <label class="" style="padding-left: 25px;margin-bottom: 0px;">
-                <input id="rdoLoaiLich3" name="rdoLoaiLich" type="radio" value="2"> <label lang="lichtheotuan-lichthi">Lịch thi</label>
-                <span></span>
-            </label>
-          </div>
-          <div class="col">
-            <input type="date" id="date" name="date" class="chonngay" placeholder="dd-mm-yyyy" value="2022-03-07" min="2000-01-01" max="2099-12-31" >
-          </div>
-          <div class="col">
-            <button class="btnlich">Hiện tại</button>
-            <button class="btnlich">Trở về</button>
-            <button class="btnlich">Tiếp</button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col thu">
-            <h5>Ca học</h5>
-          </div>
-          <div class="col thu">
-            <h5>Thứ 2</h5>
-            <h6>06/03/2022</h6>
-          </div>
-          <div class="col thu">
-            <h5>Thứ 3</h5>
-            <h6>07/03/2022</h6>
-          </div>
-          <div class="col thu">
-            <h5>Thứ 4</h5>
-            <h6>08/03/2022</h6>
-          </div>
-          <div class="col thu">
-            <h5>Thứ 5</h5>
-            <h6>09/03/2022</h6>
-          </div>
-          <div class="col thu">
-            <h5>Thứ 6</h5>
-            <h6>10/03/2022</h6>
-          </div>
-          <div class="col thu">
-            <h5>Thứ 7</h5>
-            <h6>11/03/2022</h6>
-          </div>
-          <div class="col thu">
-            <h5>Chủ nhật</h5>
-            <h6>12/03/2022</h6>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col buoi sang">
-            <h5>Sáng</h5>
-          </div>
-          <div class="col buoi">
-            <div class="lichhoc">
-              <h2 class="ten">Lớp Toeic cấp tốc</h2>
-              <h3 class="tiet">Tiết: 1-3</h3>
-              <h3 class="phong">Phòng: Trực tuyến</h3>
-              <h3 class="gianagvien">GV: Nguyễn Hoàng Lâm</h3>
-              <h3 class="ghichu">Zoom: 1234567891/123456</h3>
-            </div>
-            <div class="lichhoc">
-              <h2 class="ten">Lớp Toeic cấp tốc</h2>
-              <h3 class="tiet">Tiết: 1-3</h3>
-              <h3 class="phong">Phòng: Trực tuyến</h3>
-              <h3 class="gianagvien">GV: Nguyễn Hoàng Lâm</h3>
-              <h3 class="ghichu">Zoom: 1234567891/123456</h3>
-            </div>
-            <div class="lichhoc">
-              <h2 class="ten">Lớp Toeic cấp tốc</h2>
-              <h3 class="tiet">Tiết: 1-3</h3>
-              <h3 class="phong">Phòng: Trực tuyến</h3>
-              <h3 class="gianagvien">GV: Nguyễn Hoàng Lâm</h3>
-              <h3 class="ghichu">Zoom: 1234567891/123456</h3>
+        <div class="row mt-3">
+         
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                
+                <h5 class="card-title">Danh sách cần duyệt</h5>
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Tên học viên</th>
+                        <th scope="col">Tên khóa học</th>
+                        <th scope="col">Ngày yêu cầu</th>
+                        <th scope="col">Học phí</th>
+                        <th scope="col">Hành động</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                  <c:forEach items="${userList}" var="user">
+                      <tr>
+                        <td scope="row"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                          <button class="btn btn-success"><a href="">Cho phép</a></button>
+                          <button class="btn btn-info"><a href="">Tự động phân phối lớp</a></button>
+                                 
+                        </td>
+                     </tr>
+                    </c:forEach>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="col buoi">
-
-          </div>
-          <div class="col buoi">
-
-          </div>
-          <div class="col buoi">
-
-          </div>
-          <div class="col buoi">
-
-          </div>
-          <div class="col buoi">
-
-          </div>
-          <div class="col buoi">
-
-          </div>
         </div>
-        <div class="row">
-          <div class="col buoi chieu">
-            <h5>Chiều</h5>
-          </div>
-          <div class="col buoi">
-
-          </div>
-          <div class="col buoi">
-
-          </div>
-          <div class="col buoi">
-
-          </div>
-          <div class="col buoi">
-
-          </div>
-          <div class="col buoi">
-
-          </div>
-          <div class="col buoi">
-
-          </div>
-          <div class="col buoi">
-
-          </div>
-        </div>
-        <div class="row">
-          <div class="col buoi chieu">
-            <h5>Tối</h5>
-          </div>
-          <div class="col buoi">
-
-          </div>
-          <div class="col buoi">
-
-          </div>
-          <div class="col buoi">
-
-          </div>
-          <div class="col buoi">
-
-          </div>
-          <div class="col buoi">
-
-          </div>
-          <div class="col buoi">
-
-          </div>
-          <div class="col buoi">
-
-          </div>
-        </div>
+        <div class="overlay toggle-menu"></div>
       </div>
     </div>
    <!-- Body -->
-   
+
     <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
     <!-- <div class="right-sidebar">
       <div class="switcher-icon">
@@ -341,9 +224,6 @@
     <script src="/admin/assets/plugins/Chart.js/Chart.min.js"></script>
     <script src="/admin/assets/js/index.js"></script>
     <script src="/admin/assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
-
-    <script src="/admin/assets/js/thoikhoabieu.js"></script>
   </body>
   
   </html>
-  

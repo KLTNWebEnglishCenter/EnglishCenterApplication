@@ -50,6 +50,10 @@ public class Users implements Serializable {
         this.email = email;
     }
 
+    public Users(String username) {
+        this.username = username;
+    }
+
     @Override
     public String toString() {
         return "Users{" +
