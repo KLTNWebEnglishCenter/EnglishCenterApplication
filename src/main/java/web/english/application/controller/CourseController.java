@@ -8,10 +8,14 @@ import org.springframework.web.bind.annotation.*;
 import web.english.application.dao.CategoryDAO;
 import web.english.application.dao.CourseDAO;
 import web.english.application.dao.LevelDAO;
+import web.english.application.dao.UserDAO;
 import web.english.application.entity.course.Category;
 import web.english.application.entity.course.Course;
 import web.english.application.entity.course.Level;
+import web.english.application.entity.user.Users;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -27,17 +31,58 @@ public class CourseController {
     @Autowired
     private CategoryDAO categoryDAO;
 
+    @Autowired
+    private UserDAO userDAO;
+
 
 
     @GetMapping("/courses")
-    public String getCourse(Model model){
+    public String getCourse(Model model, HttpServletRequest httpServletRequest){
+        String token = "";
+        Users user = null;
+        if(httpServletRequest.getCookies() == null){
+            return "redirect:/login";
+        }
+        for (Cookie cookie : httpServletRequest.getCookies()) {
+            if(cookie.getName().equals("access_token")){
+                token = cookie.getValue();
+            }
+        }
+        String token_valid = "Bearer "+token;
+        if(token != ""){
+            user = userDAO.getUserFromToken(token_valid);
+        }
+
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
         List<Course> courses = courseDAO.findAllCourse();
         model.addAttribute("courses",courses);
         return "admin/course/khoahoc";
     }
 
     @GetMapping("/course/addCourse")
-    public String getAddCoursePage(Model model){
+    public String getAddCoursePage(Model model,HttpServletRequest httpServletRequest){
+        String token = "";
+        Users user = null;
+        if(httpServletRequest.getCookies() == null){
+            return "redirect:/login";
+        }
+        for (Cookie cookie : httpServletRequest.getCookies()) {
+            if(cookie.getName().equals("access_token")){
+                token = cookie.getValue();
+            }
+        }
+        String token_valid = "Bearer "+token;
+        if(token != ""){
+            user = userDAO.getUserFromToken(token_valid);
+        }
+
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
         Course course = new Course();
         List<Category> categories = categoryDAO.findAllCategory();
         List<Level> levels = levelDAO.findAllLevel();
@@ -48,7 +93,26 @@ public class CourseController {
     }
 
     @GetMapping("/course/updateCourse/{courseId}")
-    public String getUpdateCoursePage(@PathVariable("courseId") int courseId,Model model){
+    public String getUpdateCoursePage(@PathVariable("courseId") int courseId,Model model,HttpServletRequest httpServletRequest){
+        String token = "";
+        Users user = null;
+        if(httpServletRequest.getCookies() == null){
+            return "redirect:/login";
+        }
+        for (Cookie cookie : httpServletRequest.getCookies()) {
+            if(cookie.getName().equals("access_token")){
+                token = cookie.getValue();
+            }
+        }
+        String token_valid = "Bearer "+token;
+        if(token != ""){
+            user = userDAO.getUserFromToken(token_valid);
+        }
+
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
         Course course = courseDAO.getCourse(courseId);
         List<Category> categories = categoryDAO.findAllCategory();
         List<Level> levels = levelDAO.findAllLevel();

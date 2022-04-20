@@ -45,7 +45,7 @@
     <ul th:fragment="menu-fragment" class="sidebar-menu do-nicescrol">
       <li class="sidebar-header">MENU ADMIN</li>
       <li>
-        <a href="/admin/index.html">
+        <a th:href="@{/admin/home}">
           <i class="zmdi zmdi-view-dashboard"></i> <span>Lịch</span>
         </a>
       </li>
@@ -68,6 +68,11 @@
       <li>
         <a th:href="@{/admin/courses}">
           <i class="zmdi zmdi-widgets"></i> <span>Quản lí Khóa học</span>
+        </a>
+      </li>
+      <li>
+        <a th:href="@{/admin/classrooms}">
+          <i class="zmdi zmdi-widgets"></i> <span>Quản lí Lớp học</span>
         </a>
       </li>
       <li>

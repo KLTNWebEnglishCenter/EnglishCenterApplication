@@ -8,10 +8,14 @@ import org.springframework.web.bind.annotation.*;
 import web.english.application.dao.ClassroomDAO;
 import web.english.application.dao.CourseDAO;
 import web.english.application.dao.TeacherDAO;
+import web.english.application.dao.UserDAO;
 import web.english.application.entity.Classroom;
 import web.english.application.entity.course.Course;
 import web.english.application.entity.user.Teacher;
+import web.english.application.entity.user.Users;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -29,36 +33,115 @@ public class ClassroomController {
     @Autowired
     private TeacherDAO teacherDAO;
 
+    @Autowired
+    private UserDAO userDAO;
+
     @GetMapping("/classrooms")
-    public String getClassrooms(Model model){
+    public String getClassrooms(Model model, HttpServletRequest httpServletRequest){
+        String token = "";
+        Users user = null;
+        if(httpServletRequest.getCookies() == null){
+            return "redirect:/login";
+        }
+        for (Cookie cookie : httpServletRequest.getCookies()) {
+            if(cookie.getName().equals("access_token")){
+                token = cookie.getValue();
+            }
+        }
+        String token_valid = "Bearer "+token;
+        if(token != ""){
+            user = userDAO.getUserFromToken(token_valid);
+        }
+
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
         List<Classroom> classrooms = classroomDAO.findAll();
         model.addAttribute("classrooms",classrooms);
-        return "admin/lophoc";
+        return "admin/classroom/lophoc";
     }
 
     @GetMapping("/addClassroom")
-    public String getAddClassroomPage(Model model){
+    public String getAddClassroomPage(Model model,HttpServletRequest httpServletRequest){
+        String token = "";
+        Users user = null;
+        if(httpServletRequest.getCookies() == null){
+            return "redirect:/login";
+        }
+        for (Cookie cookie : httpServletRequest.getCookies()) {
+            if(cookie.getName().equals("access_token")){
+                token = cookie.getValue();
+            }
+        }
+        String token_valid = "Bearer "+token;
+        if(token != ""){
+            user = userDAO.getUserFromToken(token_valid);
+        }
+
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
         Classroom classroom = new Classroom();
         List<Course> courses = courseDAO.findAllCourse();
         List<Teacher> teachers = teacherDAO.findAllTeacher();
         model.addAttribute("classroom",classroom);
         model.addAttribute("courses", courses);
         model.addAttribute("teachers",teachers);
-        return "admin/addlophoc";
+        return "admin/classroom/addlophoc";
     }
 
     @GetMapping("/updateClassroom/{id}")
-    public String getUpdateClassroomPage(@PathVariable("id") int id,Model model){
+    public String getUpdateClassroomPage(@PathVariable("id") int id,Model model,HttpServletRequest httpServletRequest){
+        String token = "";
+        Users user = null;
+        if(httpServletRequest.getCookies() == null){
+            return "redirect:/login";
+        }
+        for (Cookie cookie : httpServletRequest.getCookies()) {
+            if(cookie.getName().equals("access_token")){
+                token = cookie.getValue();
+            }
+        }
+        String token_valid = "Bearer "+token;
+        if(token != ""){
+            user = userDAO.getUserFromToken(token_valid);
+        }
+
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
         Classroom classroom = classroomDAO.getClassroom(id);
         model.addAttribute("classroom",classroom);
-        return "admin/editlophoc";
+        return "admin/classroom/editlophoc";
     }
 
     @GetMapping("/classroom/info/{id}")
-    public String getInfomationPage(@PathVariable("id") int id,Model model){
+    public String getInformationPage(@PathVariable("id") int id,Model model,HttpServletRequest httpServletRequest){
+        String token = "";
+        Users user = null;
+        if(httpServletRequest.getCookies() == null){
+            return "redirect:/login";
+        }
+        for (Cookie cookie : httpServletRequest.getCookies()) {
+            if(cookie.getName().equals("access_token")){
+                token = cookie.getValue();
+            }
+        }
+        String token_valid = "Bearer "+token;
+        if(token != ""){
+            user = userDAO.getUserFromToken(token_valid);
+        }
+
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
         Classroom classroom = classroomDAO.getClassroom(id);
         model.addAttribute("classroom",classroom);
-        return "admin/xemthongtinlophoc";
+        return "admin/classroom/xemthongtinlophoc";
     }
 
     @PostMapping("/classroom/add")

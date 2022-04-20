@@ -38,9 +38,7 @@ public class PostController {
                 token = cookie.getValue();
             }
         }
-//        log.info(token);
         String token_valid = "Bearer "+token;
-//        log.info(token_valid);
         if(token != ""){
             user = userDAO.getUserFromToken(token_valid);
         }
@@ -48,9 +46,10 @@ public class PostController {
         if(user == null){
             return "redirect:/login";
         }
+        model.addAttribute("users",user);
         List<Post> posts = postDAO.getAllPost();
 
-        model.addAttribute("users",user);
+
         model.addAttribute("posts",posts);
         return "admin/post/baidang";
     }

@@ -9,8 +9,11 @@ import web.english.application.dao.StudentDAO;
 import web.english.application.dao.UserDAO;
 import web.english.application.entity.user.Student;
 import web.english.application.entity.user.Teacher;
+import web.english.application.entity.user.Users;
 import web.english.application.utils.Utils;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -32,7 +35,26 @@ public class StudentController {
      * @return
      */
     @GetMapping("/student")
-    public String getStudent(Model model){
+    public String getStudent(Model model, HttpServletRequest httpServletRequest){
+        String token = "";
+        Users user = null;
+        if(httpServletRequest.getCookies() == null){
+            return "redirect:/login";
+        }
+        for (Cookie cookie : httpServletRequest.getCookies()) {
+            if(cookie.getName().equals("access_token")){
+                token = cookie.getValue();
+            }
+        }
+        String token_valid = "Bearer "+token;
+        if(token != ""){
+            user = userDAO.getUserFromToken(token_valid);
+        }
+
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
         List<Student> students=studentDAO.findAllStudent();
         model.addAttribute("students",students);
         return "admin/student/student";
@@ -45,7 +67,26 @@ public class StudentController {
      * @return
      */
     @GetMapping("/addstudent")
-    public String getAddStudentPage(Model model){
+    public String getAddStudentPage(Model model,HttpServletRequest httpServletRequest){
+        String token = "";
+        Users user = null;
+        if(httpServletRequest.getCookies() == null){
+            return "redirect:/login";
+        }
+        for (Cookie cookie : httpServletRequest.getCookies()) {
+            if(cookie.getName().equals("access_token")){
+                token = cookie.getValue();
+            }
+        }
+        String token_valid = "Bearer "+token;
+        if(token != ""){
+            user = userDAO.getUserFromToken(token_valid);
+        }
+
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
         Student student=new Student();
         student.setGender("Nam");
         model.addAttribute("student",student);
@@ -60,8 +101,26 @@ public class StudentController {
      * @return
      */
     @PostMapping("/student/add")
-    public String saveStudent(@ModelAttribute Student student, Model model){
+    public String saveStudent(@ModelAttribute Student student, Model model,HttpServletRequest httpServletRequest){
+        String token = "";
+        Users user = null;
+        if(httpServletRequest.getCookies() == null){
+            return "redirect:/login";
+        }
+        for (Cookie cookie : httpServletRequest.getCookies()) {
+            if(cookie.getName().equals("access_token")){
+                token = cookie.getValue();
+            }
+        }
+        String token_valid = "Bearer "+token;
+        if(token != ""){
+            user = userDAO.getUserFromToken(token_valid);
+        }
 
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
         if(!utils.checkFullNameFormat(student.getFullName())){
             model.addAttribute("errorFullName",Utils.fullNameRequire);
             return  "admin/student/addstudent";
@@ -100,7 +159,26 @@ public class StudentController {
      * @return
      */
     @GetMapping("/editstudent/{id}")
-    public String getEditStudentPage(@PathVariable("id") int id, Model model){
+    public String getEditStudentPage(@PathVariable("id") int id, Model model,HttpServletRequest httpServletRequest){
+        String token = "";
+        Users user = null;
+        if(httpServletRequest.getCookies() == null){
+            return "redirect:/login";
+        }
+        for (Cookie cookie : httpServletRequest.getCookies()) {
+            if(cookie.getName().equals("access_token")){
+                token = cookie.getValue();
+            }
+        }
+        String token_valid = "Bearer "+token;
+        if(token != ""){
+            user = userDAO.getUserFromToken(token_valid);
+        }
+
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
         Student student=studentDAO.findStudentById(id);
         if(student.getGender()==null)student.setGender("Nam");
 //        log.info(teacher.toString());
@@ -116,8 +194,26 @@ public class StudentController {
      * @return
      */
     @PostMapping("/student/edit")
-    public String editStudent(@ModelAttribute Student student,Model model){
+    public String editStudent(@ModelAttribute Student student,Model model,HttpServletRequest httpServletRequest){
+        String token = "";
+        Users user = null;
+        if(httpServletRequest.getCookies() == null){
+            return "redirect:/login";
+        }
+        for (Cookie cookie : httpServletRequest.getCookies()) {
+            if(cookie.getName().equals("access_token")){
+                token = cookie.getValue();
+            }
+        }
+        String token_valid = "Bearer "+token;
+        if(token != ""){
+            user = userDAO.getUserFromToken(token_valid);
+        }
 
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
         if(!utils.checkFullNameFormat(student.getFullName())){
             model.addAttribute("errorFullName",Utils.fullNameRequire);
             return  "admin/student/editstudent";
@@ -157,7 +253,26 @@ public class StudentController {
      * @return
      */
     @GetMapping("/studentinfo/{id}")
-    public String getStudentInfoPage(@PathVariable("id") int id,Model model){
+    public String getStudentInfoPage(@PathVariable("id") int id,Model model,HttpServletRequest httpServletRequest){
+        String token = "";
+        Users user = null;
+        if(httpServletRequest.getCookies() == null){
+            return "redirect:/login";
+        }
+        for (Cookie cookie : httpServletRequest.getCookies()) {
+            if(cookie.getName().equals("access_token")){
+                token = cookie.getValue();
+            }
+        }
+        String token_valid = "Bearer "+token;
+        if(token != ""){
+            user = userDAO.getUserFromToken(token_valid);
+        }
+
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
         Student student=studentDAO.findStudentById(id);
 //        log.info(teacher.toString());
         model.addAttribute("student",student);
@@ -173,7 +288,26 @@ public class StudentController {
      * @return
      */
     @PostMapping("/student/search")
-    public String searchStudent(@RequestParam String idOrUsername, @RequestParam String fullName,Model model){
+    public String searchStudent(@RequestParam String idOrUsername, @RequestParam String fullName,Model model,HttpServletRequest httpServletRequest){
+        String token = "";
+        Users user = null;
+        if(httpServletRequest.getCookies() == null){
+            return "redirect:/login";
+        }
+        for (Cookie cookie : httpServletRequest.getCookies()) {
+            if(cookie.getName().equals("access_token")){
+                token = cookie.getValue();
+            }
+        }
+        String token_valid = "Bearer "+token;
+        if(token != ""){
+            user = userDAO.getUserFromToken(token_valid);
+        }
+
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
         List<Student> students=studentDAO.searchUser(idOrUsername,fullName);
 
         model.addAttribute("students",students);

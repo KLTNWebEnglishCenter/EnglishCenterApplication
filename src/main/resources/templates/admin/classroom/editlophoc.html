@@ -55,7 +55,15 @@
                 </li>
             </ul>
 
-            <ul th:replace="~{admin/index::admin-fragment}">
+            <ul class="navbar-nav align-items-center right-nav-link">
+                <li class="nav-item">
+                    <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" href="#">
+              <span class="user-profile"><img src="/admin/assets/images/avatar-admin.png" class="img-circle"
+                                              alt="user avatar"></span>
+                    </a>
+                    <ul th:replace="~{admin/index::admin-fragment}">
+                    </ul>
+                </li>
             </ul>
         </nav>
     </header>
@@ -68,50 +76,36 @@
             <div class="row mt-3">
                 <div class="col-lg-12">
                     <div class="card">
-                        <div class="card-body" th:object="${notification}">
-                            <div class="card-title">Nội dung thông báo</div>
+                        <div class="card-body">
+                            <div class="card-title">Cập nhật lớp học</div>
                             <hr>
-                            <div class="form-group">
-                                <label for="input-1">ID</label>
-                                <input type="text" class="form-control" id="input-1" readonly="readonly" placeholder="ID"
-                                       th:field="*{id}" value="" name="notification-id">
-                            </div>
-                            <div class="form-group">
-                                <label for="input-2">Tiêu đề</label>
-                                <input type="text"  class="form-control" id="input-2" placeholder="Nhập tiêu đề" th:field="*{title}"
-                                       name="title">
-                            </div>
-                            <div class="form-group">
-                                <label for="input-3">Mã lớp</label>
-                                <input type="text"  class="form-control" id="input-5"  readonly="readonly" th:value="${notification.classroom.id}"
-                                       name="classroomId">
-                            </div>
-                            <div class="form-group">
-                                <label for="input-3">Tên lớp </label>
-                                <input type="text"  class="form-control" id="input-3" readonly="readonly" placeholder="Tên lớp học" th:value="${notification.classroom.classname}"
-                                       name="title">
-<!--                                <input type="text"  class="form-control" id="input-6" hidden="hidden" readonly="readonly" th:value="${notification.classroom.id}"-->
-<!--                                       name="classroomId">-->
-                            </div>
-                            <div class="form-group">
-                                <label>Nội dung thông báo</label>
-                                <textarea rows="5" cols="50" required class="form-control" id="input-4" placeholder="Nhập nội dung thông báo" th:field="*{content}"
-                                          name="content"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="input-2">Ngày tạo</label>
-                                <input type="text"  class="form-control" readonly="readonly" placeholder="Ngày tạo" th:field="*{createDate}"
-                                       name="createDate">
-                            </div>
-                            <div class="form-group">
-                                <label for="input-2">Cập nhật lần cuối</label>
-                                <input type="text"  class="form-control" readonly="readonly" placeholder="Cập nhật lần cuối" th:field="*{modifiedDate}"
-                                       name="modifiedDate">
-                            </div>
-                            <div class="form-group">
-                                <button class="btn btn-light"><a th:href="@{/admin/notification}">Quay lại</a></button>
-                                <button class="btn btn-light"><a th:href="@{/admin/editnotification/{id}(id=${notification.id})}">Cập nhật thông tin</a></button>
+                            <form th:action="@{/admin/classroom/update}" method="post" th:object="${classroom}" enctype="application/json;charset=UTF-8">
+                                <input type="hidden" th:field="*{id}" class="form-control">
+                                <div class="form-group">
+                                    <label for="input-1">Tên lớp học</label>
+                                    <input type="text" th:field="*{classname}" class="form-control" id="input-1" placeholder="Nhập tên lớp" name="user-name" >
                                 </div>
+                                <div class="form-group">
+                                    <label for="input-2">Số lượng học viên tối đa</label>
+                                    <input type="number" th:field="*{maxMember}" class="form-control" id="input-2" placeholder="Nhập số lượng học viên tối đa" name="user-email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="the-date1">Ngày bắt đầu</label>
+                                    <input type="date" th:field="*{startDate}" class="form-control" id="the-date1" placeholder="Ngày bắt đầu học" name="user-created">
+                                </div>
+                                <div class="form-group">
+                                    <label for="the-date3">Ngày kết thúc</label>
+                                    <input type="date" th:field="*{endDate}" class="form-control" id="the-date3" placeholder="Ngày kết thúc lớp học" name="user-created">
+                                </div>
+                                <div class="form-group">
+                                    <label for="the-date2">Ngày tạo</label>
+                                    <input type="date" th:field="*{createDate}" class="form-control" id="the-date2" placeholder="Ngày tạo" name="user-created">
+                                </div>
+                                <div class="form-group">
+                                    <a type="submit" class="btn btn-danger px-5" th:href="@{/admin/classrooms}"><i class="icon-lock"></i>Hủy</a>
+                                    <button type="submit" class="btn btn-light px-5"><i class="icon-lock"></i>Cập nhật</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

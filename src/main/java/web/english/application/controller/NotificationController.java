@@ -49,6 +49,18 @@ public class NotificationController {
     public String getNotification(HttpServletRequest httpServletRequest, Model model){
         String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
         String token=jwtHelper.createToken(jwt);
+        Users user = null;
+        if(httpServletRequest.getCookies() == null){
+            return "redirect:/login";
+        }
+        if(token != ""){
+            user = userDAO.getUserFromToken(token);
+        }
+
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
 
         List<Notification> notifications=notificationDAO.findAllNotification(token);
         model.addAttribute("notifications",notifications);
@@ -89,6 +101,7 @@ public class NotificationController {
         Users users = userDAO.getUserFromToken(token);
         //get classroom list of specify teacher
         List<Classroom> classrooms=teacherDAO.getAllClassroomOfTeacher(users.getId());
+        model.addAttribute("users",users);
         model.addAttribute("classrooms",classrooms);
 
         return "admin/notification/addnotification";
@@ -126,6 +139,18 @@ public class NotificationController {
         String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
         String token=jwtHelper.createToken(jwt);
         Notification notification=notificationDAO.findNotificationById(id,token);
+        Users user = null;
+        if(httpServletRequest.getCookies() == null){
+            return "redirect:/login";
+        }
+        if(token != ""){
+            user = userDAO.getUserFromToken(token);
+        }
+
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
         model.addAttribute("notification",notification);
         return "admin/notification/notificationinfo";
     }
@@ -138,9 +163,23 @@ public class NotificationController {
      */
     @GetMapping("/editnotification/{id}")
     public String getEditNotificationPage(HttpServletRequest httpServletRequest,@PathVariable("id") int id, Model model){
+
         String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
         String token=jwtHelper.createToken(jwt);
         Notification notification=notificationDAO.findNotificationById(id,token);
+
+        Users user = null;
+        if(httpServletRequest.getCookies() == null){
+            return "redirect:/login";
+        }
+        if(token != ""){
+            user = userDAO.getUserFromToken(token);
+        }
+
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
 
         model.addAttribute("notification",notification);
         return "admin/notification/editnotification";
@@ -163,6 +202,18 @@ public class NotificationController {
 
         List<Notification> notifications=notificationDAO.searchNotification(id,classroomIdOrClassname,token);
 
+        Users user = null;
+        if(httpServletRequest.getCookies() == null){
+            return "redirect:/login";
+        }
+        if(token != ""){
+            user = userDAO.getUserFromToken(token);
+        }
+
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
         model.addAttribute("notifications",notifications);
         return "admin/notification/notification";
     }
