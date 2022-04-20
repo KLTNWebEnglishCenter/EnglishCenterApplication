@@ -3,11 +3,14 @@ package web.english.application.dao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import web.english.application.entity.course.Course;
+import web.english.application.entity.user.Student;
+import web.english.application.utils.UsersType;
 import web.english.application.entity.course.UsersCourseRequest;
 
 import java.util.ArrayList;
@@ -46,6 +49,29 @@ public class CourseDAO {
         return course;
     }
 
+    /**
+     * @author VQKHANH
+     * @param idOrCourseName
+     * @return
+     */
+    public List<Course> findByIdOrCourseName(String idOrCourseName){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        map.add("idOrCourseName", idOrCourseName);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+
+        ResponseEntity<List<Course>> responseEntity =
+                restTemplate.exchange("http://localhost:8000/course/findbyidorcoursename/",
+                        HttpMethod.POST, request, new ParameterizedTypeReference<List<Course>>() {
+                        });
+        List<Course> courses = responseEntity.getBody();
+        return courses;
+    }
+
+
     public UsersCourseRequest signupCourse(UsersCourseRequest usersCourseRequest){
         UsersCourseRequest request = restTemplate.postForObject("http://localhost:8000/user/signup/course",usersCourseRequest,UsersCourseRequest.class);
         return request;
@@ -73,4 +99,5 @@ public class CourseDAO {
         });
         return courses;
     }
+
 }

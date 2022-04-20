@@ -76,11 +76,12 @@
           <a class="nav-link toggle-menu" href="javascript:void();">
             <i class="icon-menu menu-icon"></i>
           </a>
+          <ul th:replace="~{admin/index::admin-fragment}">
+          </ul>
         </li>
       </ul>
 
-      <ul th:replace="~{admin/index::admin-fragment}">
-      </ul>
+
     </nav>
   </header>
   <div class="clearfix"></div>

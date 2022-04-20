@@ -46,7 +46,6 @@ public class UserDAO {
      * @param password
      * @return access_token(jwt)
      */
-
     public String login(String username,String password){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
