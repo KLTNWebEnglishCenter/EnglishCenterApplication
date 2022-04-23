@@ -33,6 +33,11 @@ public class UserDAO {
         return users;
     }
 
+    public Users update(Users users){
+        Users users1 = restTemplate.postForObject("http://localhost:8000/user/update",users,Users.class);
+        return users1;
+    }
+
 
     public Users getUser(int id){
         Users users = restTemplate.getForObject("http://localhost:8000/user/"+id,Users.class);

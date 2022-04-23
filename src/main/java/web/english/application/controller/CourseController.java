@@ -144,4 +144,29 @@ public class CourseController {
         return "redirect:/admin/courses";
     }
 
+    @PostMapping("/course/search")
+    public String searchCourse(@RequestParam("idOrName") String idOrName,HttpServletRequest httpServletRequest,Model model){
+       List<Course> courses = courseDAO.findByIdOrCourseName(idOrName);
+        String token = "";
+        Users user = null;
+        if(httpServletRequest.getCookies() == null){
+            return "redirect:/login";
+        }
+        for (Cookie cookie : httpServletRequest.getCookies()) {
+            if(cookie.getName().equals("access_token")){
+                token = cookie.getValue();
+            }
+        }
+        String token_valid = "Bearer "+token;
+        if(token != ""){
+            user = userDAO.getUserFromToken(token_valid);
+        }
+
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
+        model.addAttribute("courses",courses);
+        return "admin/course/khoahoc";
+    }
 }

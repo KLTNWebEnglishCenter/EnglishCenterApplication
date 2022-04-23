@@ -10,6 +10,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import web.english.application.entity.Classroom;
+import web.english.application.entity.course.Course;
 import web.english.application.entity.user.Student;
 import web.english.application.entity.user.Teacher;
 import web.english.application.utils.UsersType;
@@ -99,5 +100,23 @@ public class ClassroomDAO {
 //            log.info("addStudentToClassroom Error:"+ exception.getMessage());
 //            return "Cập nhật không thành công";
 //        }
+    }
+
+
+    public List<Classroom> findByIdOrClassName(String idOrName){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        map.add("idOrClassName", idOrName);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+
+        ResponseEntity<List<Classroom>> responseEntity =
+                restTemplate.exchange("http://localhost:8000/classroom/findbyidorclassname",
+                        HttpMethod.POST, request, new ParameterizedTypeReference<List<Classroom>>() {
+                        });
+        List<Classroom> classrooms = responseEntity.getBody();
+        return classrooms;
     }
 }

@@ -1,31 +1,34 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="icon" th:href="@{/admin/assets/images/favicon.ico}" type="image/x-icon}">
     <!-- Web page CSS -->
-    <link rel="stylesheet" th:href="@{/css/page.css}" />
-    <link rel="stylesheet" th:href="@{/css/header.css}"/>
-    <link rel="stylesheet" th:href="@{/css/section.css}"/>
-    <link rel="stylesheet" th:href="@{/css/footer.css}"/>
-    <link rel="stylesheet" th:href="@{/css/tooltip.css}"/>
-    <link rel="stylesheet" th:href="@{/css/sidebar.css}"/>
+    <link rel="stylesheet" href="/css/page.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/section.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/tooltip.css" />
+    <link rel="stylesheet" href="/css/sidebar.css" />
+    <link rel="stylesheet" href="/css/exam.css">
 
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+          integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"> -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="/js/backtotop.js"></script>
-    <title>Home</title>
+    <title>Document</title>
 </head>
+
 <body>
-<header th:fragment="header-fragment">
+<header>
     <div class="ten">
         <h3><strong>TRUNG TÂM ANH NGỮ TOPAL</strong></h3>
     </div>
@@ -36,17 +39,18 @@
         <i class="fa fa-phone"></i>
         <span><strong>039.408.6919</strong></span>
     </div>
-    <div th:unless="${users}" class="lienhe">
-        <a th:href="@{/login}" class="btn">Đăng nhập</a>
-        <a th:href="@{/register}" class="btn">Đăng ký</a>
+    <div class="lienhe">
+        <a href="/html/dangnhap.html" class="btn">Đăng nhập</a>
+        <a href="/html/dangky.html" class="btn">Đăng ký</a>
     </div>
-    <div th:if="${users}" class="profile-info">
-        <span th:text="${users.fullName}"></span><button class="arrow fa fa-angle-double-down pull-right nut_dropdown" th:onclick="hamDropdown()"></button>
+    <div class="profile-info">
+        <span>Nguyễn Hoàng Lâm</span><button class="arrow fa fa-angle-double-down pull-right nut_dropdown"
+                                             onclick="hamDropdown()"></button>
     </div>
-    <div th:if="${users}" class="noidung_dropdown">
-        <a th:href="@{/user/info/{id}(id=${users.id})}"><i class="fa fa-info-circle pull-left"></i>&nbsp;Thông tin cá nhân</a>
+    <div class="noidung_dropdown">
+        <a href="#"><i class="fa fa-info-circle pull-left"></i>&nbsp;Thông tin cá nhân</a>
         <a href="#"><i class="fa fa-key pull-left"></i>&nbsp;Đổi mật khẩu</a>
-        <a th:href="@{/logout}"><i class="fa fa-sign-out pull-left"></i>&nbsp;Đăng xuất</a>
+        <a href="#"><i class="fa fa-sign-out pull-left"></i>&nbsp;Đăng xuất</a>
     </div>
     <div class="menu-sidebar" id="menu-sidebar-id">
         <input type="checkbox" href="#" class="menu-open" name="menu-open" id="menu-open" onclick="unhidden()" />
@@ -58,7 +62,7 @@
     </div>
 
 </header>
-<nav th:fragment="nav-fragment">
+<nav>
     <div class="anhdaidien">
         <img src="/img/TOPAL.png" alt="Trung tam anh ngu topal" width="300px" height="100px">
     </div>
@@ -71,30 +75,33 @@
         </label>
     </div> -->
     <br>
-    <ul class="menu" id="menu" th>
+    <ul class="menu" id="menu">
         <li class="nav-item">
-            <a th:href="@{/home}" class="nav-link" >Trang chủ</a>
+            <a href="/html/header.html" class="nav-link" id="nav-link">Trang chủ</a>
         </li>
         <li class="nav-item">
-            <a th:href="@{/course/home}" class="nav-link" >Các khóa học</a>
+            <a href="/html/course-web.html" class="nav-link" id="nav-link">Các khóa học</a>
         </li>
         <li class="nav-item">
-            <a href="#stakeholders" class="nav-link" >Tài liệu</a>
+            <a href="#stakeholders" class="nav-link" id="nav-link">Tài liệu</a>
         </li>
         <li class="nav-item">
-            <a href="#sub" class="nav-link" >Giảng Viên</a>
+            <a href="#sub" class="nav-link" id="nav-link">Giảng Viên</a>
         </li>
         <li class="nav-item">
-            <a href="#sub" class="nav-link" >Học Viên</a>
+            <a href="#sub" class="nav-link" id="nav-link">Học Viên</a>
         </li>
         <li class="nav-item">
-            <a href="#sub" class="nav-link" >Tin tức - Sự kiện</a>
+            <a href="#sub" class="nav-link" id="nav-link">Tin tức - Sự kiện</a>
         </li>
         <li class="nav-item">
-            <a href="#sub" class="nav-link" >Giới thiệu</a>
+            <a href="#sub" class="nav-link" id="nav-link">Giới thiệu</a>
         </li>
         <li class="nav-item">
-            <a href="#sub" class="nav-link" >Liên hệ</a>
+            <a href="#sub" class="nav-link" id="nav-link">Liên hệ</a>
+        </li>
+        <li class="nav-item">
+            <a href="/html/kiemtra.html" class="nav-link" id="nav-link">Kiểm tra trình độ</a>
         </li>
     </ul>
     <div class="menuclick" id="menuclick" onclick="myFunction(this)">
@@ -105,49 +112,129 @@
 </nav>
 
 <a href="#" class="cd-top">Back To Top</a>
-<!-- Slideshow container -->
-<div class="slideshow-container">
 
-    <!-- Full-width images with number and caption text -->
-    <div class="mySlides fade">
-        <div class="numbertext">1 / 3</div>
-        <img src="/img/1609829548989.jpg" style="width:100%">
-
+<div class="comtainer-exam">
+    <div class="exam-header">
+        <h3 class="exam-header-title">
+            Bài kiểm tra thử
+        </h3>
+        <h4 class="exam-header-title">
+            Mã đề: 1055684228-test
+        </h4>
     </div>
-
-    <div class="mySlides fade">
-        <div class="numbertext">2 / 3</div>
-        <img src="/img/1640968001768.png" style="width:100%">
-
+    <div class="exam-body">
+        <form action="" method="post">
+            <div class="exam-item">
+                <h1 class="exam-question-index">Cau 1:</h1>
+                <div class="exam-question-body">
+                    <p class="exam-question-content">
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officia nam quasi accusantium!
+                        Neque animi ratione officia sed ullam eaque nobis tempora nulla, labore velit aliquid
+                        accusamus repudiandae excepturi voluptate minima?
+                    </p>
+                    <div class="exam-question-answer">
+                        <div><input type="radio" name="answer" id="a"
+                                    class="exam-question-result"><span>A.</span>AnswerA</div>
+                        <div><input type="radio" name="answer" id="b"
+                                    class="exam-question-result"><span>B.</span>AnswerA</div>
+                        <div><input type="radio" name="answer" id="c"
+                                    class="exam-question-result"><span>C.</span>AnswerA</div>
+                        <div><input type="radio" name="answer" id="d"
+                                    class="exam-question-result"><span>D.</span>AnswerA</div>
+                    </div>
+                </div>
+            </div>
+            <div class="exam-item">
+                <h1 class="exam-question-index">Cau 1:</h1>
+                <div class="exam-question-body">
+                    <p class="exam-question-content">
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officia nam quasi accusantium!
+                        Neque animi ratione officia sed ullam eaque nobis tempora nulla, labore velit aliquid
+                        accusamus repudiandae excepturi voluptate minima?
+                    </p>
+                    <div class="exam-question-answer">
+                        <div><input type="radio" name="answer" id="a"
+                                    class="exam-question-result"><span>A.</span>AnswerA</div>
+                        <div><input type="radio" name="answer" id="b"
+                                    class="exam-question-result"><span>B.</span>AnswerA</div>
+                        <div><input type="radio" name="answer" id="c"
+                                    class="exam-question-result"><span>C.</span>AnswerA</div>
+                        <div><input type="radio" name="answer" id="d"
+                                    class="exam-question-result"><span>D.</span>AnswerA</div>
+                    </div>
+                </div>
+            </div>
+            <div class="exam-item">
+                <h1 class="exam-question-index">Cau 1:</h1>
+                <div class="exam-question-body">
+                    <p class="exam-question-content">
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officia nam quasi accusantium!
+                        Neque animi ratione officia sed ullam eaque nobis tempora nulla, labore velit aliquid
+                        accusamus repudiandae excepturi voluptate minima?
+                    </p>
+                    <div class="exam-question-answer">
+                        <div><input type="radio" name="answer" id="a"
+                                    class="exam-question-result"><span>A.</span>AnswerA</div>
+                        <div><input type="radio" name="answer" id="b"
+                                    class="exam-question-result"><span>B.</span>AnswerA</div>
+                        <div><input type="radio" name="answer" id="c"
+                                    class="exam-question-result"><span>C.</span>AnswerA</div>
+                        <div><input type="radio" name="answer" id="d"
+                                    class="exam-question-result"><span>D.</span>AnswerA</div>
+                    </div>
+                </div>
+            </div>
+            <div class="exam-item">
+                <h1 class="exam-question-index">Cau 1:</h1>
+                <div class="exam-question-body">
+                    <p class="exam-question-content">
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officia nam quasi accusantium!
+                        Neque animi ratione officia sed ullam eaque nobis tempora nulla, labore velit aliquid
+                        accusamus repudiandae excepturi voluptate minima?
+                    </p>
+                    <div class="exam-question-answer">
+                        <div><input type="radio" name="answer" id="a"
+                                    class="exam-question-result"><span>A.</span>AnswerA</div>
+                        <div><input type="radio" name="answer" id="b"
+                                    class="exam-question-result"><span>B.</span>AnswerA</div>
+                        <div><input type="radio" name="answer" id="c"
+                                    class="exam-question-result"><span>C.</span>AnswerA</div>
+                        <div><input type="radio" name="answer" id="d"
+                                    class="exam-question-result"><span>D.</span>AnswerA</div>
+                    </div>
+                </div>
+            </div>
+            <div class="exam-submit">
+                <input class="exam-btn" type="submit" value="Nộp bài">
+            </div>
+            <div class="exam-submit-2">
+                <p class="exam-submit-p">Thời gian nộp bài</p>
+                <div class="exam-clock-down">
+                    <span id="exam-hour">00</span>
+                    <span>:</span>
+                    <span id="exam-minute" value>00</span>
+                    <span>:</span>
+                    <span id="exam-second">00</span>
+                </div>
+                <input class="exam-btn-2" type="submit" value="Nộp bài">
+            </div>
+        </form>
     </div>
-
-    <!-- <div class="mySlides fade">
-    <div class="numbertext">3 / 3</div>
-    <img src="img3.jpg" style="width:100%">
-    <div class="text">Caption Three</div>
-    </div> -->
-
-    <!-- Next and previous buttons -->
-    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-    <a class="next" onclick="plusSlides(1)">&#10095;</a>
-</div>
-<br>
-
-<!-- The dots/circles -->
-<div style="text-align:center">
-    <span class="dot" onclick="currentSlide(1)"></span>
-    <span class="dot" onclick="currentSlide(2)"></span>
-    <!-- <span class="dot" onclick="currentSlide(3)"></span> -->
 </div>
 
-<aside th:fragment="aside-fragment" class="sidebar" id="menu-sidebar2">
+
+<aside class="sidebar" id="menu-sidebar2">
     <div id="leftside-navigation" class="nano">
         <ul class="nano-content">
             <li>
                 <a href="/html/managerClassroom.html"><i class="fa fa-dashboard"></i><span>Vào lớp học</span></a>
             </li>
+            <li>
+                <a href="/html/lamkiemtra.html"><i class="fa fa-dashboard"></i><span></span></a>
+            </li>
             <li class="sub-menu">
-                <a href="javascript:void(0);"><i class="fa fa-cogs"></i><span>UI Elements</span><i class="arrow fa fa-angle-right pull-right"></i></a>
+                <a href="javascript:void(0);"><i class="fa fa-cogs"></i><span>UI Elements</span><i
+                        class="arrow fa fa-angle-right pull-right"></i></a>
                 <ul>
                     <li><a href="ui-alerts-notifications.html">Alerts &amp; Notifications</a>
                     </li>
@@ -170,7 +257,8 @@
                 </ul>
             </li>
             <li class="sub-menu">
-                <a href="javascript:void(0);"><i class="fa fa-table"></i><span>Tables</span><i class="arrow fa fa-angle-right pull-right"></i></a>
+                <a href="javascript:void(0);"><i class="fa fa-table"></i><span>Tables</span><i
+                        class="arrow fa fa-angle-right pull-right"></i></a>
                 <ul>
                     <li><a href="tables-basic.html">Basic Tables</a>
                     </li>
@@ -180,7 +268,8 @@
                 </ul>
             </li>
             <li class="sub-menu">
-                <a href="javascript:void(0);"><i class="fa fa fa-tasks"></i><span>Forms</span><i class="arrow fa fa-angle-right pull-right"></i></a>
+                <a href="javascript:void(0);"><i class="fa fa fa-tasks"></i><span>Forms</span><i
+                        class="arrow fa fa-angle-right pull-right"></i></a>
                 <ul>
                     <li><a href="forms-components.html">Components</a>
                     </li>
@@ -197,7 +286,8 @@
                 </ul>
             </li>
             <li class="sub-menu">
-                <a href="javascript:void(0);"><i class="fa fa-envelope"></i><span>Mail</span><i class="arrow fa fa-angle-right pull-right"></i></a>
+                <a href="javascript:void(0);"><i class="fa fa-envelope"></i><span>Mail</span><i
+                        class="arrow fa fa-angle-right pull-right"></i></a>
                 <ul>
                     <li><a href="mail-inbox.html">Inbox</a>
                     </li>
@@ -206,7 +296,8 @@
                 </ul>
             </li>
             <li class="sub-menu">
-                <a href="javascript:void(0);"><i class="fa fa-bar-chart-o"></i><span>Charts</span><i class="arrow fa fa-angle-right pull-right"></i></a>
+                <a href="javascript:void(0);"><i class="fa fa-bar-chart-o"></i><span>Charts</span><i
+                        class="arrow fa fa-angle-right pull-right"></i></a>
                 <ul>
                     <li><a href="charts-chartjs.html">Chartjs</a>
                     </li>
@@ -216,7 +307,8 @@
                 </ul>
             </li>
             <li class="sub-menu">
-                <a href="javascript:void(0);"><i class="fa fa-map-marker"></i><span>Maps</span><i class="arrow fa fa-angle-right pull-right"></i></a>
+                <a href="javascript:void(0);"><i class="fa fa-map-marker"></i><span>Maps</span><i
+                        class="arrow fa fa-angle-right pull-right"></i></a>
                 <ul>
                     <li><a href="map-google.html">Google Map</a>
                     </li>
@@ -228,7 +320,8 @@
                 <a href="typography.html"><i class="fa fa-text-height"></i><span>Typography</span></a>
             </li>
             <li class="sub-menu">
-                <a href="javascript:void(0);"><i class="fa fa-file"></i><span>Pages</span><i class="arrow fa fa-angle-right pull-right"></i></a>
+                <a href="javascript:void(0);"><i class="fa fa-file"></i><span>Pages</span><i
+                        class="arrow fa fa-angle-right pull-right"></i></a>
                 <ul>
                     <li><a href="pages-blank.html">Blank Page</a>
                     </li>
@@ -250,7 +343,7 @@
     </div>
 </aside>
 
-<footer th:fragment="footer-fragment">
+<footer>
     <div class="footer-infor">
         <div class="info-row1">
             <div class="image-logo">
@@ -350,7 +443,7 @@
 
 </footer>
 
-    <script>
+<script>
         const inputToggle = document.querySelector('#checkbox')
         const navMenu = document.getElementById("menu")
         inputToggle.addEventListener('change', () => {
@@ -368,22 +461,22 @@
             navMenu.classList.remove("active");
         }
     </script>
-    <script src="/js/section.js"></script>
-    <script src="/js/header.js"></script>
-    <script>
-        $("#leftside-navigation .sub-menu > a").click(function(e) {
+<script src="/js/section.js"></script>
+<script src="/js/header.js"></script>
+<script>
+        $("#leftside-navigation .sub-menu > a").click(function (e) {
             $("#leftside-navigation ul ul").slideUp(), $(this).next().is(":visible") || $(this).next().slideDown(),
-            e.stopPropagation()
+                e.stopPropagation()
         })
     </script>
-    <script>
-        function unhidden(){
+<script>
+        function unhidden() {
             const hidde = document.getElementById("menu-sidebar2")
             const checkHidden = document.getElementById("menu-sidebar-id")
-            if(hidde.style.display == "block"){
+            if (hidde.style.display == "block") {
                 hidde.style.display = "none"
                 checkHidden.style.left = "30px"
-            }else{
+            } else {
                 hidde.style.display = "block"
                 checkHidden.style.left = "260px"
             }
@@ -391,7 +484,7 @@
         function hamDropdown() {
             document.querySelector(".noidung_dropdown").classList.toggle("hienThi");
         }
-        window.onclick = function(e) {
+        window.onclick = function (e) {
             if (!e.target.matches('.nut_dropdown')) {
                 var noiDungDropdown = document.querySelector(".noidung_dropdown");
                 if (noiDungDropdown.classList.contains('hienThi')) {
@@ -400,6 +493,47 @@
             }
         }
     </script>
+<script>
+        const hour = document.getElementById('exam-hour')
+        const minute = document.getElementById('exam-minute')
+        const second = document.getElementById('exam-second')
+
+        var hour_value = 0
+        var minute_value = 0
+        var second_value = 0
+
+        function showTimeUp() {
+            second_value++
+            if (second_value == 60) {
+                second_value = 0
+                minute_value++
+                if (minute_value == 60) {
+                    minute_value = 0
+                    hour_value++
+                    if (hour_value == 24) {
+                        hour_value = 0
+                    }
+                }
+            }
+            if (hour_value < 9) {
+                hour.innerText = '0' + hour_value
+            } else {
+                hour.innerText = hour_value
+            }
+            if (minute_value < 9) {
+                minute.innerText = '0' + minute_value
+            } else {
+                minute.innerText = minute_value
+            }
+            if (second_value < 9) {
+                second.innerText = '0' + second_value
+            } else {
+                second.innerText = second_value
+            }
+        }
+        setInterval(showTimeUp, 1000);
+    </script>
 
 </body>
+
 </html>

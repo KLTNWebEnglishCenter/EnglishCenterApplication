@@ -131,9 +131,9 @@
                             <span th:text="${users.email}"><i class="fa fa-mail-forward mr-2"> </i></span>
                         </div>
                         <div class="info-button">
-                            <button class="btn btn-info"><a href="">Chỉnh sửa thông tin cá nhân</a></button>
-
-                            <button class="btn btn-success"><a href="">Quay lại</a></button>
+                            <button class="btn btn-info"><a th:href="@{/user/info/update/{id}(id=${users.id})}">Chỉnh sửa thông tin cá nhân</a></button>
+                            <button th:if="${author}" class="btn btn-success"><a th:href="@{/admin/home}">Quay lại admin</a></button>
+                            <button th:unless="${author}" class="btn btn-success"><a th:href="@{/home}">Quay lại home</a></button>
                         </div>
                         <img th:src="@{/admin/assets/images/anhbia.png}" alt="anhbia">
                     </div>

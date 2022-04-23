@@ -121,15 +121,15 @@
                     <div class="avatar"><img class="align-self-start mr-3" src="/admin/assets/images/avatar-admin.png"
                         alt="user avatar"></div>
                     <div class="media-body">
-                      <h6 class="mt-2 user-title">Webnongsan</h6>
-                	<b> Admin: </b><b th:text="${users.fullName}"></b>
+                      <h6 class="mt-2 user-title">Topal</h6>
+                	  <b th:text="${users.fullName}"></b>
                     </div>
                   </div>
                 </a>
               </li>
             
               <li class="dropdown-divider"></li>
-              <li class="dropdown-item"><i class="icon-power mr-2"></i><a th:href="@{/admin/info/{id}(id=${users.id})}">Thông tin cá nhân</a></li>
+              <li class="dropdown-item"><i class="icon-power mr-2"></i><a th:href="@{/user/info/{id}(id=${users.id})}">Thông tin cá nhân</a></li>
               <li class="dropdown-item"><i class="icon-power mr-2"></i><a th:href="@{/logout}"> Đăng xuất</a></li>
             </ul>
           </li>

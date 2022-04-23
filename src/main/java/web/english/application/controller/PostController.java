@@ -47,7 +47,7 @@ public class PostController {
             return "redirect:/login";
         }
         model.addAttribute("users",user);
-        List<Post> posts = postDAO.getAllPost();
+        List<Post> posts = postDAO.getMyPost(user.getId());
 
 
         model.addAttribute("posts",posts);
@@ -170,5 +170,33 @@ public class PostController {
         post.setStatus(StatusHelper.STATUS_DENI);
         postDAO.savePost(post);
         return "redirect:/admin/post/accept";
+    }
+
+    @PostMapping("/post/search")
+    public String searchPost(@RequestParam String idOrName,HttpServletRequest httpServletRequest,Model model){
+        List<Post> posts = postDAO.getPostByIdOrName(idOrName);
+        String token = "";
+        Users user = null;
+        if(httpServletRequest.getCookies() == null){
+            return "redirect:/login";
+        }
+        for (Cookie cookie : httpServletRequest.getCookies()) {
+            if(cookie.getName().equals("access_token")){
+                token = cookie.getValue();
+            }
+        }
+//        log.info(token);
+        String token_valid = "Bearer "+token;
+//        log.info(token_valid);
+        if(token != ""){
+            user = userDAO.getUserFromToken(token_valid);
+        }
+
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
+        model.addAttribute("posts",posts);
+        return "admin/post/baidang";
     }
 }

@@ -168,4 +168,29 @@ public class ClassroomController {
         return "redirect:/admin/classrooms";
     }
 
+    @PostMapping("/classroom/search")
+    public String searchCourse(@RequestParam("idOrName") String idOrName,HttpServletRequest httpServletRequest,Model model){
+        List<Classroom> classrooms = classroomDAO.findByIdOrClassName(idOrName);
+        String token = "";
+        Users user = null;
+        if(httpServletRequest.getCookies() == null){
+            return "redirect:/login";
+        }
+        for (Cookie cookie : httpServletRequest.getCookies()) {
+            if(cookie.getName().equals("access_token")){
+                token = cookie.getValue();
+            }
+        }
+        String token_valid = "Bearer "+token;
+        if(token != ""){
+            user = userDAO.getUserFromToken(token_valid);
+        }
+
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
+        model.addAttribute("classrooms",classrooms);
+        return "admin/classroom/lophoc";
+    }
 }

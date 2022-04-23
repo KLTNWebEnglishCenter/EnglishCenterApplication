@@ -46,8 +46,8 @@
             <small th:text="${errorPasswordMatch}"></small>
         </div>
         <input type="submit" value="Đăng ký" />
-        <div class="signup_link">Đã có tài khoản ?<a href="/login">Đăng nhập</a></div>
-        <div class="signup_link"><a href="/home">Về trang chủ</a></div>
+        <div class="signup_link">Đã có tài khoản ?<a th:href="@{/login}">Đăng nhập</a></div>
+        <div class="signup_link"><a th:href="@{/home}">Về trang chủ</a></div>
     </form>
 </div>
 </body>
