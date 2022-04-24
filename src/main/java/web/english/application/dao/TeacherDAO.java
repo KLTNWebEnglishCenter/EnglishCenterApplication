@@ -10,9 +10,12 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import web.english.application.entity.Classroom;
+import web.english.application.entity.Notification;
+import web.english.application.entity.ScheduleInfoHolder;
 import web.english.application.entity.user.Teacher;
 import web.english.application.utils.UsersType;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 
