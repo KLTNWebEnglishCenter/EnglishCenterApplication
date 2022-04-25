@@ -44,4 +44,29 @@ public class ScheduleDAO {
         List<ScheduleInfoHolder> scheduleInfoHolders=responseEntity.getBody();
         return  scheduleInfoHolders;
     }
+
+    /**
+     * @author VQKHANH
+     * @param selectedDate
+     * @param token
+     * @return
+     */
+    public List<ScheduleInfoHolder> getScheduleOfStudent(LocalDate selectedDate, String token ){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.set("Authorization", token);
+
+//        log.info(selectedDate);
+
+        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        map.add("selectedDate", selectedDate.toString());
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+
+        ResponseEntity<List<ScheduleInfoHolder>> responseEntity=restTemplate.exchange("http://localhost:8000/schedule/student",
+                HttpMethod.POST, request, new ParameterizedTypeReference<List<ScheduleInfoHolder>>() {
+                });
+        List<ScheduleInfoHolder> scheduleInfoHolders=responseEntity.getBody();
+        return  scheduleInfoHolders;
+    }
 }

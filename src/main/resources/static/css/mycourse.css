@@ -219,7 +219,7 @@
 }
 
 .col-thu {
-    height: 50px;
+    height: 70px;
     background-color: rgb(56, 175, 177);
     align-items: center;
     text-align: center;
@@ -240,7 +240,7 @@
 }
 
 .tiet-box {
-    border-bottom: 3px solid black;
+   /* border-bottom: 3px solid black; */
 }
 .p {
     padding-bottom: 5px;
