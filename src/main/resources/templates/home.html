@@ -25,6 +25,30 @@
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="/js/backtotop.js"></script>
     <title>Anh ngữ Topal</title>
+
+    <script th:src="@{/admin/assets/js/jquery.min.js}"></script>
+    <script th:src="@{/admin/assets/js/sweetalert2.all.js}"></script>
+    <link rel="stylesheet" th:href="@{/admin/assets/css/sweetalert2.min.css}">
+
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+
+        var msg = /*[[${msg}]]*/ '';
+
+        function yourfunction() {
+          if(msg!=""&&msg!=null){
+            Swal.fire({
+              icon: 'success',
+              title: 'Bạn làm đúng',
+              text: msg+' câu',
+             })
+          }
+        }
+
+        window.onload = yourfunction;
+
+      /*]]>*/
+    </script>
 </head>
 <body>
 <header th:fragment="header-fragment">
@@ -47,17 +71,17 @@
     </div>
     <div th:if="${users}" class="noidung_dropdown">
         <a th:href="@{/user/info/{id}(id=${users.id})}"><i class="fa fa-info-circle pull-left"></i>&nbsp;Thông tin cá nhân</a>
-        <a href="#"><i class="fa fa-key pull-left"></i>&nbsp;Đổi mật khẩu</a>
+        <a th:href="@{/user/password/{id}(id=${users.id})}"><i class="fa fa-key pull-left"></i>&nbsp;Đổi mật khẩu</a>
         <a th:href="@{/logout}"><i class="fa fa-sign-out pull-left"></i>&nbsp;Đăng xuất</a>
     </div>
-<!--    <div class="menu-sidebar" id="menu-sidebar-id">-->
-<!--        <input type="checkbox" href="#" class="menu-open" name="menu-open" id="menu-open" onclick="unhidden()" />-->
-<!--        <label class="menu-open-button" for="menu-open">-->
-<!--            <span class="lines line-1"></span>-->
-<!--            <span class="lines line-2"></span>-->
-<!--            <span class="lines line-3"></span>-->
-<!--        </label>-->
-<!--    </div>-->
+    <div th:if="${users}" class="menu-sidebar" id="menu-sidebar-id">
+        <input type="checkbox" href="#" class="menu-open" name="menu-open" id="menu-open" onclick="unhidden()" />
+        <label class="menu-open-button" for="menu-open">
+            <span class="lines line-1"></span>
+            <span class="lines line-2"></span>
+            <span class="lines line-3"></span>
+        </label>
+    </div>
 
 </header>
 <nav th:fragment="nav-fragment">
@@ -97,6 +121,9 @@
         </li>
         <li class="nav-item">
             <a th:href="@{/contact}" class="nav-link" >Liên hệ</a>
+        </li>
+        <li class="nav-item">
+            <a th:href="@{/exam}" class="nav-link">Kiểm tra thử</a>
         </li>
     </ul>
     <div class="menuclick" id="menuclick" onclick="myFunction(this)">

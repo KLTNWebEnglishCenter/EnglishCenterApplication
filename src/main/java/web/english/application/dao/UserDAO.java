@@ -12,6 +12,7 @@ import web.english.application.entity.course.UsersCourseRequest;
 import web.english.application.entity.user.Authentication;
 import web.english.application.entity.user.Teacher;
 import web.english.application.entity.user.Users;
+import web.english.application.utils.UsersType;
 
 import java.util.List;
 
@@ -82,6 +83,22 @@ public class UserDAO {
         HttpEntity<String> request = new HttpEntity<>("body",headers);
         String author= restTemplate.postForObject("http://localhost:8000/user/author/",request,String.class);
         return author;
+    }
+
+    public String updatePassword(String id,String oldpass,String newPass){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        map.add("id", id);
+        map.add("oldPass", oldpass);
+        map.add("newPass", newPass);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+
+        String rs =  restTemplate.postForObject("http://localhost:8000/user/change/password", request,String.class);
+
+        return rs;
     }
 
     public String checkEmail(String email){

@@ -38,6 +38,11 @@ public class CourseDAO {
         return course;
     }
 
+    public Course findCourse(int id) {
+        Course course = restTemplate.getForObject(("http://localhost:8000/course/find/" + id), Course.class);
+        return course;
+    }
+
     public Course saveCourse(Course course, int levelId,int categoryId ){
         Course course1 = restTemplate.postForObject("http://localhost:8000/course",course,Course.class);
         Course course2 = restTemplate.getForObject("http://localhost:8000/course/addLevelAndCategoryToCourse/"+course1.getId()+"/"+levelId+"/"+categoryId,Course.class);

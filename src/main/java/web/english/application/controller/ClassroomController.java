@@ -5,12 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import web.english.application.dao.ClassroomDAO;
-import web.english.application.dao.CourseDAO;
-import web.english.application.dao.TeacherDAO;
-import web.english.application.dao.UserDAO;
+import web.english.application.dao.*;
 import web.english.application.entity.Classroom;
 import web.english.application.entity.course.Course;
+import web.english.application.entity.user.Student;
 import web.english.application.entity.user.Teacher;
 import web.english.application.entity.user.Users;
 
@@ -35,6 +33,9 @@ public class ClassroomController {
 
     @Autowired
     private UserDAO userDAO;
+
+    @Autowired
+    private StudentDAO studentDAO;
 
     @GetMapping("/classrooms")
     public String getClassrooms(Model model, HttpServletRequest httpServletRequest){
@@ -192,5 +193,32 @@ public class ClassroomController {
         model.addAttribute("users",user);
         model.addAttribute("classrooms",classrooms);
         return "admin/classroom/lophoc";
+    }
+
+    @GetMapping("/classroom/students/{id}")
+    public String getListStudentPage(HttpServletRequest httpServletRequest, Model model, @PathVariable int id){
+        String token = "";
+        Users user = null;
+        if(httpServletRequest.getCookies() == null){
+            return "redirect:/login";
+        }
+        for (Cookie cookie : httpServletRequest.getCookies()) {
+            if(cookie.getName().equals("access_token")){
+                token = cookie.getValue();
+            }
+        }
+        String token_valid = "Bearer "+token;
+        if(token != ""){
+            user = userDAO.getUserFromToken(token_valid);
+        }
+
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
+        List<Student> students= classroomDAO.getStudentFromClassroom(id);
+        model.addAttribute("classroomId",id);
+        model.addAttribute("students",students);
+        return "admin/classroom/danhsachhocvien";
     }
 }

@@ -121,8 +121,8 @@
                                 <input type="text" th:value="${classroom.status}" class="form-control" id="input-7" readonly>
                             </div>
                             <div class="form-group">
-                                <button type="button" class="btn btn-light px-5"><i class="icon-arrow-left"></i><a href="/admin/classrooms">Quay về</a></button>
-                                <button type="button" class="btn btn-light px-5"><i class="icon-info"></i><a href="">Xem danh sách học viên của lớp</a></button>
+                                <button type="button" class="btn btn-light px-5"><i class="icon-arrow-left"></i><a th:href="@{/admin/classrooms}">Quay về</a></button>
+                                <button type="button" class="btn btn-light px-5"><i class="icon-info"></i><a th:href="@{/admin/classroom/students/{id}(id=${classroom.id})}">Xem danh sách học viên của lớp</a></button>
                                 <button type="button" class="btn btn-light px-5"><i class="icon-calendar"></i><a href="">Xem lịch học</a></button>
                                 <button type="button" class="btn btn-light px-5"><i class="icon-arrow-right"></i><a href="">Xem thông báo</a></button>
                             </div>

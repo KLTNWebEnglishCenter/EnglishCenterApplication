@@ -119,4 +119,12 @@ public class ClassroomDAO {
         List<Classroom> classrooms = responseEntity.getBody();
         return classrooms;
     }
+
+    public List<Student> getStudentFromClassroom(int id){
+        ResponseEntity<List<Student>> responseEntity =
+                restTemplate.exchange("http://localhost:8000/classrooms/students/" + id, HttpMethod.GET, null, new ParameterizedTypeReference<List<Student>>() {
+                });
+        List<Student> students = responseEntity.getBody();
+        return students;
+    }
 }

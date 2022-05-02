@@ -69,7 +69,25 @@
         left: 200px;
       }
   </style>
+    <script th:inline="javascript">
+      /*<![CDATA[*/
 
+        var msg = /*[[${msg}]]*/ '';
+
+        function yourfunction() {
+          if(msg!=""&&msg!=null){
+            Swal.fire({
+              icon: 'success',
+              title: 'Oke...',
+              text: msg,
+             })
+          }
+        }
+
+        window.onload = yourfunction;
+
+      /*]]>*/
+    </script>
 </head>
 
 <body class="bg-theme bg-theme1">

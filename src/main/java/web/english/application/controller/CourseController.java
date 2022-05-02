@@ -169,4 +169,30 @@ public class CourseController {
         model.addAttribute("courses",courses);
         return "admin/course/khoahoc";
     }
+
+    @GetMapping("/course/detail/{id}")
+    public String getDetailPage(@PathVariable int id,Model model,HttpServletRequest httpServletRequest){
+        String token = "";
+        Users user = null;
+        if(httpServletRequest.getCookies() == null){
+            return "redirect:/login";
+        }
+        for (Cookie cookie : httpServletRequest.getCookies()) {
+            if(cookie.getName().equals("access_token")){
+                token = cookie.getValue();
+            }
+        }
+        String token_valid = "Bearer "+token;
+        if(token != ""){
+            user = userDAO.getUserFromToken(token_valid);
+        }
+
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
+        Course course = courseDAO.findCourse(id);
+        model.addAttribute("course",course);
+        return "admin/course/chitietkhoahoc";
+    }
 }

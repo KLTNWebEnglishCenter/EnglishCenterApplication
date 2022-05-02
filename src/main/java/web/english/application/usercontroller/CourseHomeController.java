@@ -130,17 +130,23 @@ public class CourseHomeController {
 
         List<Course> courses = courseDAO.findAllCourse();
         List<UsersCourseRequest> courseRequests = courseDAO.getAllSignupCourse();
-        List<Course> courseList = courseDAO.getListCourseFromUserCourseRequest(user.getId(),courseRequests);
+        List<Course> courseList = new ArrayList<>();
+        try {
+            courseList = courseDAO.getListCourseFromUserCourseRequest(user.getId(),courseRequests);
+        }catch (Exception e){
 
+        }
         List<Course> courses1 = new ArrayList<>();
         courses1.addAll(courses);
-        courseList.forEach(course -> {
-            courses.forEach(course2 -> {
-                if (course.getId() == course2.getId()){
-                    courses1.remove(course2);
-                }
+        if(courseList.size()>0){
+            courseList.forEach(course -> {
+                courses.forEach(course2 -> {
+                    if (course.getId() == course2.getId()){
+                        courses1.remove(course2);
+                    }
+                });
             });
-        });
+        }
 
         if (rs == true){
             rs = false;
@@ -174,17 +180,23 @@ public class CourseHomeController {
 
         List<Course> courses = courseDAO.findAllCourse();
         List<UsersCourseRequest> courseRequests = courseDAO.getAllSignupCourse();
-        List<Course> courseList = courseDAO.getListCourseFromUserCourseRequest(user.getId(),courseRequests);
+        List<Course> courseList = new ArrayList<>();
+        try {
+            courseList = courseDAO.getListCourseFromUserCourseRequest(user.getId(),courseRequests);
+        }catch (Exception e){
 
+        }
         List<Course> courses1 = new ArrayList<>();
         courses1.addAll(courses);
-        courseList.forEach(course -> {
-            courses.forEach(course2 -> {
-                if (course.getId() == course2.getId()){
-                    courses1.remove(course2);
-                }
+        if(courseList.size()>0){
+            courseList.forEach(course -> {
+                courses.forEach(course2 -> {
+                    if (course.getId() == course2.getId()){
+                        courses1.remove(course2);
+                    }
+                });
             });
-        });
+        }
 
         if (rs == true){
             rs = false;
@@ -218,17 +230,23 @@ public class CourseHomeController {
 
         List<Course> courses = courseDAO.findAllCourse();
         List<UsersCourseRequest> courseRequests = courseDAO.getAllSignupCourse();
-        List<Course> courseList = courseDAO.getListCourseFromUserCourseRequest(user.getId(),courseRequests);
+        List<Course> courseList = new ArrayList<>();
+        try {
+            courseList = courseDAO.getListCourseFromUserCourseRequest(user.getId(),courseRequests);
+        }catch (Exception e){
 
+        }
         List<Course> courses1 = new ArrayList<>();
         courses1.addAll(courses);
-        courseList.forEach(course -> {
-            courses.forEach(course2 -> {
-                if (course.getId() == course2.getId()){
-                    courses1.remove(course2);
-                }
+        if(courseList.size()>0){
+            courseList.forEach(course -> {
+                courses.forEach(course2 -> {
+                    if (course.getId() == course2.getId()){
+                        courses1.remove(course2);
+                    }
+                });
             });
-        });
+        }
 
         if (rs == true){
             rs = false;

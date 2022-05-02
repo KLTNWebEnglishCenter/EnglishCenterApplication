@@ -36,8 +36,8 @@
     <h1>VỀ CHÚNG TÔI</h1>
 </div>
 
-<div class="about-intro-title">
-    <div class="about-intro-text">
+<div class="about-intro-title" style="background-color: white">
+    <div class="about-intro-text" style="margin-right:10px">
         <h5>Giới thiệu</h5>
         <h1>Trung tâm anh ngữ Topal</h1>
         <p>Topal tự hào là đơn vị đào tạo Anh ngữ hàng đầu tại Việt Nam với sự tận tâm, chân thành và trách nhiệm. Được thành lập từ năm 2014, Topal đã trở thành nơi trao gửi niềm tin học tiếng Anh cho hàng ngàn học viên chuyên sâu trong 3 mảng đào tạo: Luyện thi TOEIC, tiếng Anh giao tiếp và luyện thi Đại học môn Anh, cho học viên trên khắp cả nước thông qua các lớp học offline, online và sách.
@@ -51,7 +51,7 @@
     </div>
 </div>
 
-<div class="about-intro-title">
+<div class="about-intro-title" style="background-color: white">
     <div class="about-intro-mission-img">
         <img src="/img/1618805206_su-menh-la-gi-1.jpg" alt="">
     </div>
@@ -82,6 +82,37 @@
 <footer th:replace="~{home::footer-fragment}">
 </footer>
 
-
+<script src="/js/section.js"></script>
+<script src="/js/header.js"></script>
+<script>
+        $("#leftside-navigation .sub-menu > a").click(function(e) {
+            $("#leftside-navigation ul ul").slideUp(), $(this).next().is(":visible") || $(this).next().slideDown(),
+            e.stopPropagation()
+        })
+    </script>
+<script>
+        function unhidden(){
+            const hidde = document.getElementById("menu-sidebar2")
+            const checkHidden = document.getElementById("menu-sidebar-id")
+            if(hidde.style.display == "block"){
+                hidde.style.display = "none"
+                checkHidden.style.left = "30px"
+            }else{
+                hidde.style.display = "block"
+                checkHidden.style.left = "260px"
+            }
+        }
+        function hamDropdown() {
+            document.querySelector(".noidung_dropdown").classList.toggle("hienThi");
+        }
+        window.onclick = function(e) {
+            if (!e.target.matches('.nut_dropdown')) {
+                var noiDungDropdown = document.querySelector(".noidung_dropdown");
+                if (noiDungDropdown.classList.contains('hienThi')) {
+                    noiDungDropdown.classList.remove('hienThi');
+                }
+            }
+        }
+    </script>
 </body>
 </html>

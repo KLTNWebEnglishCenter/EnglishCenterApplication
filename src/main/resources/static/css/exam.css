@@ -1,0 +1,123 @@
+.comtainer-exam {
+    display: block;
+    width: 80%;
+    margin-inline: 10%;
+    min-height: 900px;
+    background-color: rgb(226, 223, 223);
+}
+
+.exam-header {
+    width: 100%;
+    min-height: 100px;
+    background-color: rgb(255, 255, 255);
+    text-align: center;
+}
+
+.exam-header-title {
+    font-size: 28px;
+    color: black;
+    margin-top: 3px;
+}
+
+.exam-body {
+    width: 100%;
+    min-height: 800px;
+    background-color: rgb(255, 255, 255);
+    padding: 5px;
+}
+
+.exam-item {
+    width: 100%;
+    min-height: 300px;
+
+}
+
+.exam-question-index {
+    font-size: 28px;
+    color: black;
+    font-weight: bold;
+}
+
+.exam-question-body {
+    width: 90%;
+    margin-inline: 5%;
+}
+
+.exam-question-content {
+    font-size: 20px;
+    font-style: italic;
+    color: black;
+    margin-bottom: 10px;
+}
+
+.exam-question-answer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+    color: black;
+    font-weight: bold;
+}
+
+
+.exam-submit {
+    text-align: center;
+    margin-block: 5px;
+}
+
+.exam-submit-2 {
+    position: fixed;
+    z-index: 9999;
+    right: 0;
+    bottom: 200px;
+    width: 230px;
+    height: 130px;
+    background: rgb(193, 186, 186);
+    text-align: center;
+    color: white;
+    border-radius: 10px;
+}
+
+.exam-submit-p{
+    font-size: 18px;
+}
+
+.exam-btn {
+    font-size: 30px;
+    min-width: 120px;
+    min-height: 50px;
+
+    border: 1px solid black;
+    border-radius: 10px;
+
+    font-family: Georgia, 'Times New Roman', Times, serif;
+
+    color: white;
+    background: rgb(127, 203, 207);
+}
+
+.exam-btn-2 {
+    font-size: 30px;
+    min-width: 120px;
+    min-height: 50px;
+
+    border: 1px solid black;
+    border-radius: 10px;
+
+    font-family: Georgia, 'Times New Roman', Times, serif;
+
+    color: white;
+    background: rgb(127, 203, 207);
+}
+
+.exam-btn, .exam-btn-2 {
+    cursor: pointer;
+}
+
+.exam-clock-down {
+    color: black;
+    margin-block: 10px;
+}
+
+.exam-clock-down input {
+    width: 20px;
+}

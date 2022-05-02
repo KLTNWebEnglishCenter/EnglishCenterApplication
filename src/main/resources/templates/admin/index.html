@@ -96,6 +96,11 @@
           <i class="zmdi zmdi-assignment-check"></i> <span>Duyệt bài đăng</span>
         </a>   
       </li>
+      <li>
+        <a th:href="@{/admin/exam}">
+          <i class="zmdi zmdi-assignment-check"></i> <span>Quản lý bài kiểm tra</span>
+        </a>
+      </li>
     </ul>
   </div>
     <header class="topbar-nav">
@@ -336,18 +341,18 @@
     </div> -->
   </div>
 
-    <script src="/admin/assets/js/jquery.min.js"></script>
-    <script src="/admin/assets/js/popper.min.js"></script>
-    <script src="/admin/assets/js/bootstrap.min.js"></script>
-    <script src="/admin/assets/plugins/simplebar/js/simplebar.js"></script>
-    <script src="/admin/assets/js/sidebar-menu.js"></script>
-    <script src="/admin/assets/js/jquery.loading-indicator.js"></script>
-    <script src="/admin/assets/js/app-script.js"></script>
-    <script src="/admin/assets/plugins/Chart.js/Chart.min.js"></script>
-    <script src="/admin/assets/js/index.js"></script>
-    <script src="/admin/assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
+    <script th:src="@{/admin/assets/js/jquery.min.js}"></script>
+    <script th:src="@{/admin/assets/js/popper.min.js}"></script>
+    <script th:src="@{/admin/assets/js/bootstrap.min.js}"></script>
+    <script th:src="@{/admin/assets/plugins/simplebar/js/simplebar.js}"></script>
+    <script th:src="@{/admin/assets/js/sidebar-menu.js}"></script>
+    <script th:src="@{/admin/assets/js/jquery.loading-indicator.js}"></script>
+    <script th:src="@{/admin/assets/js/app-script.js}"></script>
+    <script th:src="@{/admin/assets/plugins/Chart.js/Chart.min.js}"></script>
+    <script th:src="@{/admin/assets/js/index.js}"></script>
+    <script th:src="@{/admin/assets/plugins/summernote/dist/summernote-bs4.min.js}"></script>
 
-    <script src="/admin/assets/js/thoikhoabieu.js"></script>
+    <script th:src="@{/admin/assets/js/thoikhoabieu.js}"></script>
   </body>
   
   </html>

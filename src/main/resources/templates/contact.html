@@ -37,7 +37,7 @@
     <h1>LIÊN HỆ</h1>
 </div>
 
-<div class="contact-layout">
+<div class="contact-layout" style="background-color: white">
     <div class="contact-info">
         <p>Với mục tiêu phát triển mạnh mẽ trong tương lai, Anh Ngữ Topal đã, đang và luôn chào đón những đối tác, học viên muốn làm việc, tìm hiểu về trung tâm. Để kết nối với chúng tôi, xin vui lòng liên hệ:</p>
         <h2>Trung tâm anh ngữ Topal</h2>
@@ -62,19 +62,19 @@
         <form>
             <div class="col">
                 <div class="row">
-                    <input type="text" class="form-control" placeholder="Họ và tên*" name="name">
+                    <input type="text" style="width:100%" class="form-control" placeholder="Họ và tên*" name="name">
                 </div>
                 <br>
                 <div class="row">
-                    <input type="text" class="form-control" placeholder="Email*" name="email">
+                    <input type="text" style="width:100%" class="form-control" placeholder="Email*" name="email">
                 </div>
                 <br>
                 <div class="row">
-                    <input type="text" class="form-control" placeholder="Số điện thoại*" name="phone">
+                    <input type="text" style="width:100%" class="form-control" placeholder="Số điện thoại*" name="phone">
                 </div>
                 <br>
                 <div class="row">
-                    <textarea class="form-control" rows="8" name="mesage" placeholder="Lời nhắn*"></textarea>
+                    <textarea class="form-control"  style="width:100%" rows="8" name="mesage" placeholder="Lời nhắn*"></textarea>
                 </div>
                 <br>
                 <div class="row">
@@ -93,5 +93,37 @@
 
 <footer th:replace="~{home::footer-fragment}">
 </footer>
+<script src="/js/section.js"></script>
+<script src="/js/header.js"></script>
+<script>
+        $("#leftside-navigation .sub-menu > a").click(function(e) {
+            $("#leftside-navigation ul ul").slideUp(), $(this).next().is(":visible") || $(this).next().slideDown(),
+            e.stopPropagation()
+        })
+    </script>
+<script>
+        function unhidden(){
+            const hidde = document.getElementById("menu-sidebar2")
+            const checkHidden = document.getElementById("menu-sidebar-id")
+            if(hidde.style.display == "block"){
+                hidde.style.display = "none"
+                checkHidden.style.left = "30px"
+            }else{
+                hidde.style.display = "block"
+                checkHidden.style.left = "260px"
+            }
+        }
+        function hamDropdown() {
+            document.querySelector(".noidung_dropdown").classList.toggle("hienThi");
+        }
+        window.onclick = function(e) {
+            if (!e.target.matches('.nut_dropdown')) {
+                var noiDungDropdown = document.querySelector(".noidung_dropdown");
+                if (noiDungDropdown.classList.contains('hienThi')) {
+                    noiDungDropdown.classList.remove('hienThi');
+                }
+            }
+        }
+    </script>
 </body>
 </html>

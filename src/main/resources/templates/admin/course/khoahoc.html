@@ -113,7 +113,7 @@
 <!--                          Tạm thời chưa làm-->
 <!--                          <button class="btn btn-danger"><a th:href="@{/admin/course/deleteCourse/{id}(id=${course.id})}">Xóa</a></button>-->
                           <button class="btn btn-success"><a th:href="@{/admin/course/updateCourse/{id}(id=${course.id})}">Sửa</a></button>
-                          <button class="btn btn-info"><a href="/admin/chitietkhoahoc.html">Xem chi tiết</a></button>
+                          <button class="btn btn-info"><a th:href="@{/admin/course/detail/{id}(id=${course.id})}">Xem chi tiết</a></button>
                           <button class="btn btn-light"><a href="">Kích hoạt</a></button>
                         </td>
                      </tr>

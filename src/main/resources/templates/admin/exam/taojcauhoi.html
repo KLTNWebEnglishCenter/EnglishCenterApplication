@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title>Admin</title>
+
+  <link th:href="@{/admin/assets/css/pace.min.css}" rel="stylesheet" />
+  <script th:src="@{/admin/assets/js/pace.min.js}"></script>
+  <link rel="stylesheet" th:href="@{/admin/assets/plugins/summernote/dist/summernote-bs4.css}"/>
+  <link rel="icon" th:href="@{/admin/assets/images/favicon.ico}" type="image/x-icon}">
+  <link th:href="@{/admin/assets/plugins/vectormap/jquery-jvectormap-2.0.2.css}" rel="stylesheet" />
+  <link th:href="@{/admin/assets/plugins/simplebar/css/simplebar.css}" rel="stylesheet" />
+  <link th:href="@{/admin/assets/css/bootstrap.min.css}" rel="stylesheet" />
+  <link th:href="@{/admin/assets/css/animate.css}" rel="stylesheet" type="text/css" />
+  <link th:href="@{/admin/assets/css/icons.css}" rel="stylesheet" type="text/css" />
+  <link th:href="@{/admin/assets/css/sidebar-menu.css}" rel="stylesheet" />
+  <link th:href="@{/admin/assets/css/app-style.css}" rel="stylesheet" />
+
+
+</head>
+
+<body class="bg-theme bg-theme1">
+
+<!-- start loader -->
+<div id="pageloader-overlay" class="visible incoming">
+  <div class="loader-wrapper-outer">
+    <div class="loader-wrapper-inner">
+      <div class="loader"></div>
+    </div>
+  </div>
+</div>
+
+<div id="wrapper">
+  <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
+    <div class="brand-logo">
+      <a th:href="@{/admin/home}">
+        <img src="/admin/assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
+        <h5 class="logo-text">TOPAL</h5>
+      </a>
+    </div>
+    <ul th:replace="~{admin/index::menu-fragment}">
+    </ul>
+  </div>
+  <header class="topbar-nav">
+    <nav class="navbar navbar-expand fixed-top">
+      <ul class="navbar-nav mr-auto align-items-center">
+        <li class="nav-item">
+          <a class="nav-link toggle-menu" href="javascript:void();">
+            <i class="icon-menu menu-icon"></i>
+          </a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav align-items-center right-nav-link">
+        <li class="nav-item">
+          <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" href="#">
+                            <span class="user-profile"><img src="/admin/assets/images/avatar-admin.png"
+                                                            class="img-circle" alt="user avatar"></span>
+          </a>
+          <ul th:replace="~{admin/index::admin-fragment}">
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <div class="clearfix"></div>
+
+  <!-- Body -->
+  <div class="content-wrapper">
+    <div class="container-fluid">
+
+      <div class="row mt-3">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="card-title">Thêm bài kiểm tra mới</div>
+              <hr>
+              <form action="" method="post">
+                <div class="form-group">
+                  <label for="input-4">Người tạo</label>
+                  <input type="text" class="form-control" id="input-4" value="admin" readonly>
+                </div>
+                <div class="form-group">
+                  <label for="input-5">Ngày tạo</label>
+                  <input type="date" class="form-control" id="input-5" name="new-created">
+                </div>
+                <div class="form-group">
+                  <label for="input-3">Câu hỏi</label>
+                  <textarea class="form-control" rows="4" id="input-3"
+                            name="new-content"></textarea>
+                </div>
+
+                <ul class="addAnswerClass" id="addNewAnswer">
+                  <div class="form-group">
+                    <label for="input-2">Đáp án đúng</label>
+                    <textarea class="form-control" id="input-2"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="input-6">Đáp án sai</label>
+                    <textarea class="form-control" id="input-6"></textarea>
+                  </div>
+
+                </ul>
+                <div class="form-group">
+                  <button type="button" id="addAnswerBtn" class="btn btn-info"
+                          onclick="addAnswer()"><i class="fa fa-plus"></i>Thêm đáp án
+                    sai</button>
+                </div>
+                <div class="form-footer">
+                  <button class="btn btn-danger"><i class="fa fa-times"></i><a
+                          href="">Hủy</a></button>
+                  <button type="submit" class="btn btn-success"><i
+                          class="fa fa-check-square-o"></i> Thêm</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="overlay toggle-menu"></div>
+    </div>
+  </div>
+  <script>
+            var date = new Date();
+
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+
+            if (month < 10) month = "0" + month;
+            if (day < 10) day = "0" + day;
+
+            var today = year + "-" + month + "-" + day;
+
+
+            document.getElementById('input-5').value = today;
+        </script>
+
+  <!-- Body -->
+
+  <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
+  <!-- <div class="right-sidebar">
+<div class="switcher-icon">
+  <i class="zmdi zmdi-settings zmdi-hc-spin"></i>
+</div>
+<div class="right-sidebar-content">
+  <p class="mb-0">Màu nền admin</p>
+  <hr>
+  <ul class="switcher">
+    <li id="theme1"></li>
+    <li id="theme2"></li>
+    <li id="theme3"></li>
+    <li id="theme4"></li>
+    <li id="theme5"></li>
+    <li id="theme6"></li>
+  </ul>
+  <p class="mb-0">Màu nền gradient</p>
+  <hr>
+  <ul class="switcher">
+    <li id="theme7"></li>
+    <li id="theme8"></li>
+    <li id="theme9"></li>
+    <li id="theme10"></li>
+    <li id="theme11"></li>
+    <li id="theme12"></li>
+    <li id="theme13"></li>
+    <li id="theme14"></li>
+    <li id="theme15"></li>
+  </ul>
+</div>
+</div> -->
+</div>
+
+<script src="/admin/assets/js/jquery.min.js"></script>
+<script src="/admin/assets/js/popper.min.js"></script>
+<script src="/admin/assets/js/bootstrap.min.js"></script>
+<script src="/admin/assets/plugins/simplebar/js/simplebar.js"></script>
+<script src="/admin/assets/js/sidebar-menu.js"></script>
+<script src="/admin/assets/js/jquery.loading-indicator.js"></script>
+<script src="/admin/assets/js/app-script.js"></script>
+<script src="/admin/assets/plugins/Chart.js/Chart.min.js"></script>
+<script src="/admin/assets/js/index.js"></script>
+<script src="/admin/assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
+
+<script th:inline="javascript">
+        const addNewAnswer = document.getElementById('addNewAnswer')
+        const addAnswerBtn = document.getElementById('addAnswerBtn')
+
+        var i = 0
+        function addAnswer() {
+            i++
+            addNewAnswer.innerHTML += `<li id="${i}"><div class="form-group">
+                                        <label for="input-2">Đáp án sai</label>
+                                        <textarea class="form-control" id="input-2"></textarea>
+                                            <button type="button" class="btn btn-danger" onclick="removeAnswer(${i})"><i class="fa fa-minus"></i>Loại bỏ đáp án
+                                            này</button>
+                                    </div></li>`
+            if (i == 2) {
+                addAnswerBtn.style.display = 'none'
+            }
+        }
+
+        function removeAnswer(id) {
+            i--
+            var child = document.getElementById(id)
+            addNewAnswer.removeChild(child)
+            if (i < 2) {
+                addAnswerBtn.style.display = 'block'
+            }
+        }
+    </script>
+</body>
+
+</html>
