@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" th:href="@{/admin/assets/images/favicon.ico}" type="image/x-icon}">
+    <!-- Web page CSS -->
+    <link rel="stylesheet" th:href="@{/css/page.css}" />
+    <link rel="stylesheet" th:href="@{/css/header.css}"/>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/course-list.css}">
+    <link rel="stylesheet" th:href="@{/css/section.css}"/>
+    <link rel="stylesheet" th:href="@{/css/footer.css}"/>
+    <link rel="stylesheet" th:href="@{/css/tooltip.css}"/>
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}"/>
+
+    <link rel="stylesheet" th:href="@{/css/section.css}" />
+
+    <link rel="stylesheet" th:href="@{/css/exam.css}">
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+          integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"> -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="/js/backtotop.js"></script>
+
+    <title th:replace = "~{home :: title}">Title</title>
+
+    <style>
+        .exam-gird {
+            width: 100%;
+            display: grid;
+            grid-template-columns: auto auto auto;
+            gap: 50px;
+
+            padding-inline: 10%;
+        }
+
+        .exam-grid-item {
+            width: 100%;
+            min-height: 100px;
+            background-color: rgb(128, 198, 198);
+            border-radius: 100px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .exam-grid-item:hover {
+            cursor: pointer;
+            box-shadow: 5px 5px 5px 5px rgba(12, 10, 10, 0.396);
+            transition: 0s;
+        }
+
+        .exam-item-number {
+            border-radius: 100px;
+            border: 1px solid red;
+            background-color: rgb(239, 158, 158);
+
+            width: 30%;
+            padding: 10%;
+
+            align-items: center;
+            text-align: center;
+
+            font-size: 24px;
+
+            margin-right: 5px;
+        }
+        .exam-item-id {
+            color: black;
+            font-size: 18px;
+
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+<header th:replace="~{home::header-fragment}">
+</header>
+<nav th:replace="~{home::nav-fragment}">
+</nav>
+
+<a href="#" class="cd-top">Back To Top</a>
+
+<div class="comtainer-exam">
+    <div class="exam-header">
+        <h3 class="exam-header-title" style="color: rgb(34, 193, 193);">
+            Bài thi thử TOEIC
+        </h3>
+        <h4 class="exam-header-title">
+            DANH SÁCH CÁC ĐỀ THI
+        </h4>
+    </div>
+    <div class="exam-body" style="background-color: rgb(226, 250, 250);">
+        <div class="exam-gird">
+            <th:block th:each="exam,iter : ${exams}">
+                <div class="exam-grid-item" th:onclick="'window.location.href = \'' + @{/user/exam/{id}(id=${exam.id})} + '\''">
+                    <div class="exam-item-number">
+                        <span th:text="${iter.index}+1"></span>
+                    </div>
+                    <div class="exam-item-id">
+                        <span>Đề thi thử Toeic: Mã đề : </span><span th:text="${exam.id}"></span>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+    </div>
+</div>
+
+
+
+<aside th:replace="~{home::aside-fragment}">
+
+</aside>
+
+<footer th:replace="~{home::footer-fragment}">
+</footer>
+
+<script src="/js/section.js"></script>
+<script src="/js/header.js"></script>
+
+<script>
+        const inputToggle = document.querySelector('#checkbox')
+        const navMenu = document.getElementById("menu")
+        inputToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark')
+        })
+        function myFunction(x) {
+            x.classList.toggle("change");
+            navMenu.classList.toggle("active");
+        }
+        const navLink = document.querySelectorAll("#nav-link");
+        const menuclick = document.getElementById('menuclick')
+        navLink.forEach((n) => n.addEventListener("click", closeMenu));
+        function closeMenu() {
+            menuclick.classList.remove("change")
+            navMenu.classList.remove("active");
+        }
+    </script>
+<script src="/js/section.js"></script>
+<script src="/js/header.js"></script>
+<script>
+        $("#leftside-navigation .sub-menu > a").click(function (e) {
+            $("#leftside-navigation ul ul").slideUp(), $(this).next().is(":visible") || $(this).next().slideDown(),
+                e.stopPropagation()
+        })
+    </script>
+<script>
+        function unhidden() {
+            const hidde = document.getElementById("menu-sidebar2")
+            const checkHidden = document.getElementById("menu-sidebar-id")
+            if (hidde.style.display == "block") {
+                hidde.style.display = "none"
+                checkHidden.style.left = "30px"
+            } else {
+                hidde.style.display = "block"
+                checkHidden.style.left = "260px"
+            }
+        }
+        function hamDropdown() {
+            document.querySelector(".noidung_dropdown").classList.toggle("hienThi");
+        }
+        window.onclick = function (e) {
+            if (!e.target.matches('.nut_dropdown')) {
+                var noiDungDropdown = document.querySelector(".noidung_dropdown");
+                if (noiDungDropdown.classList.contains('hienThi')) {
+                    noiDungDropdown.classList.remove('hienThi');
+                }
+            }
+        }
+    </script>
+
+
+</body>
+
+</html>

@@ -9,15 +9,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import web.english.application.dao.NotificationDAO;
 import web.english.application.dao.TeacherDAO;
 import web.english.application.dao.UserDAO;
-import web.english.application.entity.Classroom;
+import web.english.application.entity.schedule.Classroom;
 import web.english.application.entity.Notification;
-import web.english.application.entity.user.Student;
-import web.english.application.entity.user.Teacher;
 import web.english.application.entity.user.Users;
 import web.english.application.utils.JwtHelper;
-import web.english.application.utils.Utils;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 

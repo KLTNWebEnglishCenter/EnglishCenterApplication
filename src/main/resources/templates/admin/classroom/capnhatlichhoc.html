@@ -20,6 +20,12 @@
     <link th:href="@{/admin/assets/css/sidebar-menu.css}" rel="stylesheet" />
     <link th:href="@{/admin/assets/css/app-style.css}" rel="stylesheet" />
 
+    <style>
+        .room-schedule {
+            display: grid;
+            grid-template-columns: auto auto auto auto auto;
+        }
+    </style>
 
 </head>
 
@@ -77,55 +83,47 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <div class="card-title">Thông tin chi tiết lớp học</div>
+                            <div class="card-title">Cập nhật lịch học</div>
                             <hr>
-
-                            <div class="form-group">
-                                <label for="input-6">Khóa học</label>
-                                <input type="text" th:value="${classroom.course.name}" class="form-control" id="input-6" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="input-1">Tên lớp học</label>
-                                <input type="text" th:value="${classroom.classname}" class="form-control" id="input-1" name="user-name" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="input-2">Số lượng học viên tối đa</label>
-                                <input type="number" th:value="${classroom.maxMember}" class="form-control" id="input-2" name="user-email" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="the-date1">Ngày bắt đầu</label>
-                                <input type="date" th:value="${classroom.startDate}" class="form-control" id="the-date1" name="user-created" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="the-date2">Ngày kết thúc</label>
-                                <input type="date" th:value="${classroom.endDate}" class="form-control" id="the-date2" name="user-created" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="the-date3">Ngày tạo</label>
-                                <input type="date" th:value="${classroom.createDate}" class="form-control" id="the-date3" name="user-created" readonly>
-                            </div>
-                            <div class="form-group" th:if="${classroom.modifiedDate}">
-                                <label for="the-date4">Ngày thay đổi</label>
-                                <input type="date" th:value="${classroom.modifiedDate}" class="form-control" id="the-date4" name="user-created" readonly>
-                            </div>
-                            <div class="form-group" th:unless="${classroom.modifiedDate}">
-                                <label for="the-date5">Ngày thay đổi</label>
-                                <input type="text" th:value="${classroom.modifiedDate}" class="form-control" id="the-date5" name="user-name" readonly value="Chưa thay đổi">
-                            </div>
-                            <div class="form-group">
-                                <label for="input-3">Giảng viên phụ trách</label>
-                                <input type="text" th:value="${classroom.teacher.fullName}" class="form-control" id="input-3" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="input-7">Trạng thái</label>
-                                <input type="text" th:value="${classroom.status}" class="form-control" id="input-7" readonly>
-                            </div>
-                            <div class="form-group">
-                                <button type="button" class="btn btn-light px-5"><i class="icon-arrow-left"></i><a th:href="@{/admin/classrooms}">Quay về</a></button>
-                                <button type="button" class="btn btn-light px-5"><i class="icon-info"></i><a th:href="@{/admin/classroom/students/{id}(id=${classroom.id})}">Xem danh sách học viên của lớp</a></button>
-                                <button type="button" class="btn btn-light px-5"><i class="icon-calendar"></i><a th:href="@{/admin/classroom/schedule/{id}(id=${classroom.id})}">Xem lịch học</a></button>
-                                <button type="button" class="btn btn-light px-5"><i class="icon-arrow-right"></i><a href="">Xem thông báo</a></button>
-                            </div>
+                            <form th:action="@{/admin/classroom/schedule/update}" method="post" enctype="application/json;charset=UTF-8">
+                                <input type="hidden" th:value="${classroom.id}" class="form-control" th:name="classroomId">
+                                <div class="form-group">
+                                    <label for="input-1">Tên lớp học</label>
+                                    <input type="text" th:value="${classroom.classname}" class="form-control" id="input-1" readonly >
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-0">Hình thức học</label>
+                                    <div>
+                                        <select id="input-0" class="form-control valid" th:name="type" required aria-invalid="false" th:onchange="roomChange();">
+                                            <option value="off"> Trực tiếp </option>
+                                            <option value="on"> Trực tuyến </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="room-off">
+                                    <label for="input-2">Phòng học offline</label>
+                                    <input type="text" th:name="location" class="form-control" id="input-2">
+                                </div>
+                                <div class="form-group" id="room-on">
+                                    <label for="input-3">Phòng học online</label>
+                                    <input type="text" th:name="meetingInfo" class="form-control" id="input-3">
+                                </div>
+                                <h3>Chọn thời khóa biểu</h3>
+                                <div class="room-schedule">
+                                    <th:block th:each="sche : ${schedules}">
+                                        <div class="form-group form-check">
+                                            <input class="form-check-input" type="checkbox" name="scheduleList"
+                                                   th:id="${sche.id}"
+                                                   th:value="${sche.id}">
+                                            <label class="form-check-label" th:text="${sche.dayOfWeek}+' '+${sche.lesson}" th:for="${sche.id}"></label>
+                                        </div>
+                                    </th:block>
+                                </div>
+                                <div class="form-group">
+                                    <a class="btn btn-danger px-5" th:href="@{/admin/classroom/info/{id}(id=${classroom.id})}"><i class="icon-lock"></i>Hủy</a>
+                                    <button type="submit" class="btn btn-light px-5"><i class="icon-lock"></i>Lưu</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -133,7 +131,23 @@
             <div class="overlay toggle-menu"></div>
         </div>
     </div>
+    <script>
+		var date = new Date();
 
+		var day = date.getDate();
+		var month = date.getMonth() + 1;
+		var year = date.getFullYear();
+
+		if (month < 10) month = "0" + month;
+		if (day < 10) day = "0" + day;
+
+		var today = year + "-" + month + "-" + day;
+
+
+		document.getElementById('the-date1').value = today;
+        document.getElementById('the-date2').value = today;
+        document.getElementById('the-date3').value = today;
+    </script>
     <!-- Body -->
 
     <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
@@ -179,6 +193,28 @@
 <script src="/admin/assets/plugins/Chart.js/Chart.min.js"></script>
 <script src="/admin/assets/js/index.js"></script>
 <script src="/admin/assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
+<script>
+     const type = document.getElementById("input-0")
+     document.getElementById("room-on").style.display = 'none'
+     document.getElementById("input-2").required = true
+     function roomChange(){
+         var value = type.options[type.selectedIndex].value;
+         if(value == "off"){
+            document.getElementById("room-off").style.display = 'block'
+            document.getElementById("room-on").style.display = 'none'
+
+            document.getElementById("input-3").required = false
+            document.getElementById("input-2").required = true
+         }
+         if(value == "on"){
+            document.getElementById("room-off").style.display = 'none'
+            document.getElementById("room-on").style.display = 'block'
+
+            document.getElementById("input-3").required = true
+            document.getElementById("input-2").required = false
+         }
+    }
+</script>
 </body>
 
 </html>

@@ -9,7 +9,10 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import web.english.application.entity.ScheduleInfoHolder;
+import web.english.application.entity.schedule.ClassroomSchedule;
+import web.english.application.entity.schedule.Schedule;
 
+import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -68,5 +71,23 @@ public class ScheduleDAO {
                 });
         List<ScheduleInfoHolder> scheduleInfoHolders=responseEntity.getBody();
         return  scheduleInfoHolders;
+    }
+
+    public ClassroomSchedule save(ClassroomSchedule classroomSchedule){
+        ClassroomSchedule schedule = restTemplate.postForObject("http://localhost:8000/classroom/schedule/save",classroomSchedule,ClassroomSchedule.class);
+        return schedule;
+    }
+
+    public List<Schedule> getAll(){
+        ResponseEntity<List<Schedule>> responseEntity =
+                restTemplate.exchange("http://localhost:8000/schedules", HttpMethod.GET, null, new ParameterizedTypeReference<List<Schedule>>() {
+                });
+        List<Schedule> schedules = responseEntity.getBody();
+        return schedules;
+    }
+
+    public Schedule getSchedule(int id){
+        Schedule schedule = restTemplate.getForObject("http://localhost:8000/schedule/"+id,Schedule.class);
+        return schedule;
     }
 }

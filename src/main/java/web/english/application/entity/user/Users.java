@@ -23,6 +23,7 @@ public class Users implements Serializable {
     private String email;
     private String phoneNumber;
     private boolean enable;
+    private String role;
 
     /**
      *
@@ -52,6 +53,18 @@ public class Users implements Serializable {
 
     public Users(String username) {
         this.username = username;
+    }
+
+    public Users(int id, String username, String password, String fullName, LocalDate dob, String gender, String email, String phoneNumber, boolean enable) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.fullName = fullName;
+        this.dob = dob;
+        this.gender = gender;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.enable = enable;
     }
 
     @Override

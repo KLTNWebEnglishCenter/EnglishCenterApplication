@@ -1,7 +1,7 @@
 package web.english.application.entity.user;
 
 import lombok.*;
-import web.english.application.entity.Classroom;
+import web.english.application.entity.schedule.Classroom;
 import web.english.application.entity.course.UsersCourseRequest;
 
 import java.io.Serializable;

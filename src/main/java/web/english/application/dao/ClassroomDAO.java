@@ -7,14 +7,12 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
-import web.english.application.entity.Classroom;
-import web.english.application.entity.course.Course;
+import web.english.application.entity.schedule.Classroom;
+import web.english.application.entity.ScheduleInfoHolder;
 import web.english.application.entity.user.Student;
-import web.english.application.entity.user.Teacher;
-import web.english.application.utils.UsersType;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -126,5 +124,22 @@ public class ClassroomDAO {
                 });
         List<Student> students = responseEntity.getBody();
         return students;
+    }
+
+    public List<ScheduleInfoHolder> getClassroomSchedule(LocalDate selectedDate,int classroomId){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        map.add("selectedDate", selectedDate.toString());
+        map.add("classroomId", String.valueOf(classroomId));
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+
+        ResponseEntity<List<ScheduleInfoHolder>> responseEntity=restTemplate.exchange("http://localhost:8000/classroom/schedule/day",
+                HttpMethod.POST, request, new ParameterizedTypeReference<List<ScheduleInfoHolder>>() {
+                });
+        List<ScheduleInfoHolder> scheduleInfoHolders=responseEntity.getBody();
+        return  scheduleInfoHolders;
     }
 }

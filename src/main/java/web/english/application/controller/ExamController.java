@@ -114,6 +114,7 @@ public class ExamController {
         String[] _n;
         List<String> strings = new ArrayList<>();
         for (String param : _params) {
+            log.info(param);
             _n = param.split("=");
             strings.add(_n[0]);
             strings.add(_n[1]);
@@ -146,7 +147,7 @@ public class ExamController {
         Exam exam = new Exam(name,description,"Ready",new Teacher());
 
         Exam temp =  examDAO.save(id,exam);
-
+        log.info(temp.toString());
         integers.forEach(integer -> {
             if(integer != 0){
                 examDAO.addQuestionToExam(temp.getId(),integer);
@@ -166,7 +167,7 @@ public class ExamController {
 
     @PostMapping("/exam/question/add")
     public String saveQuestion(@ModelAttribute Question question) throws IOException {
-        question.setAnswerA(question.getCorrectAnswer());
+        log.info(question.toString());
         questionsChoose.add(question);
         return "redirect:/admin/exam/add";
     }

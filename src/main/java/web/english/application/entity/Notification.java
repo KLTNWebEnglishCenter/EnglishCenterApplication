@@ -1,15 +1,12 @@
 package web.english.application.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import web.english.application.entity.schedule.Classroom;
 import web.english.application.entity.user.Teacher;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter

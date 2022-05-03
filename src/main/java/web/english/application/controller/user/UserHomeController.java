@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 @Controller
@@ -177,4 +179,99 @@ public class UserHomeController {
         return "redirect:/home";
     }
 
+    @GetMapping("/user/exam")
+    public String getExamPage(HttpServletRequest httpServletRequest,Model model){
+        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
+        String token=jwtHelper.createToken(jwt);
+
+        if(jwt == ""){
+            return "redirect:/login";
+        }
+        Users user = userDAO.getUserFromToken(token);
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
+
+        List<Exam> exams = examDAO.getAll();
+
+        model.addAttribute("exams",exams);
+
+        return "student/studentExam";
+    }
+
+    @GetMapping("/user/exam/{id}")
+    public String getExam(HttpServletRequest httpServletRequest, Model model, @PathVariable int id){
+        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
+        String token=jwtHelper.createToken(jwt);
+
+        if(jwt == ""){
+            return "redirect:/login";
+        }
+        Users user = userDAO.getUserFromToken(token);
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
+
+        Exam exam = examDAO.getExamById(id);
+
+        model.addAttribute("exam",exam);
+
+        List<Question> questions = examDAO.getListQuestionByExam(exam.getId());
+
+        model.addAttribute("questions",questions);
+
+        return "student/studentExamQuetion";
+    }
+
+    @PostMapping("/user/exam/result")
+    public String markTheExam(HttpServletRequest req, Model model) throws IOException {
+        List<String> theUserChoose = new ArrayList<>();
+
+        Enumeration<String> parameterNames = req.getParameterNames();
+
+        String[] examId = req.getParameterValues("examId");
+        int eId = Integer.parseInt(examId[0]);
+
+        while (parameterNames.hasMoreElements()) {
+
+            String paramName = parameterNames.nextElement();
+            String[] paramValues = req.getParameterValues(paramName);
+            for (int i = 0; i < paramValues.length; i++) {
+                String paramValue = paramValues[i];
+                if (!paramName.equals("examId")){
+                    theUserChoose.add(paramValue);
+                }
+            }
+        }
+
+        Exam exam = examDAO.getExamById(eId);
+        List<Question> questions = examDAO.getListQuestionByExam(eId);
+
+        List<String> theResult = new ArrayList<>();
+        questions.forEach(question -> {
+            theResult.add(question.getCorrectAnswer());
+        });
+
+        int point = utils.checkPoint(theUserChoose,theResult);
+
+        String jwt=jwtHelper.getJwtFromCookie(req);
+        String token=jwtHelper.createToken(jwt);
+
+        if(jwt == ""){
+            return "redirect:/login";
+        }
+        Users user = userDAO.getUserFromToken(token);
+        if(user == null){
+            return "redirect:/login";
+        }
+
+        model.addAttribute("users",user);
+        model.addAttribute("msg",point+"");
+        model.addAttribute("exam",exam);
+        model.addAttribute("questions",questions);
+
+        return "student/studentExamResult";
+    }
 }

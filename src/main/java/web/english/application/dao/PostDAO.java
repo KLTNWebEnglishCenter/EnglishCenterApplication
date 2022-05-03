@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import web.english.application.entity.Classroom;
 import web.english.application.entity.Post;
-import web.english.application.entity.user.Student;
 
 import java.util.List;
 
