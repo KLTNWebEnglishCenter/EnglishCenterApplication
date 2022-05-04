@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import web.english.application.dao.ScheduleDAO;
 import web.english.application.dao.StudentDAO;
 import web.english.application.dao.UserDAO;
-import web.english.application.entity.Classroom;
 import web.english.application.entity.Notification;
 import web.english.application.entity.ScheduleInfoHolder;
+import web.english.application.entity.schedule.Classroom;
 import web.english.application.entity.user.Users;
 import web.english.application.utils.JwtHelper;
 

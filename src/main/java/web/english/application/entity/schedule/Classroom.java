@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
+import web.english.application.entity.Notification;
 import web.english.application.entity.course.Course;
 import web.english.application.entity.user.Student;
 import web.english.application.entity.user.Teacher;
