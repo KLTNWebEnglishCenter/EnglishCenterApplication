@@ -124,7 +124,7 @@
                     <td th:text="${teacher.phoneNumber}"></td>
 <!--                    <td th:text="${teacher.gender}"></td>-->
 <!--                    <td th:text="${teacher.certificate}"></td>-->
-                    <td th:text="${teacher.enable} ? 'ACTIVE' : 'RETIRED'"></td>
+                    <td th:text="${teacher.enable} ? 'Kích hoạt' : 'Vô hiệu'"></td>
                     <td>
                       <!--                          <button class="btn btn-danger"><a href="@{/admin/deleteteacher/{id}(id=${teacher.id})}">Xóa</a></button>-->
                       <button class="btn btn-info"><a th:href="@{/admin/teacherinfo/{id}(id=${teacher.id})}">Chi tiết</a></button>

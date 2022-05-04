@@ -127,7 +127,7 @@
                     <td th:text="${employee.email}"></td>
                     <td th:text="${employee.phoneNumber}"></td>
                     <td th:text="${employee.gender}"></td>
-                    <td th:text="${employee.enable} ? 'ACTIVE' : 'RETIRED'"></td>
+                    <td th:text="${employee.enable} ? 'Kích hoạt' : 'Vô hiệu'"></td>
                     <td>
                       <!--                           <button class="btn btn-danger"><a href="#">Xóa</a></button>-->
                       <button class="btn btn-info"><a th:href="@{/admin/employeeinfo/{id}(id=${employee.id})}">Chi tiết</a></button>

@@ -37,7 +37,7 @@ public class Classroom implements Serializable {
 
     private Teacher teacher;
     private Course course;
-
+    private List<Notification> notifications;
     private List<Student> students;
 
     public Classroom(LocalDate startDate, LocalDate endDate, String status, String classname, int maxMember, LocalDate createDate, LocalDate modifiedDate) {

@@ -69,4 +69,6 @@ public class ScheduleDAO {
         List<ScheduleInfoHolder> scheduleInfoHolders=responseEntity.getBody();
         return  scheduleInfoHolders;
     }
+
+
 }
