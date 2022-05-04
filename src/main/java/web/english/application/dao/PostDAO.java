@@ -52,6 +52,15 @@ public class PostDAO {
         return posts;
     }
 
+    public List<Post> getAllPostWithStatusHasAccept(){
+        ResponseEntity<List<Post>> responseEntity =
+                restTemplate.exchange("http://localhost:8000/post/status/has/accept",
+                        HttpMethod.GET, null, new ParameterizedTypeReference<List<Post>>() {
+                        });
+        List<Post> posts = responseEntity.getBody();
+        return posts;
+    }
+
     public List<Post> getMyPost(int myId){
         ResponseEntity<List<Post>> responseEntity =
                 restTemplate.exchange("http://localhost:8000/post/my/"+myId,

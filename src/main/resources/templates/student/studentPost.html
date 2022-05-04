@@ -17,7 +17,9 @@
     <link rel="stylesheet" th:href="@{/css/tooltip.css}"/>
     <link rel="stylesheet" th:href="@{/css/sidebar.css}"/>
 
-    <link rel="stylesheet" th:href="@{/css/section.css}" />
+    <link rel="stylesheet" th:href="@{/css/about.css}">
+    <link rel="stylesheet" th:href="@{/css/tailieu.css}">
+    <link rel="stylesheet" TH:href="@{/css/student-post.css}">
 
     <link rel="stylesheet" th:href="@{/css/exam.css}">
 
@@ -33,6 +35,7 @@
     <script src="/js/backtotop.js"></script>
 
     <title th:replace = "~{home :: title}">Title</title>
+
 </head>
 
 <body>
@@ -43,41 +46,16 @@
 
 <a href="#" class="cd-top">Back To Top</a>
 
-<div class="comtainer-exam">
-    <div class="exam-header">
-        <h3 class="exam-header-title">
-            Bài kiểm tra thử
-        </h3>
-        <h4 class="exam-header-title">
-            Mã đề: <span th:text="${exam.id}"></span>
-        </h4>
-        <h4 class="exam-header-title">
-            <span>Tổng điểm :</span><span th:text="${point}"></span><span>/</span><span th:text="${sl}"></span>
-        </h4>
-        <h4 class="exam-header-title">
-            Đáp án
-        </h4>
-    </div>
-    <div class="exam-body">
-        <div class="exam-item" th:each="question,iter : ${questions}">
-            <h1 class="exam-question-index">Câu <span th:text="${iter.index}+1"></span>:</h1>
-            <div class="exam-question-body">
-                <p class="exam-question-content" th:text="${question.content}">
-
-                </p>
-                <div class="exam-question-answer" style="color:red">
-                    <div th:if="${question.correctAnswer == 'A'}"><span th:text="${question.correctAnswer}"></span>.<span th:text="${question.answerA}"></span></div>
-                    <div th:if="${question.correctAnswer == 'B'}"><span th:text="${question.correctAnswer}"></span>.<span th:text="${question.answerB}"></span></div>
-                    <div th:if="${question.correctAnswer == 'C'}"><span th:text="${question.correctAnswer}"></span>.<span th:text="${question.answerC}"></span></div>
-                    <div th:if="${question.correctAnswer == 'D'}"><span th:text="${question.correctAnswer}"></span>.<span th:text="${question.answerB}"></span></div>
-                </div>
-            </div>
-        </div>
-        <div class="exam-submit">
-            <input class="exam-btn" type="button" value="Trở về" th:onclick="'window.location.href = \'' + @{/user/exam} + '\''">
-        </div>
+<div class="document-container">
+    <h1 th:unless="${posts}">Tạm thời chưa có bài đăng nào</h1>
+    <div class="document-item" th:each="post : ${posts}">
+        <img src="/img/new_img.jpg" alt="">
+        <h1 th:text="${post.title}"></h1>
+        <span th:text="${post.createDate}"></span>
+        <p th:text="${post.content}"></p>
     </div>
 </div>
+
 
 
 <aside th:replace="~{home::aside-fragment}">
@@ -140,6 +118,7 @@
             }
         }
     </script>
+
 
 </body>
 

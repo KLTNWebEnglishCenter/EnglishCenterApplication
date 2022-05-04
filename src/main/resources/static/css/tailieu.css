@@ -4,10 +4,10 @@
 }
 
 .document-container {
-    margin-inline: 350px;
+    margin-inline: 200px;
     display: grid;
-    grid-template-columns: auto auto;
-
+    grid-template-columns: auto auto auto;
+    gap: 10px;
     padding-top: 30px;
 }
 

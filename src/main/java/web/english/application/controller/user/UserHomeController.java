@@ -4,19 +4,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import web.english.application.dao.CourseDAO;
 import web.english.application.dao.ExamDAO;
+import web.english.application.dao.PostDAO;
 import web.english.application.dao.UserDAO;
+import web.english.application.entity.Post;
 import web.english.application.entity.course.Course;
 import web.english.application.entity.exam.Exam;
 import web.english.application.entity.exam.Question;
 import web.english.application.entity.user.Users;
 import web.english.application.utils.JwtHelper;
+import web.english.application.utils.StatusHelper;
 import web.english.application.utils.Utils;
 
 import javax.servlet.http.Cookie;
@@ -40,6 +40,9 @@ public class UserHomeController {
 
     @Autowired
     private ExamDAO examDAO;
+
+    @Autowired
+    private PostDAO postDAO;
 
     private JwtHelper jwtHelper=new JwtHelper();
 
@@ -268,10 +271,81 @@ public class UserHomeController {
         }
 
         model.addAttribute("users",user);
-        model.addAttribute("msg",point+"");
+        model.addAttribute("point",point);
+        model.addAttribute("sl",theResult.size());
         model.addAttribute("exam",exam);
         model.addAttribute("questions",questions);
 
         return "student/studentExamResult";
+    }
+
+    @GetMapping("/posts")
+    public String getPostPage(HttpServletRequest httpServletRequest,Model model){
+        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
+        String token=jwtHelper.createToken(jwt);
+
+        if(jwt == ""){
+            return "redirect:/login";
+        }
+        Users user = userDAO.getUserFromToken(token);
+        if(user == null){
+            return "redirect:/login";
+        }
+
+        model.addAttribute("users",user);
+
+        List<Post> posts = postDAO.getAllPostWithStatusHasAccept();
+        model.addAttribute("posts",posts);
+
+        return "student/studentPost";
+    }
+
+    @GetMapping("/myPost")
+    public String getMyPostPage(HttpServletRequest httpServletRequest,Model model){
+        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
+        String token=jwtHelper.createToken(jwt);
+
+        if(jwt == ""){
+            return "redirect:/login";
+        }
+        Users user = userDAO.getUserFromToken(token);
+        if(user == null){
+            return "redirect:/login";
+        }
+
+        model.addAttribute("users",user);
+
+        List<Post> posts = postDAO.getMyPost(user.getId());
+        model.addAttribute("posts",posts);
+
+        return "student/myStudentPost";
+    }
+
+    @GetMapping("/newPost")
+    public String getSavePostPage(HttpServletRequest httpServletRequest,Model model){
+        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
+        String token=jwtHelper.createToken(jwt);
+
+        if(jwt == ""){
+            return "redirect:/login";
+        }
+        Users user = userDAO.getUserFromToken(token);
+        if(user == null){
+            return "redirect:/login";
+        }
+
+        Post post = new Post();
+        model.addAttribute("users",user);
+        model.addAttribute("post",post);
+        return "student/addnewpost";
+    }
+
+    @PostMapping("/new/post/save")
+    public String savePostPage(@ModelAttribute Post post, @RequestParam("username") String username){
+        Users users = new Users(username);
+        post.setUsers(users);
+        post.setStatus(StatusHelper.STATUS_NO_ACCEPT);
+        postDAO.savePost(post);
+        return "redirect:/myPost";
     }
 }

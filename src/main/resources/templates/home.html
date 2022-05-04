@@ -178,7 +178,7 @@
             Được thành lập từ năm 2022, Topal đã trở thành nơi trao gửi niềm tin học tiếng Anh cho hàng ngàn học viên chuyên sâu trong 3 mảng đào tạo: Luyện thi TOEIC, tiếng Anh giao tiếp và luyện thi Đại học môn Anh, cho học viên trên khắp cả nước thông qua các lớp học offline, online và sách.
         </p>
 
-        <button onclick="toHeader()">XEM CHI TIẾT</button>
+        <button th:onclick="'window.location.href = \'' + @{/about} + '\''">XEM CHI TIẾT</button>
     </div>
     <div class="introduce-video">
         <img src="/img/Trung-tam-tieng-anh-binh-duong.jpg" alt="trung tam anh ngu">
@@ -240,7 +240,7 @@
                         <span>26 buổi</span>
                     </div>
                 </div>
-                <a href="#">XEM CHI TIẾT</a>
+                <a>XEM CHI TIẾT</a>
             </div>
         </div>
     </div>
@@ -263,102 +263,16 @@
                 <a th:href="@{/schedule}"><i class="fa fa-dashboard"></i><span>Xem lịch học</span></a>
             </li>
             <li class="sub-menu">
-                <a href="javascript:void(0);"><i class="fa fa-cogs"></i><span>UI Elements</span><i class="arrow fa fa-angle-right pull-right"></i></a>
+                <a href="javascript:void(0);"><i class="fa fa-cogs"></i><span>Quản lý bài đăng</span><i class="arrow fa fa-angle-right pull-right"></i></a>
                 <ul>
-                    <li><a href="ui-alerts-notifications.html">Alerts &amp; Notifications</a>
+                    <li>
+                        <a th:href="@{/posts}"><i class="fa fa-dashboard"></i><span>Xem bài đăng</span></a>
                     </li>
-                    <li><a href="ui-panels.html">Panels</a>
+                    <li>
+                        <a th:href="@{/myPost}"><i class="fa fa-dashboard"></i><span>Bài đăng của tôi</span></a>
                     </li>
-                    <li><a href="ui-buttons.html">Buttons</a>
-                    </li>
-                    <li><a href="ui-slider-progress.html">Sliders &amp; Progress</a>
-                    </li>
-                    <li><a href="ui-modals-popups.html">Modals &amp; Popups</a>
-                    </li>
-                    <li><a href="ui-icons.html">Icons</a>
-                    </li>
-                    <li><a href="ui-grid.html">Grid</a>
-                    </li>
-                    <li><a href="ui-tabs-accordions.html">Tabs &amp; Accordions</a>
-                    </li>
-                    <li><a href="ui-nestable-list.html">Nestable Lists</a>
-                    </li>
-                </ul>
-            </li>
-            <li class="sub-menu">
-                <a href="javascript:void(0);"><i class="fa fa-table"></i><span>Tables</span><i class="arrow fa fa-angle-right pull-right"></i></a>
-                <ul>
-                    <li><a href="tables-basic.html">Basic Tables</a>
-                    </li>
-
-                    <li><a href="tables-data.html">Data Tables</a>
-                    </li>
-                </ul>
-            </li>
-            <li class="sub-menu">
-                <a href="javascript:void(0);"><i class="fa fa fa-tasks"></i><span>Forms</span><i class="arrow fa fa-angle-right pull-right"></i></a>
-                <ul>
-                    <li><a href="forms-components.html">Components</a>
-                    </li>
-                    <li><a href="forms-validation.html">Validation</a>
-                    </li>
-                    <li><a href="forms-mask.html">Mask</a>
-                    </li>
-                    <li><a href="forms-wizard.html">Wizard</a>
-                    </li>
-                    <li><a href="forms-multiple-file.html">Multiple File Upload</a>
-                    </li>
-                    <li><a href="forms-wysiwyg.html">WYSIWYG Editor</a>
-                    </li>
-                </ul>
-            </li>
-            <li class="sub-menu">
-                <a href="javascript:void(0);"><i class="fa fa-envelope"></i><span>Mail</span><i class="arrow fa fa-angle-right pull-right"></i></a>
-                <ul>
-                    <li><a href="mail-inbox.html">Inbox</a>
-                    </li>
-                    <li><a href="mail-compose.html">Compose Mail</a>
-                    </li>
-                </ul>
-            </li>
-            <li class="sub-menu">
-                <a href="javascript:void(0);"><i class="fa fa-bar-chart-o"></i><span>Charts</span><i class="arrow fa fa-angle-right pull-right"></i></a>
-                <ul>
-                    <li><a href="charts-chartjs.html">Chartjs</a>
-                    </li>
-                    <li><a href="charts-morris.html">Morris</a>
-                    </li>
-                    <li><a href="charts-c3.html">C3 Charts</a></li>
-                </ul>
-            </li>
-            <li class="sub-menu">
-                <a href="javascript:void(0);"><i class="fa fa-map-marker"></i><span>Maps</span><i class="arrow fa fa-angle-right pull-right"></i></a>
-                <ul>
-                    <li><a href="map-google.html">Google Map</a>
-                    </li>
-                    <li><a href="map-vector.html">Vector Map</a>
-                    </li>
-                </ul>
-            </li>
-            <li class="sub-menu">
-                <a href="typography.html"><i class="fa fa-text-height"></i><span>Typography</span></a>
-            </li>
-            <li class="sub-menu">
-                <a href="javascript:void(0);"><i class="fa fa-file"></i><span>Pages</span><i class="arrow fa fa-angle-right pull-right"></i></a>
-                <ul>
-                    <li><a href="pages-blank.html">Blank Page</a>
-                    </li>
-                    <li><a href="pages-login.html">Login</a>
-                    </li>
-                    <li><a href="pages-sign-up.html">Sign Up</a>
-                    </li>
-                    <li><a href="pages-calendar.html">Calendar</a>
-                    </li>
-                    <li><a href="pages-timeline.html">Timeline</a>
-                    </li>
-                    <li><a href="pages-404.html">404</a>
-                    </li>
-                    <li><a href="pages-500.html">500</a>
+                    <li>
+                        <a th:href="@{/newPost}"><i class="fa fa-dashboard"></i><span>Tạo bài đăng mới</span></a>
                     </li>
                 </ul>
             </li>

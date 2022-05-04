@@ -19,7 +19,6 @@
   <link th:href="@{/admin/assets/css/icons.css}" rel="stylesheet" type="text/css" />
   <link th:href="@{/admin/assets/css/sidebar-menu.css}" rel="stylesheet" />
   <link th:href="@{/admin/assets/css/app-style.css}" rel="stylesheet" />
-  
 
 </head>
 
@@ -83,7 +82,6 @@
                 <div class="card-title">Thêm tin tức</div>
                 <hr>
                 <form th:action="@{/admin/post/save}" method="post" th:object="${post}">
-                 
                   <div class="form-group">
                     <label for="input-1">Tên tin tức</label>
                     <input type="text" th:field="*{title}" class="form-control" id="input-1" placeholder="Tên tin tức" name="new-title">
