@@ -1,6 +1,7 @@
 package web.english.application.utils;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,6 +13,7 @@ public class Utils {
     public static final String emailRequire="Email chỉ được sử dụng chữ cái (a-z), số (0-9) và ký tự (.)";
     public static final String yearRequire="Năm sinh phải trong khoảng: "+(LocalDate.now().getYear()-100)+" <= năm sinh <= "+(LocalDate.now().getYear()-18);
 
+    public static final int exam = 1;
     /**
      *{@value #phoneNumberRequire}
      * @author VQKHANH
@@ -74,5 +76,14 @@ public class Utils {
     public boolean checkDob(LocalDate dob){
         if(dob.getYear()<1900||dob.getYear()>(LocalDate.now().getYear())-18) return false;
         return true;
+    }
+
+
+    public int checkPoint(List<String> listCheck, List<String> listAnswer){
+        int point = 0;
+        for (int i = 0; i < listCheck.size(); i++) {
+            if(listCheck.get(i).equals(listAnswer.get(i))) point++;
+        }
+        return point;
     }
 }

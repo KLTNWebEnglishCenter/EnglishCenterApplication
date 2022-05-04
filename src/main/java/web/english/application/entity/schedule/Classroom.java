@@ -1,4 +1,4 @@
-package web.english.application.entity;
+package web.english.application.entity.schedule;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

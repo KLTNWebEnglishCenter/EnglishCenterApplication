@@ -47,7 +47,7 @@
 
       /*]]>*/
     </script>
-    <title>Document</title>
+    <title th:replace = "~{home :: title}">Title</title>
 </head>
 <body>
 <header th:replace="~{home::header-fragment}">
@@ -69,7 +69,7 @@
     <div class="list-course-web">
         <h1>Khóa học tại Topal</h1>
         <hr>
-        <div class="list-course-grid" >
+        <div class="list-course-grid" th:if="${#lists.size(courses) > 0}">
             <div class="course-box" th:each="course : ${courses}">
                 <img src="/img/1598515185222.jpg" alt="">
                 <h3 th:text="${course.name}"></h3>

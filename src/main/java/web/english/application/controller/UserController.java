@@ -20,6 +20,8 @@ public class UserController {
     @Autowired
     private UserDAO userDAO;
 
+    private boolean a = false;
+
     @GetMapping("/info/{id}")
     public String getProfilePage(@PathVariable("id") int id, Model model,HttpServletRequest httpServletRequest){
         String token = "";
@@ -43,6 +45,11 @@ public class UserController {
         }
 
         model.addAttribute("users",users);
+        if (a == true){
+            model.addAttribute("msg","Cập nhật thành công");
+        }else {
+            model.addAttribute("msg","");
+        }
         return "admin/thongtincanhan";
     }
 
@@ -56,6 +63,36 @@ public class UserController {
     @PostMapping("/info/update")
     public String updateUser(@ModelAttribute Users users,Model model){
         Users users1 = userDAO.update(users);
+        a = true;
         return "redirect:/user/info/"+users.getId();
+    }
+
+    @GetMapping("/password/{id}")
+    public String updatePasswordUser(@PathVariable("id") int id,Model model){
+        Users users = userDAO.getUser(id);
+        model.addAttribute("users",users);
+        model.addAttribute("oldp","");
+        model.addAttribute("newp","");
+        return "admin/doimatkhau";
+    }
+
+    @PostMapping("/password/update")
+    public String updatePassUser(@RequestParam String userId,@RequestParam String oldPass, @RequestParam String newPass,@RequestParam String newPassCheck,Model model){
+        Users users = userDAO.getUser(Integer.parseInt(userId));
+        model.addAttribute("users",users);
+        model.addAttribute("oldp",oldPass);
+        model.addAttribute("newp",newPass);
+        String rs1 = userDAO.updatePassword(userId,oldPass,newPass);
+        String rs = userDAO.checkPasswordMatch(newPassCheck,newPass);
+        if (rs != ""){
+            model.addAttribute("errorMs",rs);
+            return "admin/doimatkhau";
+        }else if (rs1.equals("false")){
+            model.addAttribute("errorMs","Nhập mật khẩu sai");
+            return "admin/doimatkhau";
+        }else {
+            a = true;
+            return "redirect:/user/info/"+users.getId();
+        }
     }
 }

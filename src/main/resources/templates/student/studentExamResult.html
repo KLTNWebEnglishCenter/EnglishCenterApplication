@@ -33,6 +33,28 @@
     <script src="/js/backtotop.js"></script>
 
     <title th:replace = "~{home :: title}">Title</title>
+    <script th:src="@{/admin/assets/js/jquery.min.js}"></script>
+    <script th:src="@{/admin/assets/js/sweetalert2.all.js}"></script>
+    <link rel="stylesheet" th:href="@{/admin/assets/css/sweetalert2.min.css}">
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+
+        var msg = /*[[${msg}]]*/ '';
+
+        function yourfunction() {
+          if(msg!=""&&msg!=null){
+            Swal.fire({
+              icon: 'success',
+              title: 'Bạn làm đúng',
+              text: msg+' câu',
+             })
+          }
+        }
+
+        window.onload = yourfunction;
+
+      /*]]>*/
+    </script>
 </head>
 
 <body>
@@ -51,42 +73,28 @@
         <h4 class="exam-header-title">
             Mã đề: <span th:text="${exam.id}"></span>
         </h4>
+        <h4 class="exam-header-title">
+            Đáp án
+        </h4>
     </div>
     <div class="exam-body">
-        <form th:action="@{/exam/result}" method="post">
-            <div class="exam-item" th:each="question,iter : ${questions}">
-                <h1 class="exam-question-index">Cau <span th:text="${iter.index}+1"></span>:</h1>
-                <div class="exam-question-body">
-                    <p class="exam-question-content" th:text="${question.content}">
+        <div class="exam-item" th:each="question,iter : ${questions}">
+            <h1 class="exam-question-index">Câu <span th:text="${iter.index}+1"></span>:</h1>
+            <div class="exam-question-body">
+                <p class="exam-question-content" th:text="${question.content}">
 
-                    </p>
-                    <div class="exam-question-answer">
-                        <div><input type="radio" th:name="'answer'+${question.id}" th:value="A"
-                                    class="exam-question-result"><span>A.</span><span th:text="${question.answerA}"></span></div>
-                        <div><input type="radio" th:name="'answer'+${question.id}" th:value="B"
-                                    class="exam-question-result"><span>B.</span><span th:text="${question.answerB}"></span></div>
-                        <div th:if="${question.answerC}"><input type="radio" th:name="'answer'+${question.id}" th:value="C"
-                                    class="exam-question-result"><span>C.</span><span th:text="${question.answerC}"></span></div>
-                        <div th:if="${question.answerD}"><input type="radio" th:name="'answer'+${question.id}" th:value="D"
-                                    class="exam-question-result"><span>D.</span><span th:text="${question.answerD}"></span></div>
-                    </div>
+                </p>
+                <div class="exam-question-answer" style="color:red">
+                    <div th:if="${question.correctAnswer == 'A'}"><span th:text="${question.correctAnswer}"></span>.<span th:text="${question.answerA}"></span></div>
+                    <div th:if="${question.correctAnswer == 'B'}"><span th:text="${question.correctAnswer}"></span>.<span th:text="${question.answerB}"></span></div>
+                    <div th:if="${question.correctAnswer == 'C'}"><span th:text="${question.correctAnswer}"></span>.<span th:text="${question.answerC}"></span></div>
+                    <div th:if="${question.correctAnswer == 'D'}"><span th:text="${question.correctAnswer}"></span>.<span th:text="${question.answerB}"></span></div>
                 </div>
             </div>
-            <div class="exam-submit">
-                <input class="exam-btn" type="submit" value="Nộp bài">
-            </div>
-            <div class="exam-submit-2">
-                <p class="exam-submit-p">Thời gian nộp bài</p>
-                <div class="exam-clock-down">
-                    <span id="exam-hour">00</span>
-                    <span>:</span>
-                    <span id="exam-minute" value>00</span>
-                    <span>:</span>
-                    <span id="exam-second">00</span>
-                </div>
-                <input class="exam-btn-2" type="submit" value="Nộp bài">
-            </div>
-        </form>
+        </div>
+        <div class="exam-submit">
+            <input class="exam-btn" type="button" value="Trở về" th:onclick="'window.location.href = \'' + @{/user/exam} + '\''">
+        </div>
     </div>
 </div>
 
@@ -150,46 +158,6 @@
                 }
             }
         }
-    </script>
-<script>
-        const hour = document.getElementById('exam-hour')
-        const minute = document.getElementById('exam-minute')
-        const second = document.getElementById('exam-second')
-
-        var hour_value = 0
-        var minute_value = 0
-        var second_value = 0
-
-        function showTimeUp() {
-            second_value++
-            if (second_value == 60) {
-                second_value = 0
-                minute_value++
-                if (minute_value == 60) {
-                    minute_value = 0
-                    hour_value++
-                    if (hour_value == 24) {
-                        hour_value = 0
-                    }
-                }
-            }
-            if (hour_value < 9) {
-                hour.innerText = '0' + hour_value
-            } else {
-                hour.innerText = hour_value
-            }
-            if (minute_value < 9) {
-                minute.innerText = '0' + minute_value
-            } else {
-                minute.innerText = minute_value
-            }
-            if (second_value < 9) {
-                second.innerText = '0' + second_value
-            } else {
-                second.innerText = second_value
-            }
-        }
-        setInterval(showTimeUp, 1000);
     </script>
 
 </body>

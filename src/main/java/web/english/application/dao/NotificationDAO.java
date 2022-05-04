@@ -10,13 +10,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
-import web.english.application.entity.Classroom;
+import web.english.application.entity.schedule.Classroom;
 import web.english.application.entity.Notification;
-import web.english.application.entity.user.Student;
-import web.english.application.entity.user.Teacher;
-import web.english.application.utils.UsersType;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

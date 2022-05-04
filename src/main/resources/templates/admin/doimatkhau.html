@@ -20,7 +20,6 @@
     <link th:href="@{/admin/assets/css/sidebar-menu.css}" rel="stylesheet" />
     <link th:href="@{/admin/assets/css/app-style.css}" rel="stylesheet" />
 
-
 </head>
 
 <body class="bg-theme bg-theme1">
@@ -35,25 +34,14 @@
 </div>
 
 <div id="wrapper">
-    <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
-        <div class="brand-logo">
-            <a th:href="@{/admin/home}">
-                <img src="/admin/assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
-                <h5 class="logo-text">TOPAL</h5>
-            </a>
-        </div>
-
-        <ul th:replace="~{admin/index::menu-fragment}">
-        </ul>
-    </div>
     <header class="topbar-nav">
         <nav class="navbar navbar-expand fixed-top">
             <ul class="navbar-nav mr-auto align-items-center">
-                <li class="nav-item">
-                    <a class="nav-link toggle-menu" href="javascript:void();">
-                        <i class="icon-menu menu-icon"></i>
-                    </a>
-                </li>
+                <!-- <li class="nav-item">
+                  <a class="nav-link toggle-menu" href="javascript:void();">
+                    <i class="icon-menu menu-icon"></i>
+                  </a>
+                </li> -->
             </ul>
 
             <ul class="navbar-nav align-items-center right-nav-link">
@@ -71,38 +59,68 @@
     <div class="clearfix"></div>
 
     <!-- Body -->
-    <div class="content-wrapper">
+    <div class="content-wrapper" style="margin-right:250px;">
         <div class="container-fluid">
+
             <div class="row mt-3">
-                <div class="col-lg-12">
-                    <button class="add-catalog"><a th:href="@{/admin/exam/add}">Tạo bài kiểm tra mới</a></button>
-                </div>
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Danh sách Bài kiểm tra</h5>
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Tên bài kiểm tra</th>
-                                        <th scope="col">Trạng thái</th>
-                                        <th scope="col">Hoạt động</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:each="exam,iter : ${exams}">
-                                        <td th:text="${iter.index}"></td>
-                                        <td th:text="${exam.name}"></td>
-                                        <td th:text="${exam.status}"></td>
-                                        <td>
-                                            <button class="btn btn-info"><a th:href="@{/admin/exam/detail/{id}(id=${exam.id})}">Xem chi tiết</a></button>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <div class="card-title">Cập nhật mật khẩu</div>
+                            <hr>
+                            <form th:action="@{/user/password/update}" method="post">
+                                <div class="form-group">
+                                    <input th:value="${users.id}" type="hidden" class="form-control" th:name="userId">
+                                    <span id="error" style="color:red" th:text="${errorMs}"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Mật khẩu cũ</label>
+                                    <input type="password" class="form-control" id="myinputa" placeholder="Nhập mật khẩu cũ" th:name="oldPass" th:value="${oldp}">
+                                    <input type="checkbox" onclick="myFunction1()">Hiển thị mật khẩu
+                                </div>
+                                <div class="form-group">
+                                    <label>Mật khẩu mới</label>
+                                    <input type="password" class="form-control" id="myinputb" placeholder="Nhập mật khẩu mới" th:name="newPass" th:value="${newp}">
+                                    <input type="checkbox" onclick="myFunction2()">Hiển thị mật khẩu
+                                </div>
+                                <div class="form-group">
+                                    <label>Nhập lại mật khẩu</label>
+                                    <input type="password" class="form-control" id="myinputc" placeholder="Nhập lại mật khẩu mới" th:name="newPassCheck">
+                                    <input type="checkbox" onclick="myFunction3()">Hiển thị mật khẩu
+
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-danger"><a th:href="@{/user/info/{id}(id=${users.id})}">Hủy</a></button>
+                                    <button type="submit" class="btn btn-success">Cập nhật</button>
+                                </div>
+                                <script>
+                                     function myFunction1() {
+                                        var x = document.getElementById("myinputa");
+                                        if (x.type === "password") {
+                                            x.type = "text";
+                                        } else {
+                                            x.type = "password";
+                                        }
+                                    }
+                                     function myFunction2() {
+                                        var y = document.getElementById("myinputb");
+                                        if (y.type === "password") {
+                                            y.type = "text";
+                                        } else {
+                                            y.type = "password";
+                                        }
+                                    }
+                                    function myFunction3() {
+                                        var z = document.getElementById("myinputc");
+                                        if (z.type === "password") {
+                                            z.type = "text";
+                                        } else {
+                                            z.type = "password";
+                                        }
+                                    }
+
+                                </script>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -155,6 +173,7 @@
 <script src="/admin/assets/plugins/Chart.js/Chart.min.js"></script>
 <script src="/admin/assets/js/index.js"></script>
 <script src="/admin/assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
+
 </body>
 
 </html>

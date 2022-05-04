@@ -19,8 +19,27 @@
     <link th:href="@{/admin/assets/css/icons.css}" rel="stylesheet" type="text/css" />
     <link th:href="@{/admin/assets/css/sidebar-menu.css}" rel="stylesheet" />
     <link th:href="@{/admin/assets/css/app-style.css}" rel="stylesheet" />
+    <style>
+        ul {
+            padding: 0;
+            list-style-type: none;
 
+        }
 
+        li span:hover {
+            cursor: pointer;
+        }
+
+        .addAnswerClass {
+            padding: 0;
+            list-style-type: none;
+
+            display: grid;
+            grid-template-columns: auto auto;
+
+            column-gap: 20px;
+        }
+    </style>
 </head>
 
 <body class="bg-theme bg-theme1">
@@ -42,7 +61,6 @@
                 <h5 class="logo-text">TOPAL</h5>
             </a>
         </div>
-
         <ul th:replace="~{admin/index::menu-fragment}">
         </ul>
     </div>
@@ -59,11 +77,10 @@
             <ul class="navbar-nav align-items-center right-nav-link">
                 <li class="nav-item">
                     <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" href="#">
-              <span class="user-profile"><img src="/admin/assets/images/avatar-admin.png" class="img-circle"
-                                              alt="user avatar"></span>
+                            <span class="user-profile"><img src="/admin/assets/images/avatar-admin.png"
+                                                            class="img-circle" alt="user avatar"></span>
                     </a>
                     <ul th:replace="~{admin/index::admin-fragment}">
-
                     </ul>
                 </li>
             </ul>
@@ -81,46 +98,50 @@
                         <div class="card-body">
                             <div class="card-title">Thêm bài kiểm tra mới</div>
                             <hr>
-                            <form action="" method="post">
+                            <form th:action="@{/admin/exam/add}" method="post" th:object="${exam}">
+                                <input type="hidden" class="form-control" th:name="teacherId" th:value="${users.id}" readonly>
                                 <div class="form-group">
-                                    <label for="input-4">Người tạo</label>
-                                    <input type="text" class="form-control" id="input-4" value="admin" readonly>
-                                </div>
-                                <div class="form-group">
-                                    <label for="input-5">Ngày tạo</label>
-                                    <input type="date" class="form-control" id="input-5" name="new-created">
+                                    <label for="input-6">Người tạo</label>
+                                    <input type="text" class="form-control" id="input-6" th:name="teacherName" th:value="${users.fullName}" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="input-1">Tên bài kiểm tra</label>
-                                    <input type="text" class="form-control" id="input-1"
-                                           placeholder="Tên bài kiểm tra">
+                                    <input type="text" class="form-control" id="input-1" th:field="*{name}"
+                                           placeholder="Tên bài kiểm tra" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="input-2">Nội dung</label>
-                                    <textarea class="form-control" rows="4" id="input-2"
-                                              name="new-content"></textarea>
+                                    <label for="input-7">Nội dung</label>
+                                    <textarea class="form-control" rows="4" id="input-7" th:field="*{description}"
+                                              name="new-content" required></textarea>
                                 </div>
                                 <div class="form-group">
-                                    <label for="input-3">Đáp án đúng</label>
-                                    <input type="text" class="form-control" id="input-3" placeholder="Đáp án">
+                                    <ul id="listQuestion">
+                                        <th:block th:each="questionCheck,iter : ${listQuestionCheckValue}">
+                                            <li th:id="${iter.index}" class="row m-4" >
+                                                <span th:onclick="removeQuestion([[${iter.index}]]);" class="form-control col-1"><i class="fa fa-times"></i></span><input style="margin-bottom: 5px;" type="text" readonly class="form-control col-11" th:name="'question'+${iter.index}" th:value="${questionCheck.id}">
+                                            </li>
+                                        </th:block>
+                                    </ul>
                                 </div>
                                 <div class="form-group">
-                                    <label for="input-0">Đáp án sai</label>
-                                    <input type="text" class="form-control" id="input-0" placeholder="Đáp án">
+                                    <button type="button" class="btn btn-success" data-toggle="modal"
+                                            data-target="#exampleModal"><i class="fa fa-check-circle"></i>Chọn câu hỏi</button>
+                                    <button type="button" class="btn btn-danger" th:onclick="deleteAll();"><i
+                                            class="fa fa-minus"></i>Xóa tất cả</button>
                                 </div>
-                                <div class="form-group">
-                                    <button type="button" id="addAnswerBtn" class="btn btn-info"
-                                            onclick="addAnswer()"><i class="fa fa-plus"></i>Thêm đáp án
-                                        sai</button>
-                                </div>
-                                <ul class="addAnswerClass" id="addNewAnswer">
 
-                                </ul>
+
                                 <div class="form-footer">
                                     <button class="btn btn-danger"><i class="fa fa-times"></i><a
-                                            href="">Hủy</a></button>
+                                            th:href="@{/admin/exam}">Hủy</a></button>
                                     <button type="submit" class="btn btn-success"><i
                                             class="fa fa-check-square-o"></i> Thêm</button>
+
+                                    <!-- <button type="button" class="btn btn-light"><i
+                                            class="fa fa-check-square-o"></i><a target="_blank"
+                                            href="/admin/taocauhoi.html">Tạo câu hỏi mới</a></button> -->
+                                    <button type="button" class="btn btn-light" data-toggle="modal"
+                                            data-target="#questionModal"><i class="fa fa-plus"></i>Thêm câu hỏi mới</button>
                                 </div>
                             </form>
                         </div>
@@ -150,35 +171,166 @@
 
     <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
     <!-- <div class="right-sidebar">
-      <div class="switcher-icon">
-        <i class="zmdi zmdi-settings zmdi-hc-spin"></i>
-      </div>
-      <div class="right-sidebar-content">
-        <p class="mb-0">Màu nền admin</p>
-        <hr>
-        <ul class="switcher">
-          <li id="theme1"></li>
-          <li id="theme2"></li>
-          <li id="theme3"></li>
-          <li id="theme4"></li>
-          <li id="theme5"></li>
-          <li id="theme6"></li>
-        </ul>
-        <p class="mb-0">Màu nền gradient</p>
-        <hr>
-        <ul class="switcher">
-          <li id="theme7"></li>
-          <li id="theme8"></li>
-          <li id="theme9"></li>
-          <li id="theme10"></li>
-          <li id="theme11"></li>
-          <li id="theme12"></li>
-          <li id="theme13"></li>
-          <li id="theme14"></li>
-          <li id="theme15"></li>
-        </ul>
-      </div>
-    </div> -->
+  <div class="switcher-icon">
+    <i class="zmdi zmdi-settings zmdi-hc-spin"></i>
+  </div>
+  <div class="right-sidebar-content">
+    <p class="mb-0">Màu nền admin</p>
+    <hr>
+    <ul class="switcher">
+      <li id="theme1"></li>
+      <li id="theme2"></li>
+      <li id="theme3"></li>
+      <li id="theme4"></li>
+      <li id="theme5"></li>
+      <li id="theme6"></li>
+    </ul>
+    <p class="mb-0">Màu nền gradient</p>
+    <hr>
+    <ul class="switcher">
+      <li id="theme7"></li>
+      <li id="theme8"></li>
+      <li id="theme9"></li>
+      <li id="theme10"></li>
+      <li id="theme11"></li>
+      <li id="theme12"></li>
+      <li id="theme13"></li>
+      <li id="theme14"></li>
+      <li id="theme15"></li>
+    </ul>
+  </div>
+</div> -->
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel1">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body" style="background-color: rgb(103, 132, 132);">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Mã câu hỏi</th>
+                                    <th scope="col">Nội dung</th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="question,iter : ${questions}">
+                                    <td th:text="${iter.index}"></td>
+                                    <td th:text="${question.id}"></td>
+                                    <td th:text="${question.content}"></td>
+                                    <td>
+                                        <button type="button" class="btn btn-success classPlus"
+                                                th:onclick="selectQuestion([[${iter.index}]],[[${question.id}]]);">Chọn</button>
+                                        <button type="button" class="btn btn-danger classMinus"
+                                                th:onclick="deleteQuestion([[${iter.index}]],[[${question.id}]]);">Xóa</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="addNewQuestion();" data-dismiss="modal">Save
+                    changes<span id="demso"></span></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="questionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row mt-3">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body" style="background-color: rgb(103, 132, 132);">
+                                <div class="card-title">Thêm câu hỏi mới mới</div>
+                                <hr>
+<!--                                -->
+                                <form id="formQuestionToAndNew" th:action="@{/admin/exam/question/add}" method="post" th:object="${question}">
+<!--                                    <div class="form-group">-->
+<!--                                        <label for="input-4">Người tạo</label>-->
+<!--                                        <input type="text" class="form-control" id="input-4" value="admin" readonly>-->
+<!--                                    </div>-->
+<!--                                    <div class="form-group">-->
+<!--                                        <label for="date-create">Ngày tạo</label>-->
+<!--                                        <input type="date" class="form-control" id="date-create" name="new-created">-->
+<!--                                    </div>-->
+                                    <div class="form-group">
+                                        <label for="input-3">Câu hỏi</label>
+                                        <textarea class="form-control" rows="4" id="input-3"
+                                                  th:field="*{content}"></textarea>
+                                    </div>
+
+                                    <ul class="addAnswerClass" id="addNewAnswer">
+                                        <li id="1">
+                                            <div class="form-group">
+                                                <label for="input-88">Đáp án A</label>
+                                                <textarea class="form-control" id="input-88" th:field="*{answerA}"></textarea>
+                                            </div>
+                                        </li>
+                                        <li id="2">
+                                            <div class="form-group">
+                                                <label for="input-8">Đáp án B</label>
+                                                <textarea class="form-control" id="input-8" th:field="*{answerB}"></textarea>
+                                            </div>
+                                        </li>
+                                        <li id="3">
+                                            <div class="form-group">
+                                                <label for="input-9">Đáp án C</label>
+                                                <textarea class="form-control" id="input-9" th:field="*{answerC}"></textarea>
+                                            </div>
+                                        </li>
+                                        <li id="4">
+                                            <div class="form-group">
+                                                <label for="input-10">Đáp án D</label>
+                                                <textarea class="form-control" id="input-10" th:field="*{answerD}"></textarea>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div class="form-group">
+                                        <label for="input-2">Đáp án đúng</label>
+                                        <select id="input-2" class="form-control" th:field="*{correctAnswer}">
+                                            <option value="A"> A </option>
+                                            <option value="B"> B </option>
+                                            <option value="C"> C </option>
+                                            <option value="D"> D </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>
+                                        <button type="submit" class="btn btn-primary">Thêm</button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="/admin/assets/js/jquery.min.js"></script>
@@ -191,34 +343,87 @@
 <script src="/admin/assets/plugins/Chart.js/Chart.min.js"></script>
 <script src="/admin/assets/js/index.js"></script>
 <script src="/admin/assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
-<script>
-        const addNewAnswer = document.getElementById('addNewAnswer')
-        const addAnswerBtn = document.getElementById('addAnswerBtn')
 
-        var i = 0
-        function addAnswer() {
-            i++
-            addNewAnswer.innerHTML += `<li id="${i}"><div class="form-group">
-                                        <label for="input-2">Đáp án sai</label>
-                                        <input type="text" class="form-control" id="input-1"
-                                            placeholder="Đáp án">
-                                            <button type="button" class="btn btn-danger" onclick="removeAnswer(${i})"><i class="fa fa-minus"></i>Loại bỏ đáp án
-                                            này</button>
-                                    </div></li>`
-            if (i == 2) {
-                addAnswerBtn.style.display = 'none'
-            }
-        }
+<script th:inline="javascript">
+        var date = new Date();
 
-        function removeAnswer(id) {
-            i--
-            var child = document.getElementById(id)
-            addNewAnswer.removeChild(child)
-            if (i < 2) {
-                addAnswerBtn.style.display = 'block'
-            }
-        }
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+
+        if (month < 10) month = "0" + month;
+        if (day < 10) day = "0" + day;
+
+        var today = year + "-" + month + "-" + day;
+
+
+        document.getElementById('date-create').value = today;
     </script>
+
+<script th:inline="javascript">
+        var list = []
+        var listQuestionCheck = []
+        var listQuestionCheckContent = []
+
+        var a = [[${#lists.size(listQuestionCheckValue)}]]
+        const listQuestion = document.getElementById("listQuestion")
+        const listQuestion2 = document.getElementById("listQuestion2")
+
+        listQuestion.style.listStyleType = 'none'
+        listQuestion.style.padding = '0'
+        const demso = document.getElementById("demso")
+        const plusButton = document.getElementsByClassName("btn btn-success classPlus")
+        const minusButton = document.getElementsByClassName("btn btn-danger classMinus")
+        for (let i = 0; i < minusButton.length; i++) {
+            minusButton[i].style.display = 'none'
+        }
+        function addNewQuestion() {
+            listQuestionCheck.forEach(i => {
+                listQuestion.innerHTML += `<li id="${a}" class="row m-4">
+                                                <span onclick="removeQuestion(${a});" class="form-control col-1"><i class="fa fa-times"></i></span><input style="margin-bottom: 5px;" type="text" readonly class="form-control col-11" name="question${a}" value="${i}">
+                                            </li>`
+                a++
+            })
+            list.length = 0
+            listQuestionCheck.length = 0
+            demso.innerText = '( ' + list.length + ' )'
+            for (let i = 0; i < minusButton.length; i++) {
+                minusButton[i].style.display = 'none'
+                plusButton[i].style.display = 'block'
+            }
+        }
+        function selectQuestion(index,id) {
+            list.push(index)
+            listQuestionCheck.push(id)
+            demso.innerText = '( ' + list.length + ' )'
+            minusButton[index].style.display = 'block'
+            plusButton[index].style.display = 'none'
+
+            console.log(list.toString())
+        }
+        function deleteQuestion(index,id) {
+            if (list.length != 0) {
+                var index1 = list.indexOf(index)
+                var index2 = listQuestionCheck.indexOf(id)
+                list.splice(index1, 1)
+                listQuestionCheck.splice(index2,1)
+                demso.innerText = '( ' + list.length + ' )'
+                minusButton[index].style.display = 'none'
+                plusButton[index].style.display = 'block'
+
+                console.log(list.toString())
+            }
+        }
+        function deleteAll() {
+            listQuestion.innerHTML = ``
+        }
+        function removeQuestion(id) {
+            var li = document.getElementById(id)
+            listQuestion.removeChild(li)
+        }
+
+    </script>
+
 </body>
 
 </html>
