@@ -99,7 +99,7 @@ public class LoginController {
         if (author.equals(RoleType.STUDENT)){
             return "redirect:/home";
         }else {
-            return "redirect:/admin/home";
+            return "redirect:/admin/schedule";
         }
     }
 

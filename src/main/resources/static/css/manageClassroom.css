@@ -1,0 +1,331 @@
+.myCourse {
+    display: inline-flex;
+    width: 100%;
+    min-height: 600px;
+    align-items: center;
+    justify-content: center;
+}
+.myCourse-menu {
+    width: 20%;
+    min-height: 600px;
+    background-color: rgb(17, 34, 34);
+    background: #2d2c41;
+    font-family: 'Open Sans', Arial, Helvetica, Sans-serif, Verdana, Tahoma;
+    border: 5px solid green;
+    padding-top: 50px;
+}
+
+.myCourse-menu ul { 
+    list-style-type: none; }
+
+.myCourse-menu a {
+    color: #b63b4d;
+    text-decoration: none;
+}
+.myCourse-menu h3 {
+    width: 90%;
+    margin-inline: 5px;
+    margin-bottom: 10px;
+    font-size: 28px;
+    text-align: center;
+    color: white;
+}
+
+.myCourse-menu h1 {
+    color: #FFF;
+    font-size: 24px;
+    font-weight: 400;
+    text-align: center;
+    margin-top: 80px;
+  }
+  
+.myCourse-menu h1 a {
+    color: #c12c42;
+    font-size: 16px;
+  }
+  
+.accordion {
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto 20px;
+    background: #FFF;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+  
+  .accordion .link {
+    cursor: pointer;
+    display: block;
+    padding: 15px 15px 15px 42px;
+    color: #4D4D4D;
+    font-size: 14px;
+    font-weight: 700;
+    border-bottom: 1px solid #CCC;
+    position: relative;
+    -webkit-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+  }
+  
+  .accordion li:last-child .link { border-bottom: 0; }
+  
+  .accordion li i {
+    position: absolute;
+    top: 16px;
+    left: 12px;
+    font-size: 18px;
+    color: #595959;
+    -webkit-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+  }
+  
+  .accordion li i.fa-chevron-down {
+    right: 12px;
+    left: auto;
+    font-size: 16px;
+  }
+  
+  .accordion li.open .link { color: #b63b4d; }
+  
+  .accordion li.open i { color: #b63b4d; }
+  
+  .accordion li.open i.fa-chevron-down {
+    -webkit-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+  }
+  
+  /**
+   * Submenu
+   -----------------------------*/
+  
+  
+  .submenu {
+    display: none;
+    background: #444359;
+    font-size: 14px;
+  }
+  
+  .submenu li { border-bottom: 1px solid #4b4a5e; }
+  
+  .submenu a {
+    display: block;
+    text-decoration: none;
+    color: #d9d9d9;
+    padding: 12px;
+    padding-left: 42px;
+    -webkit-transition: all 0.25s ease;
+    -o-transition: all 0.25s ease;
+    transition: all 0.25s ease;
+  }
+  
+  .submenu a:hover {
+    background: #b63b4d;
+    color: #FFF;
+  }
+
+
+  /* ------------------------------------- */
+.myCourse-body {
+    width: 80%;
+    min-height: 600px;
+    /* background-color: #7a7777; */
+    background-color: white;
+}
+
+.my-no-choice {
+    width: 200px;
+    height: 30px;
+    color: #656565;
+    text-align: center;
+    margin-inline: 43%;
+    margin-block: 300px;
+    display: none;
+}
+.my-choice {
+    display: flex;
+}
+.my-choice-action {
+    width: 5%;
+    min-height: 600px;
+    background-color: #626060; 
+    color: white;
+    align-items: center;
+    text-align: center;
+}
+
+.my-choice-action ul {
+    margin-block: 50px;
+   
+}
+
+.my-choice-action ul li {
+    display: flex;
+    flex-direction: column;
+    margin-block: 30px;
+    font-size: 12px;
+}
+
+.my-choice-action ul li a{
+    text-decoration: none;
+    color: #656565;
+}
+
+.my-choice-action ul li i{
+    font-size: 30px;
+}
+
+
+.my-choice-action ul li:hover{
+    color: #21b90a;
+    transition: 0s;
+}
+
+.my-choice-action ul li:hover a{
+    color: #21b90a;
+    transition: 0s;
+}
+
+
+.show-my-action {
+    width: 95%;
+    min-height: 600px;
+    display: none;
+}
+
+.show-my-action-body {
+    min-width: 300px;
+    min-height: 100px;
+    margin-left: 50px;
+    margin-block-start: 50px;
+    /* margin-right: 50px; */
+    color: #656565;
+}
+.classroomTitleLayout{
+    display: flex; 
+    align-items: flex-start; 
+    justify-content: center; 
+    flex: 1;
+}
+
+.title-color{
+    color: #ff6905;
+}
+
+.classroomTitleInfoLayout{
+    display: flex; 
+    flex: 1; 
+    flex-wrap: wrap; 
+    justify-content: space-between; 
+    align-items: flex-start; 
+    margin-top: 35px; 
+    margin-right: 50px;
+    border: 1px solid #e3e3e3; 
+    padding: 15px;
+}
+.halfWidth{
+    flex: 50%;
+}
+
+.inline{
+    display: inline;
+}
+
+.classroomNotifyLayout{
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-right: 50px;
+    border: 1px solid #e3e3e3; 
+    padding: 15px;
+}
+
+.classroomAllNotifyLayout{
+    display: flex; 
+    flex: 1; 
+    flex-direction: column; 
+    align-items: flex-start; 
+    justify-content: center;
+}
+.classroomOneNotifyLayout{
+    margin-top: 10px; 
+    width: 95%;
+}
+.text-display-limit-char{
+    text-overflow: ellipsis; 
+    overflow: hidden; 
+    white-space: nowrap;
+}
+.multiline{
+    text-align: left;
+    word-wrap: break-word;
+}
+
+.show-my-notification{
+    width: 95%;
+    min-height: 600px;
+    display: none;
+}
+.show-my-notification-body{
+    min-width: 300px;
+    min-height: 100px;
+    margin-left: 50px;
+    margin-block-start: 50px;
+    color: #656565;
+}
+
+.show-calendar {
+    width: 95%;
+    min-height: 600px;
+    display: none;
+}
+
+.row-calendar {
+    width: 100%;
+    display: flex;
+}
+.col-calendar {
+    width: 12.5%;
+    border: 2px solid rgb(12, 109, 105);
+}
+
+.col-thu {
+    height: 50px;
+    background-color: rgb(56, 175, 177);
+    align-items: center;
+    text-align: center;
+    padding-block: 10px;
+    color: rgb(143, 66, 22);
+    border-radius: 5px;
+}
+
+.col-tiet {
+    min-height: 180px;
+    background-color: white;
+    align-items: center;
+    text-align: center;
+    padding-block: 10px;
+    color: rgb(143, 66, 22);
+    border-radius: 5px;
+    
+}
+
+.tiet-box {
+    border-bottom: 3px solid black;
+}
+.p {
+    padding-bottom: 5px;
+}
+.actives {
+    display: block;
+}
+
+.choice-item {
+    color: rgb(230, 124, 62) !important;
+}
+
+.choice-item i {
+    color: rgb(230, 124, 62) !important;
+}

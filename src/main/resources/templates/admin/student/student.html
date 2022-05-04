@@ -122,7 +122,7 @@
                     <td th:text="${student.email}"></td>
                     <td th:text="${student.phoneNumber}"></td>
                     <td th:text="${student.gender}"></td>
-                    <td th:text="${student.enable} ? 'ACTIVE' : 'RETIRED'"></td>
+                    <td th:text="${student.enable} ? 'Kích hoạt' : 'Vô hiệu'"></td>
                     <td>
                       <!--                          <button class="btn btn-danger"><a href="#">Xóa</a></button>-->
                       <button class="btn btn-info"><a th:href="@{/admin/studentinfo/{id}(id=${student.id})}">Chi tiết</a></button>

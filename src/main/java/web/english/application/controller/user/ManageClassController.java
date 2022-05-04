@@ -5,13 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import web.english.application.dao.ScheduleDAO;
+import web.english.application.dao.StudentDAO;
 import web.english.application.dao.UserDAO;
+import web.english.application.entity.Notification;
 import web.english.application.entity.ScheduleInfoHolder;
+import web.english.application.entity.schedule.Classroom;
 import web.english.application.entity.user.Users;
 import web.english.application.utils.JwtHelper;
 
@@ -30,7 +30,8 @@ public class ManageClassController {
 
     @Autowired
     private UserDAO userDAO;
-
+    @Autowired
+    private StudentDAO studentDAO;
     @Autowired
     private ScheduleDAO scheduleDAO;
 
@@ -190,5 +191,41 @@ public class ManageClassController {
         model.addAttribute("scheduleInSundays",scheduleInSundays);
 
         return "/student/studentSchedule";
+    }
+
+    @GetMapping("/classroom")
+    public String getManageClassroomPage(HttpServletRequest httpServletRequest,Model model){
+        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
+        String token=jwtHelper.createToken(jwt);
+
+        List<Classroom> classrooms=studentDAO.getAllClassroomOfStudent(token);
+        List<Notification> notifications=studentDAO.getNotificationsOfStudent(token);
+        Classroom classroom=null;
+        if(classrooms.size()>0){
+            classroom=studentDAO.getClassroomOfStudent(classrooms.get(0).getId());
+        }
+
+        model.addAttribute("classroom",classroom);
+        model.addAttribute("classrooms",classrooms);
+        model.addAttribute("notifications",notifications);
+
+        return "/student/manageClassroom";
+    }
+
+    @GetMapping("/student/classroom/{id}")
+    public  String getOneClassInManagePage(@PathVariable int id,HttpServletRequest httpServletRequest,Model model){
+
+        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
+        String token=jwtHelper.createToken(jwt);
+
+        List<Classroom> classrooms=studentDAO.getAllClassroomOfStudent(token);
+        List<Notification> notifications=studentDAO.getNotificationsOfStudent(token);
+        Classroom classroom=studentDAO.getClassroomOfStudent(id);
+
+        model.addAttribute("classroom",classroom);
+        model.addAttribute("classrooms",classrooms);
+        model.addAttribute("notifications",notifications);
+
+        return "/student/manageClassroom";
     }
 }

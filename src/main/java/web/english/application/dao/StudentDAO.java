@@ -9,6 +9,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.RestTemplate;
+import web.english.application.entity.Notification;
+import web.english.application.entity.schedule.Classroom;
 import web.english.application.entity.user.Student;
 import web.english.application.entity.user.Teacher;
 import web.english.application.utils.UsersType;
@@ -103,6 +105,49 @@ public class StudentDAO {
             log.info("addStudentToClassroom Error:"+ exception.getMessage());
             return "Cập nhật không thành công";
         }
+    }
 
+    /**
+     * for manage classroom of student
+     * @param token
+     * @return
+     */
+    public List<Classroom> getAllClassroomOfStudent(String token){
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", token);
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+        ResponseEntity<List<Classroom>> responseEntity =
+                restTemplate.exchange("http://localhost:8000/student/classrooms/",
+                        HttpMethod.GET, request, new ParameterizedTypeReference<List<Classroom>>() {
+                        });
+        List<Classroom> classrooms = responseEntity.getBody();
+        return classrooms;
+    }
+
+    /**
+     * for manage classroom of student
+     * @param classroomId
+     * @return
+     */
+    public Classroom getClassroomOfStudent(int classroomId){
+        Classroom classroom=restTemplate.getForObject("http://localhost:8000/student/classroom/"+classroomId,Classroom.class);
+        return  classroom;
+    }
+
+    /**
+     * for manage classroom of student
+     * @param token
+     * @return
+     */
+    public List<Notification> getNotificationsOfStudent(String token){
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", token);
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+        ResponseEntity<List<Notification>> responseEntity =
+                restTemplate.exchange("http://localhost:8000/student/notifications/",
+                        HttpMethod.GET, request, new ParameterizedTypeReference<List<Notification>>() {
+                        });
+        List<Notification> notifications = responseEntity.getBody();
+        return  notifications;
     }
 }
