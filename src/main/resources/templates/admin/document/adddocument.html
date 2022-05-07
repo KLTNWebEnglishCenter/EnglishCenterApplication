@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <meta name="description" content=""/>
+  <meta name="author" content=""/>
+  <title>Admin</title>
+
+  <link th:href="@{/admin/assets/css/pace.min.css}" rel="stylesheet"/>
+  <script th:src="@{/admin/assets/js/pace.min.js}"></script>
+  <link rel="stylesheet" th:href="@{/admin/assets/plugins/summernote/dist/summernote-bs4.css}"/>
+  <link rel="icon" th:href="@{/admin/assets/images/favicon.ico}" type="image/x-icon">
+  <link th:href="@{/admin/assets/plugins/vectormap/jquery-jvectormap-2.0.2.css}" rel="stylesheet"/>
+  <link th:href="@{/admin/assets/plugins/simplebar/css/simplebar.css}" rel="stylesheet"/>
+  <link th:href="@{/admin/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+  <link th:href="@{/admin/assets/css/animate.css}" rel="stylesheet" type="text/css"/>
+  <link th:href="@{/admin/assets/css/icons.css}" rel="stylesheet" type="text/css"/>
+  <link th:href="@{/admin/assets/css/sidebar-menu.css}" rel="stylesheet"/>
+  <link th:href="@{/admin/assets/css/app-style.css}" rel="stylesheet"/>
+
+  <script th:src="@{/admin/assets/js/jquery.min.js}"></script>
+  <script th:src="@{/admin/assets/js/sweetalert2.all.js}"></script>
+  <link rel="stylesheet" th:href="@{/admin/assets/css/sweetalert2.min.css}">
+
+  <style>
+  .redText {
+    color: red;
+  }
+  </style>
+
+  <script th:inline="javascript">
+  /*<![CDATA[*/
+
+    var msg = /*[[${msg}]]*/ '';
+
+    function yourfunction() {
+      if(msg!=""&&msg!=null){
+        Swal.fire({
+          text: msg,
+         })
+      }
+    }
+
+    window.onload = yourfunction;
+
+  /*]]>*/
+  </script>
+
+  <script th:inline="javascript">
+    var maxSize = 1 * 1024 * 1024;
+
+    function autoName(){
+      var input = document.getElementById('fileinput');
+      var name = document.getElementById('name');
+
+      var file = input.files[0];
+      name.value=file.name;
+    }
+    
+    function showFileSize() {
+      // (Can't use `typeof FileReader === "function"` because apparently it
+      // comes back as "object" on some browsers. So just see if it's there
+      // at all.)
+      if (!window.FileReader) { // This is VERY unlikely, browser support is near-universal
+          console.log("The file API isn't supported on this browser yet.");
+          return false;
+      }
+
+      var input = document.getElementById('fileinput');
+      if (!input.files) { // This is VERY unlikely, browser support is near-universal
+          console.error("This browser doesn't seem to support the `files` property of file inputs.");
+      } else {
+          var file = input.files[0];
+          if(file.size > maxSize){
+            console.log(file.size+"");
+            Swal.fire({
+              text: "Kích thước tối đa tải lên là 1MB!",
+            })
+            return false;
+          }else return true;
+      }
+    };
+  </script>
+
+</head>
+
+<body class="bg-theme bg-theme1">
+
+<!-- start loader -->
+<div id="pageloader-overlay" class="visible incoming">
+  <div class="loader-wrapper-outer">
+    <div class="loader-wrapper-inner">
+      <div class="loader"></div>
+    </div>
+  </div>
+</div>
+
+<div id="wrapper">
+  <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
+    <div class="brand-logo">
+      <a th:href="@{/admin/home}">
+        <img src="/admin/assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
+        <h5 class="logo-text">TOPAL</h5>
+      </a>
+    </div>
+    <ul th:replace="~{admin/index::menu-fragment}">
+    </ul>
+  </div>
+  <header class="topbar-nav">
+    <nav class="navbar navbar-expand fixed-top">
+      <ul class="navbar-nav mr-auto align-items-center">
+        <li class="nav-item">
+          <a class="nav-link toggle-menu" href="javascript:void();">
+            <i class="icon-menu menu-icon"></i>
+          </a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav align-items-center right-nav-link">
+        <li class="nav-item">
+          <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" href="#">
+              <span class="user-profile"><img src="/admin/assets/images/avatar-admin.png" class="img-circle"
+                                              alt="user avatar"></span>
+          </a>
+          <ul th:replace="~{admin/index::admin-fragment}">
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <div class="clearfix"></div>
+
+  <!-- Body -->
+  <div class="content-wrapper">
+    <div class="container-fluid">
+
+      <div class="row mt-3">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="card-title">Đăng tải tài liệu</div>
+              <hr>
+              <form th:action="@{/admin/document/add}" method="post" enctype="multipart/form-data" onsubmit="return showFileSize()">
+                <div class="form-group">
+                  <input id="fileinput" required type="file" name="file" onchange="autoName()">
+                </div>
+                <div class="form-group">
+                  <label for="name">Tên</label>
+                  <input type="text" required class="form-control" id="name" placeholder="Nhập tên tài liệu"
+                         name="name">
+                  <small class="redText" th:text="${errorName}"></small>
+                </div>
+                <div class="form-group">
+                  <label>Mô tả</label>
+                  <textarea class="form-control" id="input-3" placeholder="Nhập mô tả"
+                             name="description"></textarea>
+                  <small class="redText" th:text="${errorDescription}"></small>
+                </div>
+                <div class="form-group">
+                  <button class="btn btn-light"><a th:href="@{/admin/document}">Hủy</a></button>
+                  <button id="btnLoad" type="submit" class="btn btn-light px-5" > Tải lên</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="overlay toggle-menu"></div>
+    </div>
+  </div>
+
+
+  <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
+</div>
+
+<!--<script src="/admin/assets/js/jquery.min.js"></script>-->
+<script src="/admin/assets/js/popper.min.js"></script>
+<script src="/admin/assets/js/bootstrap.min.js"></script>
+<script src="/admin/assets/plugins/simplebar/js/simplebar.js"></script>
+<script src="/admin/assets/js/sidebar-menu.js"></script>
+<script src="/admin/assets/js/jquery.loading-indicator.js"></script>
+<script src="/admin/assets/js/app-script.js"></script>
+<script src="/admin/assets/plugins/Chart.js/Chart.min.js"></script>
+<script src="/admin/assets/js/index.js"></script>
+<script src="/admin/assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
+</body>
+
+</html>

@@ -122,6 +122,7 @@ public class TeacherController {
             return "redirect:/login";
         }
         model.addAttribute("users",user);
+
         if(!utils.checkFullNameFormat(teacher.getFullName())){
             model.addAttribute("errorFullName",Utils.fullNameRequire);
             return  "admin/teacher/addteacher";
