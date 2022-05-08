@@ -12,8 +12,11 @@ public class Utils {
     public static final String phoneNumberRequire="Số điện thoại gồm 10 chữ số, bắt đầu bằng số 0";
     public static final String emailRequire="Email chỉ được sử dụng chữ cái (a-z), số (0-9) và ký tự (.)";
     public static final String yearRequire="Năm sinh phải trong khoảng: "+(LocalDate.now().getYear()-100)+" <= năm sinh <= "+(LocalDate.now().getYear()-18);
+    public static final String maxLengthRequire="Tối đa 255 kí tự";
 
     public static final int exam = 27;
+    public static final int maxLength = 255;
+
     /**
      *{@value #phoneNumberRequire}
      * @author VQKHANH
@@ -85,5 +88,10 @@ public class Utils {
             if(listCheck.get(i).equals(listAnswer.get(i))) point++;
         }
         return point;
+    }
+
+    public boolean checkMaxLength(String text){
+        if (text.length()>maxLength)return  false;
+        else return true;
     }
 }
