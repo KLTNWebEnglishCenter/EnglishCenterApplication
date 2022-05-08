@@ -197,6 +197,14 @@ public class ManageClassController {
     public String getManageClassroomPage(HttpServletRequest httpServletRequest,Model model){
         String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
         String token=jwtHelper.createToken(jwt);
+        if(jwt == ""){
+            return "redirect:/login";
+        }
+        Users user = userDAO.getUserFromToken(token);
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
 
         List<Classroom> classrooms=studentDAO.getAllClassroomOfStudent(token);
         List<Notification> notifications=studentDAO.getNotificationsOfStudent(token);
@@ -217,6 +225,14 @@ public class ManageClassController {
 
         String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
         String token=jwtHelper.createToken(jwt);
+        if(jwt == ""){
+            return "redirect:/login";
+        }
+        Users user = userDAO.getUserFromToken(token);
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
 
         List<Classroom> classrooms=studentDAO.getAllClassroomOfStudent(token);
         List<Notification> notifications=studentDAO.getNotificationsOfStudent(token);
@@ -228,4 +244,5 @@ public class ManageClassController {
 
         return "/student/manageClassroom";
     }
+
 }

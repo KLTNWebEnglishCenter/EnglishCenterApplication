@@ -45,6 +45,7 @@ public class Course {
         this.discount = discount;
         this.level = level;
         this.category = category;
+        this.enable = true;
     }
 
     @Override

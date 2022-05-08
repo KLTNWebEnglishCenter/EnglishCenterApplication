@@ -132,6 +132,7 @@ public class CourseController {
     public String addCourse(@ModelAttribute("course") Course course, @RequestParam("level_id") String level_id,@RequestParam("category_id") String category_id){
         int levelId = Integer.parseInt(level_id);
         int categoryId = Integer.parseInt(category_id);
+        course.setEnable(true);
         courseDAO.saveCourse(course,levelId,categoryId);
         return "redirect:/admin/courses";
     }
@@ -141,6 +142,22 @@ public class CourseController {
         int levelId = Integer.parseInt(level_id);
         int categoryId = Integer.parseInt(category_id);
         courseDAO.saveCourse(course,levelId,categoryId);
+        return "redirect:/admin/courses";
+    }
+
+    @GetMapping("/course/disable/{id}")
+    public String disableCourse(@PathVariable int id){
+        Course course = courseDAO.findCourse(id);
+        course.setEnable(false);
+        courseDAO.disableCourse(course);
+        return "redirect:/admin/courses";
+    }
+
+    @GetMapping("/course/enable/{id}")
+    public String enableCourse(@PathVariable int id){
+        Course course = courseDAO.findCourse(id);
+        course.setEnable(true);
+        courseDAO.disableCourse(course);
         return "redirect:/admin/courses";
     }
 

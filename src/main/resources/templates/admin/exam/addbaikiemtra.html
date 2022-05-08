@@ -98,7 +98,7 @@
                         <div class="card-body">
                             <div class="card-title">Thêm bài kiểm tra mới</div>
                             <hr>
-                            <form th:action="@{/admin/exam/add}" method="post" th:object="${exam}">
+                            <form th:action="@{/admin/exam/add}" method="post" th:object="${exam}" enctype="text/html; charset=UTF-8">
                                 <input type="hidden" class="form-control" th:name="teacherId" th:value="${users.id}" readonly>
                                 <div class="form-group">
                                     <label for="input-6">Người tạo</label>

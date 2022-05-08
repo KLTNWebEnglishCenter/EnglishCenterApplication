@@ -1,9 +1,6 @@
 package web.english.application.entity.exam;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -13,6 +10,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class UsersExamScoresKey implements Serializable {
 
 

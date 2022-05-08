@@ -4,9 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import web.english.application.dao.CourseDAO;
 import web.english.application.dao.UserDAO;
@@ -127,8 +125,16 @@ public class CourseHomeController {
                 user = userDAO.getUserFromToken(token_valid);
             }
         }
+        List<Course> courses = new ArrayList<>();
+        if (rs == true){
+            rs = false;
+            courses.addAll( courseDAO.findAllCourse());
+        }else {
+            rs = true;
+            courses.addAll(courseDAO.findByCategory(1));
+        }
 
-        List<Course> courses = courseDAO.findAllCourse();
+
         List<UsersCourseRequest> courseRequests = courseDAO.getAllSignupCourse();
         List<Course> courseList = new ArrayList<>();
         try {
@@ -148,11 +154,7 @@ public class CourseHomeController {
             });
         }
 
-        if (rs == true){
-            rs = false;
-        }else {
-            rs = true;
-        }
+
 
         model.addAttribute("users",user);
         model.addAttribute("courses",courses1);
@@ -178,7 +180,15 @@ public class CourseHomeController {
             }
         }
 
-        List<Course> courses = courseDAO.findAllCourse();
+        List<Course> courses = new ArrayList<>();
+        if (rs == true){
+            rs = false;
+            courses.addAll( courseDAO.findAllCourse());
+        }else {
+            rs = true;
+            courses.addAll(courseDAO.findByCategory(2));
+        }
+
         List<UsersCourseRequest> courseRequests = courseDAO.getAllSignupCourse();
         List<Course> courseList = new ArrayList<>();
         try {
@@ -196,12 +206,6 @@ public class CourseHomeController {
                     }
                 });
             });
-        }
-
-        if (rs == true){
-            rs = false;
-        }else {
-            rs = true;
         }
 
         model.addAttribute("users",user);
@@ -228,7 +232,15 @@ public class CourseHomeController {
             }
         }
 
-        List<Course> courses = courseDAO.findAllCourse();
+        List<Course> courses = new ArrayList<>();
+        if (rs == true){
+            rs = false;
+            courses.addAll( courseDAO.findAllCourse());
+        }else {
+            rs = true;
+            courses.addAll(courseDAO.findByCategory(3));
+        }
+
         List<UsersCourseRequest> courseRequests = courseDAO.getAllSignupCourse();
         List<Course> courseList = new ArrayList<>();
         try {
@@ -248,17 +260,56 @@ public class CourseHomeController {
             });
         }
 
-        if (rs == true){
-            rs = false;
-        }else {
-            rs = true;
+        model.addAttribute("users",user);
+        model.addAttribute("courses",courses1);
+        model.addAttribute("flag", false);
+        model.addAttribute("flag1", false);
+        model.addAttribute("flag2", rs);
+        return "course-web";
+    }
+
+
+    @PostMapping("/course/search")
+    public String searchCourse(@RequestParam("idOrName") String idOrName, HttpServletRequest httpServletRequest, Model model){
+        String token = "";
+        Users user = null;
+        if(httpServletRequest.getCookies() != null){
+            for (Cookie cookie : httpServletRequest.getCookies()) {
+                if(cookie.getName().equals("access_token")){
+                    token = cookie.getValue();
+                }
+            }
+            String token_valid = "Bearer "+token;
+            if(token != ""){
+                user = userDAO.getUserFromToken(token_valid);
+            }
+        }
+
+        List<Course> courses = courseDAO.findByIdOrCourseName(idOrName);
+        List<UsersCourseRequest> courseRequests = courseDAO.getAllSignupCourse();
+        List<Course> courseList = new ArrayList<>();
+        try {
+            courseList = courseDAO.getListCourseFromUserCourseRequest(user.getId(),courseRequests);
+        }catch (Exception e){
+
+        }
+        List<Course> courses1 = new ArrayList<>();
+        courses1.addAll(courses);
+        if(courseList.size()>0){
+            courseList.forEach(course -> {
+                courses.forEach(course2 -> {
+                    if (course.getId() == course2.getId()){
+                        courses1.remove(course2);
+                    }
+                });
+            });
         }
 
         model.addAttribute("users",user);
         model.addAttribute("courses",courses1);
         model.addAttribute("flag", false);
         model.addAttribute("flag1", false);
-        model.addAttribute("flag2", rs);
+        model.addAttribute("flag2", false);
         return "course-web";
     }
 }

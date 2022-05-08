@@ -9,6 +9,7 @@ import web.english.application.entity.user.Student;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class UsersExamScores {
 
     private UsersExamScoresKey usersExamScoresKey;
@@ -16,6 +17,7 @@ public class UsersExamScores {
     private Exam exam;
 
     private int scores;
+
 
 
 }

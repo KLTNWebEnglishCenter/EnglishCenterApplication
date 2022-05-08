@@ -1,0 +1,210 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Admin</title>
+
+    <link th:href="@{/admin/assets/css/pace.min.css}" rel="stylesheet" />
+    <script th:src="@{/admin/assets/js/pace.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/admin/assets/plugins/summernote/dist/summernote-bs4.css}"/>
+    <link rel="icon" th:href="@{/admin/assets/images/favicon.ico}" type="image/x-icon}">
+    <link th:href="@{/admin/assets/plugins/vectormap/jquery-jvectormap-2.0.2.css}" rel="stylesheet" />
+    <link th:href="@{/admin/assets/plugins/simplebar/css/simplebar.css}" rel="stylesheet" />
+    <link th:href="@{/admin/assets/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/admin/assets/css/animate.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/admin/assets/css/icons.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/admin/assets/css/sidebar-menu.css}" rel="stylesheet" />
+    <link th:href="@{/admin/assets/css/app-style.css}" rel="stylesheet" />
+
+    <style>
+        .room-schedule {
+            display: grid;
+            grid-template-columns: auto auto auto auto auto;
+        }
+    </style>
+
+</head>
+
+<body class="bg-theme bg-theme1">
+
+<!-- start loader -->
+<div id="pageloader-overlay" class="visible incoming">
+    <div class="loader-wrapper-outer">
+        <div class="loader-wrapper-inner">
+            <div class="loader"></div>
+        </div>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
+        <div class="brand-logo">
+            <a th:href="@{/admin/home}">
+                <img src="/admin/assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
+                <h5 class="logo-text">TOPAL</h5>
+            </a>
+        </div>
+        <ul th:replace="~{admin/index::menu-fragment}">
+        </ul>
+    </div>
+    <header class="topbar-nav">
+        <nav class="navbar navbar-expand fixed-top">
+            <ul class="navbar-nav mr-auto align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link toggle-menu" href="javascript:void();">
+                        <i class="icon-menu menu-icon"></i>
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav align-items-center right-nav-link">
+                <li class="nav-item">
+                    <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" href="#">
+              <span class="user-profile"><img src="/admin/assets/images/avatar-admin.png" class="img-circle"
+                                              alt="user avatar"></span>
+                    </a>
+                    <ul th:replace="~{admin/index::admin-fragment}">
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <div class="clearfix"></div>
+
+    <!-- Body -->
+    <div class="content-wrapper">
+        <div class="container-fluid">
+
+            <div class="row mt-3">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title">Cập nhật lịch học</div>
+                            <hr>
+                            <form th:action="@{/admin/classroom/schedule/update/one}" method="post" enctype="application/json;charset=UTF-8">
+                                <input type="hidden" th:value="${classroom.id}" class="form-control" th:name="classroomId">
+                                <input type="hidden" th:value="${scheduleId}" class="form-control" th:name="scheduleId">
+                                <div class="form-group">
+                                    <label for="input-1">Tên lớp học</label>
+                                    <input type="text" th:value="${classroom.classname}" class="form-control" id="input-1" readonly >
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-0">Hình thức học</label>
+                                    <div>
+                                        <select id="input-0" class="form-control valid" th:name="type" required aria-invalid="false" th:onchange="roomChange();">
+                                            <option value="off"> Trực tiếp </option>
+                                            <option value="on"> Trực tuyến </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="room-off">
+                                    <label for="input-2">Phòng học offline</label>
+                                    <input type="text" th:name="location" class="form-control" id="input-2">
+                                </div>
+                                <div class="form-group" id="room-on">
+                                    <label for="input-3">Phòng học online</label>
+                                    <input type="text" th:name="meetingInfo" class="form-control" id="input-3">
+                                </div>
+                                <div class="form-group">
+                                    <a class="btn btn-danger px-5" th:href="@{/admin/classroom/info/{id}(id=${classroom.id})}"><i class="icon-lock"></i>Hủy</a>
+                                    <button type="submit" class="btn btn-light px-5"><i class="icon-lock"></i>Lưu</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="overlay toggle-menu"></div>
+        </div>
+    </div>
+    <script>
+		var date = new Date();
+
+		var day = date.getDate();
+		var month = date.getMonth() + 1;
+		var year = date.getFullYear();
+
+		if (month < 10) month = "0" + month;
+		if (day < 10) day = "0" + day;
+
+		var today = year + "-" + month + "-" + day;
+
+
+		document.getElementById('the-date1').value = today;
+        document.getElementById('the-date2').value = today;
+        document.getElementById('the-date3').value = today;
+    </script>
+    <!-- Body -->
+
+    <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
+    <!-- <div class="right-sidebar">
+      <div class="switcher-icon">
+        <i class="zmdi zmdi-settings zmdi-hc-spin"></i>
+      </div>
+      <div class="right-sidebar-content">
+        <p class="mb-0">Màu nền admin</p>
+        <hr>
+        <ul class="switcher">
+          <li id="theme1"></li>
+          <li id="theme2"></li>
+          <li id="theme3"></li>
+          <li id="theme4"></li>
+          <li id="theme5"></li>
+          <li id="theme6"></li>
+        </ul>
+        <p class="mb-0">Màu nền gradient</p>
+        <hr>
+        <ul class="switcher">
+          <li id="theme7"></li>
+          <li id="theme8"></li>
+          <li id="theme9"></li>
+          <li id="theme10"></li>
+          <li id="theme11"></li>
+          <li id="theme12"></li>
+          <li id="theme13"></li>
+          <li id="theme14"></li>
+          <li id="theme15"></li>
+        </ul>
+      </div>
+    </div> -->
+</div>
+
+<script src="/admin/assets/js/jquery.min.js"></script>
+<script src="/admin/assets/js/popper.min.js"></script>
+<script src="/admin/assets/js/bootstrap.min.js"></script>
+<script src="/admin/assets/plugins/simplebar/js/simplebar.js"></script>
+<script src="/admin/assets/js/sidebar-menu.js"></script>
+<script src="/admin/assets/js/jquery.loading-indicator.js"></script>
+<script src="/admin/assets/js/app-script.js"></script>
+<script src="/admin/assets/plugins/Chart.js/Chart.min.js"></script>
+<script src="/admin/assets/js/index.js"></script>
+<script src="/admin/assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
+<script>
+     const type = document.getElementById("input-0")
+     document.getElementById("room-on").style.display = 'none'
+     document.getElementById("input-2").required = true
+     function roomChange(){
+         var value = type.options[type.selectedIndex].value;
+         if(value == "off"){
+            document.getElementById("room-off").style.display = 'block'
+            document.getElementById("room-on").style.display = 'none'
+
+            document.getElementById("input-3").required = false
+            document.getElementById("input-2").required = true
+         }
+         if(value == "on"){
+            document.getElementById("room-off").style.display = 'none'
+            document.getElementById("room-on").style.display = 'block'
+
+            document.getElementById("input-3").required = true
+            document.getElementById("input-2").required = false
+         }
+    }
+</script>
+</body>
+
+</html>

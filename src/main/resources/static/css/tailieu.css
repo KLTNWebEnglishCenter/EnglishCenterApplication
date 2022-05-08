@@ -13,7 +13,7 @@
 
 .document-item {
     width: 350px;
-    height: 600px;
+    min-height: 300px;
 }
 
 .document-item img {

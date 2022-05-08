@@ -462,4 +462,70 @@ public class ClassroomController {
         }
         return "redirect:/admin/classroom/schedule/"+id;
     }
+
+    @PostMapping("/classroom/schedule/delete")
+    public String deleteClassroomSchedule(HttpServletRequest httpServletRequest){
+        String[] c = httpServletRequest.getParameterValues("classroomId");
+        String[] s = httpServletRequest.getParameterValues("scheduleId");
+        int id = Integer.parseInt(c[0]);
+        int scheduleId = Integer.parseInt(s[0]);
+        String delete = classroomDAO.deleteClassroomSchedule(id,scheduleId);
+        log.info(delete);
+        return "redirect:/admin/classroom/schedule/"+id;
+    }
+
+    @PostMapping("/classroom/schedule/updateOne")
+    public String updateClassroomSchedule(HttpServletRequest httpServletRequest,Model model){
+        String[] c = httpServletRequest.getParameterValues("classroomId");
+        String[] s = httpServletRequest.getParameterValues("scheduleId");
+        int id = Integer.parseInt(c[0]);
+        int scheduleId = Integer.parseInt(s[0]);
+        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
+        String token=jwtHelper.createToken(jwt);
+
+        if(jwt == ""){
+            return "redirect:/login";
+        }
+        Users user = userDAO.getUserFromToken(token);
+        if(user == null){
+            return "redirect:/login";
+        }
+        model.addAttribute("users",user);
+
+        model.addAttribute("scheduleId",scheduleId);
+        Classroom  classroom = classroomDAO.getClassroom(id);
+        model.addAttribute("classroom",classroom);
+        return "admin/classroom/capnhatmotlichhoc";
+    }
+
+    @PostMapping("/classroom/schedule/update/one")
+    public String updateChangeSchedule(HttpServletRequest httpServletRequest){
+        String classroomId = httpServletRequest.getParameter("classroomId");
+        String schedule = httpServletRequest.getParameter("scheduleId");
+        String type = httpServletRequest.getParameter("type");
+        String meetingInfo = httpServletRequest.getParameter("meetingInfo");
+        String location = httpServletRequest.getParameter("location");
+
+        int id = Integer.parseInt(classroomId);
+        int scheduleId = Integer.parseInt(schedule);
+        if (type.equals("on")){
+            ClassroomScheduleKey key = new ClassroomScheduleKey(id,scheduleId);
+            ClassroomSchedule classroomSchedule = new ClassroomSchedule();
+            classroomSchedule.setClassroomScheduleKey(key);
+            classroomSchedule.setType("Trực tuyến");
+            classroomSchedule.setMeetingInfo(meetingInfo);
+
+            scheduleDAO.save(classroomSchedule);
+
+        }else if (type.equals("off")){
+            ClassroomScheduleKey key = new ClassroomScheduleKey(id,scheduleId);
+            ClassroomSchedule classroomSchedule = new ClassroomSchedule();
+            classroomSchedule.setClassroomScheduleKey(key);
+            classroomSchedule.setType("Trực tiếp");
+            classroomSchedule.setLocation(location);
+
+            scheduleDAO.save(classroomSchedule);
+        }
+        return "redirect:/admin/classroom/schedule/"+id;
+    }
 }

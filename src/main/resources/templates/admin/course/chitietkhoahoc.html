@@ -107,6 +107,10 @@
                   <label for="input-7">Ngày tạo</label>
                   <input type="date" class="form-control" id="input-7" placeholder="Ngày tạo" value="" name="course-created" readonly th:field="*{createDate}">
                 </div>
+                <div class="form-group">
+                  <label for="input-8">Trạng thái</label>
+                  <input type="text" class="form-control" id="input-8" readonly th:value="${course.enable ? 'Kích hoạt' : 'Vô hiệu'}">
+                </div>
                 <div class="form-footer">
                   <button type="button" class="btn btn-success" th:onclick="'window.location.href = \'' + @{/admin/courses} + '\''"><i class="fa fa-check-square-o"></i>Quay lại</button>
                 </div>

@@ -34,6 +34,43 @@
     .lichhoc{
       min-height: 150px;
     }
+
+    .dialog {
+      display: none;
+      position: fixed;
+      justify-content: space-between;
+      padding: 5px;
+      width: 100px;
+      top: 0;
+      left: 0;
+      min-height: 50px;
+      background-color: rgb(13, 13, 133);
+      border-radius: 5px;
+      font-size: larger;
+      font-weight: bold;
+    }
+    .dialog-update {
+      border: 1px solid black;
+      color: black;
+      border-radius: 10px;
+      background-color: white;
+    }
+
+    .dialog-delete {
+      border: 1px solid black;
+      color: black;
+      border-radius: 10px;
+      background-color: white;
+    }
+
+    .dialog-update:hover {
+      background-color: rgb(0, 47, 255);
+      color: wheat;
+    }
+    .dialog-delete:hover {
+      background-color: rgb(0, 47, 255);
+      color: red;
+    }
   </style>
 
     <script th:inline="javascript">
@@ -112,6 +149,7 @@
       document.body.appendChild(form);
       form.submit();
     }
+
 
   </script>
 </head>
@@ -234,86 +272,103 @@
                 <div class="col buoi">
                     <!--            Sang Thu 2-->
                     <th:block th:each="scheduleInMonday : ${scheduleInMondays}" >
-                        <div class="lichhoc multiline" th:if="${scheduleInMonday.lesson == '1-3' || scheduleInMonday.lesson == '4-6'}">
+                        <div th:onclick="showDialog(this)" th:id="${scheduleInMonday.scheduleId}" class="lichhoc multiline" th:if="${scheduleInMonday.lesson == '1-3' || scheduleInMonday.lesson == '4-6'}">
                             <h2 class="ten multiline" th:text="${'Lớp ' + scheduleInMonday.classname}"></h2>
                             <h3 class="tiet multiline" th:text="${'Tiết: ' + scheduleInMonday.lesson}"></h3>
                             <h3 class="phong multiline" th:text="${'Hình thức: ' + scheduleInMonday.type}"></h3>
                             <h3 class="gianagvien multiline" th:text="${'GV: ' + scheduleInMonday.teacherName}"></h3>
-                            <h3 class="ghichu multiline"  th:text="${scheduleInMonday.meetingInfo != 'null'} ?  ${scheduleInMonday.meetingInfo} : ${'Phòng: ' + scheduleInMonday.location}"></h3>
-                            <!--                <h3 class="ghichu multiline"  th:if="${scheduleInMonday.meetingInfo != 'null'} "  th:text="${scheduleInMonday.meetingInfo}"></h3>-->
-                            <!--                <h3 class="ghichu multiline"  th:if="${scheduleInMonday.location != 'null'} "  th:text="${scheduleInMonday.location}"></h3>-->
+<!--                            <h3 class="ghichu multiline"  th:text="${scheduleInMonday.meetingInfo != null} ?  ${scheduleInMonday.meetingInfo} : ${'Phòng: ' + scheduleInMonday.location}"></h3>-->
+                            <h3 class="ghichu multiline"  th:if="${scheduleInMonday.meetingInfo != null} "  th:text="${scheduleInMonday.meetingInfo}"></h3>
+                            <h3 class="ghichu multiline"  th:if="${scheduleInMonday.location != null} "  th:text="${'Phòng: ' + scheduleInMonday.location}"></h3>
                         </div>
                     </th:block>
                 </div>
                 <div class="col buoi">
                     <!--            Sang Thu 3-->
                     <th:block th:each="scheduleInTuesday : ${scheduleInTuesdays}" >
-                        <div class="lichhoc multiline" th:if="${scheduleInTuesday.lesson == '1-3' || scheduleInTuesday.lesson == '4-6'}">
+                        <div th:onclick="showDialog(this)" th:id="${scheduleInTuesday.scheduleId}" class="lichhoc multiline" th:if="${scheduleInTuesday.lesson == '1-3' || scheduleInTuesday.lesson == '4-6'}">
                             <h2 class="ten multiline" th:text="${'Lớp ' + scheduleInTuesday.classname}"></h2>
                             <h3 class="tiet multiline" th:text="${'Tiết: ' + scheduleInTuesday.lesson}"></h3>
                             <h3 class="phong multiline" th:text="${'Hình thức: ' + scheduleInTuesday.type}"></h3>
                             <h3 class="gianagvien multiline" th:text="${'GV: ' + scheduleInTuesday.teacherName}"></h3>
-                            <h3 class="ghichu multiline"  th:text="${scheduleInTuesday.meetingInfo != 'null'} ?  ${scheduleInTuesday.meetingInfo} : ${'Phòng: ' + scheduleInTuesday.location}"></h3>
+<!--                            <h3 class="ghichu multiline"  th:text="${scheduleInTuesday.meetingInfo != 'null'} ?  ${scheduleInTuesday.meetingInfo} : ${'Phòng: ' + scheduleInTuesday.location}"></h3>-->
+                            <h3 class="ghichu multiline"  th:if="${scheduleInTuesday.meetingInfo != null} "  th:text="${scheduleInTuesday.meetingInfo}"></h3>
+                            <h3 class="ghichu multiline"  th:if="${scheduleInTuesday.location != null} "  th:text="${'Phòng: ' + scheduleInTuesday.location}"></h3>
                         </div>
                     </th:block>
                 </div>
                 <div class="col buoi">
                     <!--            Sang Thu 4-->
                     <th:block th:each="scheduleInWednesday : ${scheduleInWednesdays}" >
-                        <div class="lichhoc multiline" th:if="${scheduleInWednesday.lesson == '1-3' || scheduleInWednesday.lesson == '4-6'}">
+                        <div th:onclick="showDialog(this)" th:id="${scheduleInWednesday.scheduleId}" class="lichhoc multiline" th:if="${scheduleInWednesday.lesson == '1-3' || scheduleInWednesday.lesson == '4-6'}">
                             <h2 class="ten multiline" th:text="${'Lớp ' + scheduleInWednesday.classname}"></h2>
                             <h3 class="tiet multiline" th:text="${'Tiết: ' + scheduleInWednesday.lesson}"></h3>
                             <h3 class="phong multiline" th:text="${'Hình thức: ' + scheduleInWednesday.type}"></h3>
                             <h3 class="gianagvien multiline" th:text="${'GV: ' + scheduleInWednesday.teacherName}"></h3>
-                            <h3 class="ghichu multiline"  th:text="${scheduleInWednesday.meetingInfo != 'null'} ?  ${scheduleInWednesday.meetingInfo} : ${'Phòng: ' + scheduleInWednesday.location}"></h3>
+<!--                            <h3 class="ghichu multiline"  th:text="${scheduleInWednesday.meetingInfo != 'null'} ?  ${scheduleInWednesday.meetingInfo} : ${'Phòng: ' + scheduleInWednesday.location}"></h3>-->
+                            <h3 class="ghichu multiline"  th:if="${scheduleInWednesday.meetingInfo != null} "  th:text="${scheduleInWednesday.meetingInfo}"></h3>
+                            <h3 class="ghichu multiline"  th:if="${scheduleInWednesday.location != null} "  th:text="${'Phòng: ' + scheduleInWednesday.location}"></h3>
+
                         </div>
                     </th:block>
                 </div>
                 <div class="col buoi">
                     <!--            Sang Thu 5-->
                     <th:block th:each="scheduleInThursday : ${scheduleInThursdays}" >
-                        <div class="lichhoc multiline" th:if="${scheduleInThursday.lesson == '1-3' || scheduleInThursday.lesson == '4-6'}">
+                        <div th:onclick="showDialog(this)" th:id="${scheduleInThursday.scheduleId}" class="lichhoc multiline" th:if="${scheduleInThursday.lesson == '1-3' || scheduleInThursday.lesson == '4-6'}">
                             <h2 class="ten multiline" th:text="${'Lớp ' + scheduleInThursday.classname}"></h2>
                             <h3 class="tiet multiline" th:text="${'Tiết: ' + scheduleInThursday.lesson}"></h3>
                             <h3 class="phong multiline" th:text="${'Hình thức: ' + scheduleInThursday.type}"></h3>
                             <h3 class="gianagvien multiline" th:text="${'GV: ' + scheduleInThursday.teacherName}"></h3>
-                            <h3 class="ghichu multiline"  th:text="${scheduleInThursday.meetingInfo != 'null'} ?  ${scheduleInThursday.meetingInfo} : ${'Phòng: ' + scheduleInThursday.location}"></h3>
+<!--                            <h3 class="ghichu multiline"  th:text="${scheduleInThursday.meetingInfo != 'null'} ?  ${scheduleInThursday.meetingInfo} : ${'Phòng: ' + scheduleInThursday.location}"></h3>-->
+                            <h3 class="ghichu multiline"  th:if="${scheduleInThursday.meetingInfo != null} "  th:text="${scheduleInThursday.meetingInfo}"></h3>
+                            <h3 class="ghichu multiline"  th:if="${scheduleInThursday.location != null} "  th:text="${'Phòng: ' + scheduleInThursday.location}"></h3>
+
                         </div>
                     </th:block>
                 </div>
                 <div class="col buoi">
                     <!--            Sang Thu 6-->
                     <th:block th:each="scheduleInFriday : ${scheduleInFridays}" >
-                        <div class="lichhoc multiline" th:if="${scheduleInFriday.lesson == '1-3' || scheduleInFriday.lesson == '4-6'}">
+                        <div th:onclick="showDialog(this)" th:id="${scheduleInFriday.scheduleId}" class="lichhoc multiline" th:if="${scheduleInFriday.lesson == '1-3' || scheduleInFriday.lesson == '4-6'}">
                             <h2 class="ten multiline" th:text="${'Lớp ' + scheduleInFriday.classname}"></h2>
                             <h3 class="tiet multiline" th:text="${'Tiết: ' + scheduleInFriday.lesson}"></h3>
                             <h3 class="phong multiline" th:text="${'Hình thức: ' + scheduleInFriday.type}"></h3>
                             <h3 class="gianagvien multiline" th:text="${'GV: ' + scheduleInFriday.teacherName}"></h3>
-                            <h3 class="ghichu multiline"  th:text="${scheduleInFriday.meetingInfo != 'null'} ?  ${scheduleInFriday.meetingInfo} : ${'Phòng: ' + scheduleInFriday.location}"></h3>
+<!--                            <h3 class="ghichu multiline"  th:text="${scheduleInFriday.meetingInfo != 'null'} ?  ${scheduleInFriday.meetingInfo} : ${'Phòng: ' + scheduleInFriday.location}"></h3>-->
+                            <h3 class="ghichu multiline"  th:if="${scheduleInFriday.meetingInfo != null} "  th:text="${scheduleInFriday.meetingInfo}"></h3>
+                            <h3 class="ghichu multiline"  th:if="${scheduleInFriday.location != null} "  th:text="${'Phòng: ' + scheduleInFriday.location}"></h3>
+
                         </div>
                     </th:block>
                 </div>
                 <div class="col buoi">
                     <!--            Sang Thu 7-->
                     <th:block th:each="scheduleInSaturday : ${scheduleInSaturdays}" >
-                        <div class="lichhoc multiline" th:if="${scheduleInSaturday.lesson == '1-3' || scheduleInSaturday.lesson == '4-6'}">
+                        <div th:onclick="showDialog(this)" th:id="${scheduleInSaturday.scheduleId}" class="lichhoc multiline" th:if="${scheduleInSaturday.lesson == '1-3' || scheduleInSaturday.lesson == '4-6'}">
                             <h2 class="ten multiline" th:text="${'Lớp ' + scheduleInSaturday.classname}"></h2>
                             <h3 class="tiet multiline" th:text="${'Tiết: ' + scheduleInSaturday.lesson}"></h3>
                             <h3 class="phong multiline" th:text="${'Hình thức: ' + scheduleInSaturday.type}"></h3>
                             <h3 class="gianagvien multiline" th:text="${'GV: ' + scheduleInSaturday.teacherName}"></h3>
-                            <h3 class="ghichu multiline"  th:text="${scheduleInSaturday.meetingInfo != 'null'} ?  ${scheduleInSaturday.meetingInfo} : ${'Phòng: ' + scheduleInSaturday.location}"></h3>
+<!--                            <h3 class="ghichu multiline"  th:text="${scheduleInSaturday.meetingInfo != 'null'} ?  ${scheduleInSaturday.meetingInfo} : ${'Phòng: ' + scheduleInSaturday.location}"></h3>-->
+                            <h3 class="ghichu multiline"  th:if="${scheduleInSaturday.meetingInfo != null} "  th:text="${scheduleInSaturday.meetingInfo}"></h3>
+                            <h3 class="ghichu multiline"  th:if="${scheduleInSaturday.location != null} "  th:text="${'Phòng: ' + scheduleInSaturday.location}"></h3>
+
                         </div>
                     </th:block>
                 </div>
                 <div class="col buoi">
                     <!--            Sang CN-->
                     <th:block th:each="scheduleInSunday : ${scheduleInSundays}" >
-                        <div class="lichhoc multiline" th:if="${scheduleInSunday.lesson == '1-3' || scheduleInSunday.lesson == '4-6'}">
+                        <div th:onclick="showDialog(this)" th:id="${scheduleInSunday.scheduleId}" class="lichhoc multiline" th:if="${scheduleInSunday.lesson == '1-3' || scheduleInSunday.lesson == '4-6'}">
                             <h2 class="ten multiline" th:text="${'Lớp ' + scheduleInSunday.classname}"></h2>
                             <h3 class="tiet multiline" th:text="${'Tiết: ' + scheduleInSunday.lesson}"></h3>
                             <h3 class="phong multiline" th:text="${'Hình thức: ' + scheduleInSunday.type}"></h3>
                             <h3 class="gianagvien multiline" th:text="${'GV: ' + scheduleInSunday.teacherName}"></h3>
-                            <h3 class="ghichu multiline"  th:text="${scheduleInSunday.meetingInfo != 'null'} ?  ${scheduleInSunday.meetingInfo} : ${'Phòng: ' + scheduleInSunday.location}"></h3>
+<!--                            <h3 class="ghichu multiline"  th:text="${scheduleInSunday.meetingInfo != 'null'} ?  ${scheduleInSunday.meetingInfo} : ${'Phòng: ' + scheduleInSunday.location}"></h3>-->
+                            <h3 class="ghichu multiline"  th:if="${scheduleInSunday.meetingInfo != null} "  th:text="${scheduleInSunday.meetingInfo}"></h3>
+                            <h3 class="ghichu multiline"  th:if="${scheduleInSunday.location != null} "  th:text="${'Phòng: ' + scheduleInSunday.location}"></h3>
+
                         </div>
                     </th:block>
                 </div>
@@ -325,84 +380,103 @@
                 <div class="col buoi">
                     <!--            Chieu Thu 2-->
                     <th:block th:each="scheduleInMonday : ${scheduleInMondays}" >
-                        <div class="lichhoc multiline" th:if="${scheduleInMonday.lesson == '7-9' || scheduleInMonday.lesson == '10-12'}">
+                        <div th:onclick="showDialog(this)" th:id="${scheduleInMonday.scheduleId}" class="lichhoc multiline" th:if="${scheduleInMonday.lesson == '7-9' || scheduleInMonday.lesson == '10-12'}">
                             <h2 class="ten multiline" th:text="${'Lớp ' + scheduleInMonday.classname}"></h2>
                             <h3 class="tiet multiline" th:text="${'Tiết: ' + scheduleInMonday.lesson}"></h3>
                             <h3 class="phong multiline" th:text="${'Hình thức: ' + scheduleInMonday.type}"></h3>
                             <h3 class="gianagvien multiline" th:text="${'GV: ' + scheduleInMonday.teacherName}"></h3>
-                            <h3 class="ghichu multiline"  th:text="${scheduleInMonday.meetingInfo != 'null'} ?  ${scheduleInMonday.meetingInfo} : ${'Phòng: ' + scheduleInMonday.location}"></h3>
+<!--                            <h3 class="ghichu multiline"  th:text="${scheduleInMonday.meetingInfo != null} ?  ${scheduleInMonday.meetingInfo} : ${'Phòng: ' + scheduleInMonday.location}"></h3>-->
+                            <h3 class="ghichu multiline"  th:if="${scheduleInMonday.meetingInfo != null} "  th:text="${scheduleInMonday.meetingInfo}"></h3>
+                            <h3 class="ghichu multiline"  th:if="${scheduleInMonday.location != null} "  th:text="${'Phòng: ' + scheduleInMonday.location}"></h3>
                         </div>
                     </th:block>
                 </div>
                 <div class="col buoi">
                     <!--            Chieu Thu 3-->
                     <th:block th:each="scheduleInTuesday : ${scheduleInTuesdays}" >
-                        <div class="lichhoc multiline" th:if="${scheduleInTuesday.lesson == '7-9' || scheduleInTuesday.lesson == '10-12'}">
+                        <div th:onclick="showDialog(this)" th:id="${scheduleInTuesday.scheduleId}" class="lichhoc multiline" th:if="${scheduleInTuesday.lesson == '7-9' || scheduleInTuesday.lesson == '10-12'}">
                             <h2 class="ten multiline" th:text="${'Lớp ' + scheduleInTuesday.classname}"></h2>
                             <h3 class="tiet multiline" th:text="${'Tiết: ' + scheduleInTuesday.lesson}"></h3>
                             <h3 class="phong multiline" th:text="${'Hình thức: ' + scheduleInTuesday.type}"></h3>
                             <h3 class="gianagvien multiline" th:text="${'GV: ' + scheduleInTuesday.teacherName}"></h3>
-                            <h3 class="ghichu multiline"  th:text="${scheduleInTuesday.meetingInfo != 'null'} ?  ${scheduleInTuesday.meetingInfo} : ${'Phòng: ' + scheduleInTuesday.location}"></h3>
+<!--                            <h3 class="ghichu multiline"  th:text="${scheduleInTuesday.meetingInfo != 'null'} ? ${scheduleInTuesday.meetingInfo} : ${'Phòng: ' + scheduleInTuesday.location}"></h3>-->
+                            <h3 class="ghichu multiline"  th:if="${scheduleInTuesday.meetingInfo != null} "  th:text="${scheduleInTuesday.meetingInfo}"></h3>
+                            <h3 class="ghichu multiline"  th:if="${scheduleInTuesday.location != null} "  th:text="${'Phòng: ' + scheduleInTuesday.location}"></h3>
                         </div>
                     </th:block>
                 </div>
                 <div class="col buoi">
                     <!--            Chieu Thu 4-->
                     <th:block th:each="scheduleInWednesday : ${scheduleInWednesdays}" >
-                        <div class="lichhoc multiline" th:if="${scheduleInWednesday.lesson == '7-9' || scheduleInWednesday.lesson == '10-12'}">
+                        <div th:onclick="showDialog(this)" th:id="${scheduleInWednesday.scheduleId}" class="lichhoc multiline" th:if="${scheduleInWednesday.lesson == '7-9' || scheduleInWednesday.lesson == '10-12'}">
                             <h2 class="ten multiline" th:text="${'Lớp ' + scheduleInWednesday.classname}"></h2>
                             <h3 class="tiet multiline" th:text="${'Tiết: ' + scheduleInWednesday.lesson}"></h3>
                             <h3 class="phong multiline" th:text="${'Hình thức: ' + scheduleInWednesday.type}"></h3>
                             <h3 class="gianagvien multiline" th:text="${'GV: ' + scheduleInWednesday.teacherName}"></h3>
-                            <h3 class="ghichu multiline"  th:text="${scheduleInWednesday.meetingInfo != 'null'} ?  ${scheduleInWednesday.meetingInfo} : ${'Phòng: ' + scheduleInWednesday.location}"></h3>
+<!--                            <h3 class="ghichu multiline"  th:text="${scheduleInWednesday.meetingInfo != 'null'} ? ${scheduleInWednesday.meetingInfo} : ${'Phòng: ' + scheduleInWednesday.location}"></h3>-->
+                            <h3 class="ghichu multiline"  th:if="${scheduleInWednesday.meetingInfo != null} "  th:text="${scheduleInWednesday.meetingInfo}"></h3>
+                            <h3 class="ghichu multiline"  th:if="${scheduleInWednesday.location != null} "  th:text="${'Phòng: ' + scheduleInWednesday.location}"></h3>
+
                         </div>
                     </th:block>
                 </div>
                 <div class="col buoi">
                     <!--            Chieu Thu 5-->
                     <th:block th:each="scheduleInThursday : ${scheduleInThursdays}" >
-                        <div class="lichhoc multiline" th:if="${scheduleInThursday.lesson == '7-9' || scheduleInThursday.lesson == '10-12'}">
+                        <div th:onclick="showDialog(this)" th:id="${scheduleInThursday.scheduleId}" class="lichhoc multiline" th:if="${scheduleInThursday.lesson == '7-9' || scheduleInThursday.lesson == '10-12'}">
                             <h2 class="ten multiline" th:text="${'Lớp ' + scheduleInThursday.classname}"></h2>
                             <h3 class="tiet multiline" th:text="${'Tiết: ' + scheduleInThursday.lesson}"></h3>
                             <h3 class="phong multiline" th:text="${'Hình thức: ' + scheduleInThursday.type}"></h3>
                             <h3 class="gianagvien multiline" th:text="${'GV: ' + scheduleInThursday.teacherName}"></h3>
-                            <h3 class="ghichu multiline"  th:text="${scheduleInThursday.meetingInfo != 'null'} ?  ${scheduleInThursday.meetingInfo} : ${'Phòng: ' + scheduleInThursday.location}"></h3>
+<!--                            <h3 class="ghichu multiline"  th:text="${scheduleInThursday.meetingInfo != 'null'} ?  ${scheduleInThursday.meetingInfo} : ${'Phòng: ' + scheduleInThursday.location}"></h3>-->
+                            <h3 class="ghichu multiline"  th:if="${scheduleInThursday.meetingInfo != null} "  th:text="${scheduleInThursday.meetingInfo}"></h3>
+                            <h3 class="ghichu multiline"  th:if="${scheduleInThursday.location != null} "  th:text="${'Phòng: ' + scheduleInThursday.location}"></h3>
+
                         </div>
                     </th:block>
                 </div>
                 <div class="col buoi">
                     <!--            Chieu Thu 6-->
                     <th:block th:each="scheduleInFriday : ${scheduleInFridays}" >
-                        <div class="lichhoc multiline" th:if="${scheduleInFriday.lesson == '7-9' || scheduleInFriday.lesson == '10-12'}">
+                        <div th:onclick="showDialog(this)" th:id="${scheduleInFriday.scheduleId}" class="lichhoc multiline" th:if="${scheduleInFriday.lesson == '7-9' || scheduleInFriday.lesson == '10-12'}">
                             <h2 class="ten multiline" th:text="${'Lớp ' + scheduleInFriday.classname}"></h2>
                             <h3 class="tiet multiline" th:text="${'Tiết: ' + scheduleInFriday.lesson}"></h3>
                             <h3 class="phong multiline" th:text="${'Hình thức: ' + scheduleInFriday.type}"></h3>
                             <h3 class="gianagvien multiline" th:text="${'GV: ' + scheduleInFriday.teacherName}"></h3>
-                            <h3 class="ghichu multiline"  th:text="${scheduleInFriday.meetingInfo != 'null'} ?  ${scheduleInFriday.meetingInfo} : ${'Phòng: ' + scheduleInFriday.location}"></h3>
+<!--                            <h3 class="ghichu multiline"  th:text="${scheduleInFriday.meetingInfo != 'null'} ?  ${scheduleInFriday.meetingInfo} : ${'Phòng: ' + scheduleInFriday.location}"></h3>-->
+                            <h3 class="ghichu multiline"  th:if="${scheduleInFriday.meetingInfo != null} "  th:text="${scheduleInFriday.meetingInfo}"></h3>
+                            <h3 class="ghichu multiline"  th:if="${scheduleInFriday.location != null} "  th:text="${'Phòng: ' + scheduleInFriday.location}"></h3>
+
                         </div>
                     </th:block>
                 </div>
                 <div class="col buoi">
                     <!--            Chieu Thu 7-->
                     <th:block th:each="scheduleInSaturday : ${scheduleInSaturdays}" >
-                        <div class="lichhoc multiline" th:if="${scheduleInSaturday.lesson == '7-9' || scheduleInSaturday.lesson == '10-12'}">
+                        <div th:onclick="showDialog(this)" th:id="${scheduleInSaturday.scheduleId}" class="lichhoc multiline" th:if="${scheduleInSaturday.lesson == '7-9' || scheduleInSaturday.lesson == '10-12'}">
                             <h2 class="ten multiline" th:text="${'Lớp ' + scheduleInSaturday.classname}"></h2>
                             <h3 class="tiet multiline" th:text="${'Tiết: ' + scheduleInSaturday.lesson}"></h3>
                             <h3 class="phong multiline" th:text="${'Hình thức: ' + scheduleInSaturday.type}"></h3>
                             <h3 class="gianagvien multiline" th:text="${'GV: ' + scheduleInSaturday.teacherName}"></h3>
-                            <h3 class="ghichu multiline"  th:text="${scheduleInSaturday.meetingInfo != 'null'} ?  ${scheduleInSaturday.meetingInfo} : ${'Phòng: ' + scheduleInSaturday.location}"></h3>
+<!--                            <h3 class="ghichu multiline"  th:text="${scheduleInSaturday.meetingInfo != 'null'} ?  ${scheduleInSaturday.meetingInfo} : ${'Phòng: ' + scheduleInSaturday.location}"></h3>-->
+                            <h3 class="ghichu multiline"  th:if="${scheduleInSaturday.meetingInfo != null} "  th:text="${scheduleInSaturday.meetingInfo}"></h3>
+                            <h3 class="ghichu multiline"  th:if="${scheduleInSaturday.location != null} "  th:text="${'Phòng: ' + scheduleInSaturday.location}"></h3>
+
                         </div>
                     </th:block>
                 </div>
                 <div class="col buoi">
                     <!--            Chieu CN-->
                     <th:block th:each="scheduleInSunday : ${scheduleInSundays}" >
-                        <div class="lichhoc multiline" th:if="${scheduleInSunday.lesson == '7-9' || scheduleInSunday.lesson == '10-12'}">
+                        <div th:onclick="showDialog(this)" th:id="${scheduleInSunday.scheduleId}" class="lichhoc multiline" th:if="${scheduleInSunday.lesson == '7-9' || scheduleInSunday.lesson == '10-12'}">
                             <h2 class="ten multiline" th:text="${'Lớp ' + scheduleInSunday.classname}"></h2>
                             <h3 class="tiet multiline" th:text="${'Tiết: ' + scheduleInSunday.lesson}"></h3>
                             <h3 class="phong multiline" th:text="${'Hình thức: ' + scheduleInSunday.type}"></h3>
                             <h3 class="gianagvien multiline" th:text="${'GV: ' + scheduleInSunday.teacherName}"></h3>
-                            <h3 class="ghichu multiline"  th:text="${scheduleInSunday.meetingInfo != 'null'} ?  ${scheduleInSunday.meetingInfo} : ${'Phòng: ' + scheduleInSunday.location}"></h3>
+<!--                            <h3 class="ghichu multiline"  th:text="${scheduleInSunday.meetingInfo != 'null'} ?  ${scheduleInSunday.meetingInfo} : ${'Phòng: ' + scheduleInSunday.location}"></h3>-->
+                            <h3 class="ghichu multiline"  th:if="${scheduleInSunday.meetingInfo != null} "  th:text="${scheduleInSunday.meetingInfo}"></h3>
+                            <h3 class="ghichu multiline"  th:if="${scheduleInSunday.location != null} "  th:text="${'Phòng: ' + scheduleInSunday.location}"></h3>
+
                         </div>
                     </th:block>
                 </div>
@@ -414,84 +488,103 @@
                 <div class="col buoi">
                     <!--            Toi Thu 2-->
                     <th:block th:each="scheduleInMonday : ${scheduleInMondays}" >
-                        <div class="lichhoc multiline" th:if="${scheduleInMonday.lesson == '13-15'}">
+                        <div th:onclick="showDialog(this)" th:id="${scheduleInMonday.scheduleId}" class="lichhoc multiline" th:if="${scheduleInMonday.lesson == '13-15'}">
                             <h2 class="ten multiline" th:text="${'Lớp ' + scheduleInMonday.classname}"></h2>
                             <h3 class="tiet multiline" th:text="${'Tiết: ' + scheduleInMonday.lesson}"></h3>
                             <h3 class="phong multiline" th:text="${'Hình thức: ' + scheduleInMonday.type}"></h3>
                             <h3 class="gianagvien multiline" th:text="${'GV: ' + scheduleInMonday.teacherName}"></h3>
-                            <h3 class="ghichu multiline"  th:text="${scheduleInMonday.meetingInfo != 'null'} ?  ${scheduleInMonday.meetingInfo} : ${'Phòng: ' + scheduleInMonday.location}"></h3>
+<!--                            <h3 class="ghichu multiline"  th:text="${scheduleInMonday.meetingInfo != 'null'} ?  ${scheduleInMonday.meetingInfo} : ${'Phòng: ' + scheduleInMonday.location}"></h3>-->
+                            <h3 class="ghichu multiline"  th:if="${scheduleInMonday.meetingInfo != null} "  th:text="${scheduleInMonday.meetingInfo}"></h3>
+                            <h3 class="ghichu multiline"  th:if="${scheduleInMonday.location != null} "  th:text="${'Phòng: ' + scheduleInMonday.location}"></h3>
                         </div>
                     </th:block>
                 </div>
                 <div class="col buoi">
                     <!--            Toi Thu 3-->
                     <th:block th:each="scheduleInTuesday : ${scheduleInTuesdays}" >
-                        <div class="lichhoc multiline" th:if="${scheduleInTuesday.lesson == '13-15'}">
+                        <div th:onclick="showDialog(this)" th:id="${scheduleInTuesday.scheduleId}" class="lichhoc multiline" th:if="${scheduleInTuesday.lesson == '13-15'}">
                             <h2 class="ten multiline" th:text="${'Lớp ' + scheduleInTuesday.classname}"></h2>
                             <h3 class="tiet multiline" th:text="${'Tiết: ' + scheduleInTuesday.lesson}"></h3>
                             <h3 class="phong multiline" th:text="${'Hình thức: ' + scheduleInTuesday.type}"></h3>
                             <h3 class="gianagvien multiline" th:text="${'GV: ' + scheduleInTuesday.teacherName}"></h3>
-                            <h3 class="ghichu multiline"  th:text="${scheduleInTuesday.meetingInfo != 'null'} ?  ${scheduleInTuesday.meetingInfo} : ${'Phòng: ' + scheduleInTuesday.location}"></h3>
+<!--                            <h3 class="ghichu multiline"  th:text="${scheduleInTuesday.meetingInfo != 'null'} ?  ${scheduleInTuesday.meetingInfo} : ${'Phòng: ' + scheduleInTuesday.location}"></h3>-->
+                            <h3 class="ghichu multiline"  th:if="${scheduleInTuesday.meetingInfo != null} "  th:text="${scheduleInTuesday.meetingInfo}"></h3>
+                            <h3 class="ghichu multiline"  th:if="${scheduleInTuesday.location != null} "  th:text="${'Phòng: ' + scheduleInTuesday.location}"></h3>
                         </div>
                     </th:block>
                 </div>
                 <div class="col buoi">
                     <!--            Toi Thu 4-->
                     <th:block th:each="scheduleInWednesday : ${scheduleInWednesdays}" >
-                        <div class="lichhoc multiline" th:if="${scheduleInWednesday.lesson == '13-15'}">
+                        <div th:onclick="showDialog(this)" th:id="${scheduleInWednesday.scheduleId}" class="lichhoc multiline" th:if="${scheduleInWednesday.lesson == '13-15'}">
                             <h2 class="ten multiline" th:text="${'Lớp ' + scheduleInWednesday.classname}"></h2>
                             <h3 class="tiet multiline" th:text="${'Tiết: ' + scheduleInWednesday.lesson}"></h3>
                             <h3 class="phong multiline" th:text="${'Hình thức: ' + scheduleInWednesday.type}"></h3>
                             <h3 class="gianagvien multiline" th:text="${'GV: ' + scheduleInWednesday.teacherName}"></h3>
-                            <h3 class="ghichu multiline"  th:text="${scheduleInWednesday.meetingInfo != 'null'} ?  ${scheduleInWednesday.meetingInfo} : ${'Phòng: ' + scheduleInWednesday.location}"></h3>
+<!--                            <h3 class="ghichu multiline"  th:text="${scheduleInWednesday.meetingInfo != 'null'} ?  ${scheduleInWednesday.meetingInfo} : ${'Phòng: ' + scheduleInWednesday.location}"></h3>-->
+                            <h3 class="ghichu multiline"  th:if="${scheduleInWednesday.meetingInfo != null} "  th:text="${scheduleInWednesday.meetingInfo}"></h3>
+                            <h3 class="ghichu multiline"  th:if="${scheduleInWednesday.location != null} "  th:text="${'Phòng: ' + scheduleInWednesday.location}"></h3>
+
                         </div>
                     </th:block>
                 </div>
                 <div class="col buoi">
                     <!--            Toi Thu 5-->
                     <th:block th:each="scheduleInThursday : ${scheduleInThursdays}" >
-                        <div class="lichhoc multiline" th:if="${scheduleInThursday.lesson == '13-15'}">
+                        <div th:onclick="showDialog(this)" th:id="${scheduleInThursday.scheduleId}" class="lichhoc multiline" th:if="${scheduleInThursday.lesson == '13-15'}">
                             <h2 class="ten multiline" th:text="${'Lớp ' + scheduleInThursday.classname}"></h2>
                             <h3 class="tiet multiline" th:text="${'Tiết: ' + scheduleInThursday.lesson}"></h3>
                             <h3 class="phong multiline" th:text="${'Hình thức: ' + scheduleInThursday.type}"></h3>
                             <h3 class="gianagvien multiline" th:text="${'GV: ' + scheduleInThursday.teacherName}"></h3>
-                            <h3 class="ghichu multiline"  th:text="${scheduleInThursday.meetingInfo != 'null'} ?  ${scheduleInThursday.meetingInfo} : ${'Phòng: ' + scheduleInThursday.location}"></h3>
+<!--                            <h3 class="ghichu multiline"  th:text="${scheduleInThursday.meetingInfo != 'null'} ?  ${scheduleInThursday.meetingInfo} : ${'Phòng: ' + scheduleInThursday.location}"></h3>-->
+                            <h3 class="ghichu multiline"  th:if="${scheduleInThursday.meetingInfo != null} "  th:text="${scheduleInThursday.meetingInfo}"></h3>
+                            <h3 class="ghichu multiline"  th:if="${scheduleInThursday.location != null} "  th:text="${'Phòng: ' + scheduleInThursday.location}"></h3>
+
                         </div>
                     </th:block>
                 </div>
                 <div class="col buoi">
                     <!--            Toi Thu 6-->
                     <th:block th:each="scheduleInFriday : ${scheduleInFridays}" >
-                        <div class="lichhoc multiline" th:if="${scheduleInFriday.lesson == '13-15'}">
+                        <div th:onclick="showDialog(this)" th:id="${scheduleInFriday.scheduleId}" class="lichhoc multiline" th:if="${scheduleInFriday.lesson == '13-15'}">
                             <h2 class="ten multiline" th:text="${'Lớp ' + scheduleInFriday.classname}"></h2>
                             <h3 class="tiet multiline" th:text="${'Tiết: ' + scheduleInFriday.lesson}"></h3>
                             <h3 class="phong multiline" th:text="${'Hình thức: ' + scheduleInFriday.type}"></h3>
                             <h3 class="gianagvien multiline" th:text="${'GV: ' + scheduleInFriday.teacherName}"></h3>
-                            <h3 class="ghichu multiline"  th:text="${scheduleInFriday.meetingInfo != 'null'} ?  ${scheduleInFriday.meetingInfo} : ${'Phòng: ' + scheduleInFriday.location}"></h3>
+<!--                            <h3 class="ghichu multiline"  th:text="${scheduleInFriday.meetingInfo != 'null'} ?  ${scheduleInFriday.meetingInfo} : ${'Phòng: ' + scheduleInFriday.location}"></h3>-->
+                            <h3 class="ghichu multiline"  th:if="${scheduleInFriday.meetingInfo != null} "  th:text="${scheduleInFriday.meetingInfo}"></h3>
+                            <h3 class="ghichu multiline"  th:if="${scheduleInFriday.location != null} "  th:text="${'Phòng: ' + scheduleInFriday.location}"></h3>
+
                         </div>
                     </th:block>
                 </div>
                 <div class="col buoi">
                     <!--            Toi Thu 7-->
                     <th:block th:each="scheduleInSaturday : ${scheduleInSaturdays}" >
-                        <div class="lichhoc multiline" th:if="${scheduleInSaturday.lesson == '13-15'}">
+                        <div th:onclick="showDialog(this)" th:id="${scheduleInSaturday.scheduleId}" class="lichhoc multiline" th:if="${scheduleInSaturday.lesson == '13-15'}">
                             <h2 class="ten multiline" th:text="${'Lớp ' + scheduleInSaturday.classname}"></h2>
                             <h3 class="tiet multiline" th:text="${'Tiết: ' + scheduleInSaturday.lesson}"></h3>
                             <h3 class="phong multiline" th:text="${'Hình thức: ' + scheduleInSaturday.type}"></h3>
                             <h3 class="gianagvien multiline" th:text="${'GV: ' + scheduleInSaturday.teacherName}"></h3>
-                            <h3 class="ghichu multiline"  th:text="${scheduleInSaturday.meetingInfo != 'null'} ?  ${scheduleInSaturday.meetingInfo} : ${'Phòng: ' + scheduleInSaturday.location}"></h3>
+<!--                            <h3 class="ghichu multiline"  th:text="${scheduleInSaturday.meetingInfo != 'null'} ?  ${scheduleInSaturday.meetingInfo} : ${'Phòng: ' + scheduleInSaturday.location}"></h3>-->
+                            <h3 class="ghichu multiline"  th:if="${scheduleInSaturday.meetingInfo != null} "  th:text="${scheduleInSaturday.meetingInfo}"></h3>
+                            <h3 class="ghichu multiline"  th:if="${scheduleInSaturday.location != null} "  th:text="${'Phòng: ' + scheduleInSaturday.location}"></h3>
+
                         </div>
                     </th:block>
                 </div>
                 <div class="col buoi">
                     <!--            Toi CN-->
                     <th:block th:each="scheduleInSunday : ${scheduleInSundays}" >
-                        <div class="lichhoc multiline" th:if="${scheduleInSunday.lesson == '13-15'}">
+                        <div th:onclick="showDialog(this)" th:id="${scheduleInSunday.scheduleId}" class="lichhoc multiline" th:if="${scheduleInSunday.lesson == '13-15'}">
                             <h2 class="ten multiline" th:text="${'Lớp ' + scheduleInSunday.classname}"></h2>
                             <h3 class="tiet multiline" th:text="${'Tiết: ' + scheduleInSunday.lesson}"></h3>
                             <h3 class="phong multiline" th:text="${'Hình thức: ' + scheduleInSunday.type}"></h3>
                             <h3 class="gianagvien multiline" th:text="${'GV: ' + scheduleInSunday.teacherName}"></h3>
-                            <h3 class="ghichu multiline"  th:text="${scheduleInSunday.meetingInfo != 'null'} ?  ${scheduleInSunday.meetingInfo} : ${'Phòng: ' + scheduleInSunday.location}"></h3>
+<!--                            <h3 class="ghichu multiline"  th:text="${scheduleInSunday.meetingInfo != 'null'} ?  ${scheduleInSunday.meetingInfo} : ${'Phòng: ' + scheduleInSunday.location}"></h3>-->
+                            <h3 class="ghichu multiline"  th:if="${scheduleInSunday.meetingInfo != null} "  th:text="${scheduleInSunday.meetingInfo}"></h3>
+                            <h3 class="ghichu multiline"  th:if="${scheduleInSunday.location != null} "  th:text="${'Phòng: ' + scheduleInSunday.location}"></h3>
+
                         </div>
                     </th:block>
                 </div>
@@ -499,7 +592,10 @@
         </div>
     </div>
     <!-- Body -->
-
+    <div class="dialog" id="dialog">
+        <button class="dialog-update" th:onclick="updateClassroomSchedule()">Sửa</button>
+        <button class="dialog-delete" th:onclick="deleteClassroomSchedule()">Xóa</button>
+    </div>
     <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
     <!-- <div class="right-sidebar">
       <div class="switcher-icon">
@@ -545,6 +641,84 @@
 <script th:src="@{/admin/assets/plugins/summernote/dist/summernote-bs4.min.js}"></script>
 
 <script th:src="@{/admin/assets/js/thoikhoabieu.js}"></script>
+
+<script>
+      function getOffset(el) {
+          var _x = 0;
+          var _y = 0;
+          while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
+              _x += el.offsetLeft - el.scrollLeft;
+              _y += el.offsetTop - el.scrollTop;
+              el = el.offsetParent;
+          }
+          return { top: _y, left: _x };
+      }
+      const dialog = document.getElementById('dialog')
+      var inte
+      function showDialog(e){
+        var x = getOffset(e).left;
+        var y = getOffset(e).top;
+        dialog.style.display = 'flex'
+        dialog.style.top = y+'px'
+        dialog.style.left = x+'px'
+        inte = e.id
+      }
+      function updateClassroomSchedule(){
+        var id = [[${id}]]
+        var path='/admin/classroom/schedule/updateOne/';
+        var method='post';
+
+        // The rest of this code assumes you are not using a library.
+        // It can be made less verbose if you use one.
+        const form = document.createElement('form');
+        form.method = method;
+        form.action = path;
+
+        const hiddenField = document.createElement('input');
+        hiddenField.type = 'hidden';
+        hiddenField.name = 'classroomId';
+        hiddenField.value = id;
+
+        const hiddenField1 = document.createElement('input');
+        hiddenField1.type = 'hidden';
+        hiddenField1.name = 'scheduleId';
+        hiddenField1.value = inte;
+
+        form.appendChild(hiddenField);
+        form.appendChild(hiddenField1);
+
+        document.body.appendChild(form);
+        form.submit();
+      }
+
+      function deleteClassroomSchedule(){
+        var id = [[${id}]]
+        var path='/admin/classroom/schedule/delete';
+        var method='post';
+
+        // The rest of this code assumes you are not using a library.
+        // It can be made less verbose if you use one.
+        const form = document.createElement('form');
+        form.method = method;
+        form.action = path;
+
+        const hiddenField = document.createElement('input');
+        hiddenField.type = 'hidden';
+        hiddenField.name = 'classroomId';
+        hiddenField.value = id;
+
+        const hiddenField1 = document.createElement('input');
+        hiddenField1.type = 'hidden';
+        hiddenField1.name = 'scheduleId';
+        hiddenField1.value = inte;
+
+        form.appendChild(hiddenField);
+        form.appendChild(hiddenField1);
+
+        document.body.appendChild(form);
+        form.submit();
+      }
+</script>
 </body>
 
 </html>

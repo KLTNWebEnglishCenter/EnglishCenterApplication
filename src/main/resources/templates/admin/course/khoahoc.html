@@ -114,7 +114,8 @@
 <!--                          <button class="btn btn-danger"><a th:href="@{/admin/course/deleteCourse/{id}(id=${course.id})}">Xóa</a></button>-->
                           <button class="btn btn-success"><a th:href="@{/admin/course/updateCourse/{id}(id=${course.id})}">Sửa</a></button>
                           <button class="btn btn-info"><a th:href="@{/admin/course/detail/{id}(id=${course.id})}">Xem chi tiết</a></button>
-                          <button class="btn btn-light"><a href="">Kích hoạt</a></button>
+                          <button th:if="${course.enable == true}" class="btn btn-light"><a th:href="@{/admin/course/disable/{id}(id=${course.id})}">Vô hiệu</a></button>
+                            <button th:if="${course.enable == false}" class="btn btn-light"><a th:href="@{/admin/course/enable/{id}(id=${course.id})}">Kích hoạt</a></button>
                         </td>
                      </tr>
                     </tbody>

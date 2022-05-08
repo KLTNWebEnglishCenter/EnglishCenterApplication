@@ -62,7 +62,7 @@
         <div class="exam-item" th:each="question,iter : ${questions}">
             <h1 class="exam-question-index">Câu <span th:text="${iter.index}+1"></span>:</h1>
             <div class="exam-question-body">
-                <p class="exam-question-content" th:text="${question.content}">
+                <p class="exam-question-content" th:utext="${question.content}">
 
                 </p>
                 <div class="exam-question-answer" style="color:red">

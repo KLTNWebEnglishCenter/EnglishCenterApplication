@@ -14,6 +14,7 @@ import web.english.application.entity.schedule.Schedule;
 
 import java.lang.reflect.Type;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -40,12 +41,17 @@ public class ScheduleDAO {
         map.add("selectedDate", selectedDate.toString());
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+        try {
+            ResponseEntity<List<ScheduleInfoHolder>> responseEntity=restTemplate.exchange("http://localhost:8000/schedule/teacher",
+                    HttpMethod.POST, request, new ParameterizedTypeReference<List<ScheduleInfoHolder>>() {
+                    });
+            List<ScheduleInfoHolder> scheduleInfoHolders=responseEntity.getBody();
+            return  scheduleInfoHolders;
+        }catch (Exception e){
 
-        ResponseEntity<List<ScheduleInfoHolder>> responseEntity=restTemplate.exchange("http://localhost:8000/schedule/teacher",
-                HttpMethod.POST, request, new ParameterizedTypeReference<List<ScheduleInfoHolder>>() {
-                });
-        List<ScheduleInfoHolder> scheduleInfoHolders=responseEntity.getBody();
-        return  scheduleInfoHolders;
+            List<ScheduleInfoHolder> scheduleInfoHolders= new ArrayList<>();
+            return  scheduleInfoHolders;
+        }
     }
 
     /**

@@ -48,6 +48,33 @@
       /*]]>*/
     </script>
     <title th:replace = "~{home :: title}">Title</title>
+    <style>
+        .search {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .search-input {
+            width: 70%;
+            min-height: 20px;
+            border: 1px solid black;
+            border-radius: 5px;
+            margin-right: 5%;
+        }
+        .search-btn {
+            width: 25%;
+            min-height: 20px;
+            font-weight: normal;
+            border: 1px solid red;
+            border-radius: 10px;
+            color: red;
+            cursor: pointer;
+        }
+
+        .search-btn:hover {
+            background-color: rgb(117, 113, 113);
+        }
+    </style>
 </head>
 <body>
 <header th:replace="~{home::header-fragment}">
@@ -58,6 +85,10 @@
 <a href="#" class="cd-top">Back To Top</a>
 <div class="container-course-web">
     <div class="navigation-course">
+        <form th:action="@{/course/search}" method="post" class="search">
+            <input type="text" name="idOrName" class="search-input" placeholder="ID/Tên khóa học" >
+            <button type="submit" class="search-btn" >Tìm kiếm</button>
+        </form>
         <h3>Danh mục khóa học</h3>
         <ul class="navigation-bar">
             <li><input type="checkbox" th:checked="${flag}" th:onclick="'window.location.href = \'' + @{/course/signup/toeic/{rs}(rs=${flag ? '1' : '0'})} + '\''"> Luyện thi Toeic</li>
@@ -70,13 +101,15 @@
         <h1>Khóa học tại Topal</h1>
         <hr>
         <div class="list-course-grid" th:if="${#lists.size(courses) > 0}">
-            <div class="course-box" th:each="course : ${courses}">
-                <img src="/img/1598515185222.jpg" alt="">
-                <h3 th:text="${course.name}"></h3>
-                <h6 th:text="${course.description}"></h6>
-                <h5 th:text="${course.price}"></h5>
-                <button class="btn-dangkyhoc" th:onclick="'window.location.href = \'' + @{/course/signup/{id}(id=${course.id})} + '\''">Đăng ký học</button>
-            </div>
+            <th:block th:each="course : ${courses}">
+                <div class="course-box" th:if="${course.enable == true}">
+                    <img src="/img/course.jpg" alt="">
+                    <h3 th:text="${course.name}"></h3>
+                    <h6 th:text="${course.description}"></h6>
+                    <h5 th:text="${course.price}"></h5>
+                    <button class="btn-dangkyhoc" th:onclick="'window.location.href = \'' + @{/course/signup/{id}(id=${course.id})} + '\''">Đăng ký học</button>
+                </div>
+            </th:block>
         </div>
         <div class="list-course-grid" th:if="${#lists.size(courses) == 0}">
             <h3 style="color:white">Bạn đã học tất cả các khóa học</h3>

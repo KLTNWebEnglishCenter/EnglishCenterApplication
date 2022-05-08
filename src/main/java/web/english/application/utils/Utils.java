@@ -13,7 +13,7 @@ public class Utils {
     public static final String emailRequire="Email chỉ được sử dụng chữ cái (a-z), số (0-9) và ký tự (.)";
     public static final String yearRequire="Năm sinh phải trong khoảng: "+(LocalDate.now().getYear()-100)+" <= năm sinh <= "+(LocalDate.now().getYear()-18);
 
-    public static final int exam = 1;
+    public static final int exam = 27;
     /**
      *{@value #phoneNumberRequire}
      * @author VQKHANH

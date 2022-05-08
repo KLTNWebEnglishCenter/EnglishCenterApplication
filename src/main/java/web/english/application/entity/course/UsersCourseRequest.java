@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import web.english.application.entity.user.Student;
+import web.english.application.utils.UserRequestStatus;
 
 @Getter
 @Setter
@@ -21,7 +22,7 @@ public class UsersCourseRequest {
         this.userRequestCourseKey = userRequestCourseKey;
         this.student = student;
         this.course = course;
-        this.status="requesting";
+        this.status= UserRequestStatus.REQUESTING;
     }
 
     @Override

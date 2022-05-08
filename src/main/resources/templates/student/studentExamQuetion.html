@@ -55,10 +55,11 @@
     <div class="exam-body">
         <form th:action="@{/user/exam/result}" method="post">
             <input type="hidden" th:name="examId" th:value="${exam.id}">
+            <h1 class="exam-question-index"><span th:text="${exam.name}"></span>:</h1>
             <div class="exam-item" th:each="question,iter : ${questions}">
                 <h1 class="exam-question-index">Câu <span th:text="${iter.index}+1"></span>:</h1>
                 <div class="exam-question-body">
-                    <p class="exam-question-content" th:text="${question.content}">
+                    <p class="exam-question-content" th:utext="${question.content}">
 
                     </p>
                     <div class="exam-question-answer">
@@ -66,9 +67,9 @@
                                     class="exam-question-result"><span>A.</span><span th:text="${question.answerA}"></span></div>
                         <div><input type="radio" th:name="'answer'+${question.id}" th:value="B"
                                     class="exam-question-result"><span>B.</span><span th:text="${question.answerB}"></span></div>
-                        <div th:unless="${question.answerC}"><input type="radio" th:name="'answer'+${question.id}" th:value="C"
+                        <div th:if="${question.answerC != 'null'}"><input type="radio" th:name="'answer'+${question.id}" th:value="C"
                                                                 class="exam-question-result"><span>C.</span><span th:text="${question.answerC}"></span></div>
-                        <div th:unless="${question.answerD}"><input type="radio" th:name="'answer'+${question.id}" th:value="D"
+                        <div th:if="${question.answerD != 'null'}"><input type="radio" th:name="'answer'+${question.id}" th:value="D"
                                                                 class="exam-question-result"><span>D.</span><span th:text="${question.answerD}"></span></div>
                     </div>
                 </div>
