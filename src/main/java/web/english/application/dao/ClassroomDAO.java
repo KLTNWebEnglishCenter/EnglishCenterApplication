@@ -142,4 +142,13 @@ public class ClassroomDAO {
         List<ScheduleInfoHolder> scheduleInfoHolders=responseEntity.getBody();
         return  scheduleInfoHolders;
     }
+
+    public String deleteClassroomSchedule(int classroomId,int scheduleId){
+        try {
+            String rs = restTemplate.getForObject("http://localhost:8000/classroom/schedule/delete/"+classroomId+"/"+scheduleId,String.class);
+            return rs;
+        }catch (Exception e){
+            return e.getMessage();
+        }
+    }
 }

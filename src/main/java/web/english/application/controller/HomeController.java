@@ -20,30 +20,8 @@ public class HomeController {
     private UserDAO userDAO;
 
     @GetMapping("/home")
-    public String getIndex(HttpServletRequest httpServletRequest, Model model){
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("access_token")){
-                token = cookie.getValue();
-            }
-        }
-//        log.info(token);
-        String token_valid = "Bearer "+token;
-//        log.info(token_valid);
-        if(token != ""){
-            user = userDAO.getUserFromToken(token_valid);
-        }
-
-        if(user == null){
-            return "redirect:/login";
-        }
-//        log.info(user.toString());
-        model.addAttribute("users",user);
-        return "admin/index";
+    public String getIndex(){
+        return "redirect:/admin/schedule";
     }
 
 }

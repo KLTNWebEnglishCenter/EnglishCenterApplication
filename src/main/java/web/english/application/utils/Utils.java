@@ -14,8 +14,9 @@ public class Utils {
     public static final String yearRequire="Năm sinh phải trong khoảng: "+(LocalDate.now().getYear()-100)+" <= năm sinh <= "+(LocalDate.now().getYear()-18);
     public static final String maxLengthRequire="Tối đa 255 kí tự";
 
+    public static final int exam = 27;
     public static final int maxLength = 255;
-    public static final int exam = 1;
+
     /**
      *{@value #phoneNumberRequire}
      * @author VQKHANH

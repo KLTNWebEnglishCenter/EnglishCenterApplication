@@ -260,31 +260,28 @@
                             <h3>Sáng</h3>
                         </div>
                         <div class="col-calendar col-tiet">
-                            <div class="">
-                                <!--            Sang Thu 2-->
-                                <th:block th:each="scheduleInMonday : ${scheduleInMondays}" >
-                                    <div class="lichhoc multiline" th:if="${scheduleInMonday.lesson == '1-3' || scheduleInMonday.lesson == '4-6'}">
-                                        <h2 class="ten multiline" th:text="${'Lớp ' + scheduleInMonday.classname}"></h2>
-                                        <h3 class="tiet multiline" th:text="${'Tiết: ' + scheduleInMonday.lesson}"></h3>
-                                        <h3 class="phong multiline" th:text="${'Hình thức: ' + scheduleInMonday.type}"></h3>
-                                        <h3 class="gianagvien multiline" th:text="${'GV: ' + scheduleInMonday.teacherName}"></h3>
-                                        <h3 class="ghichu multiline"  th:text="${scheduleInMonday.meetingInfo != 'null'} ?  ${scheduleInMonday.meetingInfo} : ${'Phòng: ' + scheduleInMonday.location}"></h3>
-                                    </div>
-                                </th:block>
-                            </div>
-                            <div class="">
-                                <!--            Sang Thu 3-->
-                                <th:block th:each="scheduleInTuesday : ${scheduleInTuesdays}" >
-                                    <div class="lichhoc multiline" th:if="${scheduleInTuesday.lesson == '1-3' || scheduleInTuesday.lesson == '4-6'}">
-                                        <h2 class="ten multiline" th:text="${'Lớp ' + scheduleInTuesday.classname}"></h2>
-                                        <h3 class="tiet multiline" th:text="${'Tiết: ' + scheduleInTuesday.lesson}"></h3>
-                                        <h3 class="phong multiline" th:text="${'Hình thức: ' + scheduleInTuesday.type}"></h3>
-                                        <h3 class="gianagvien multiline" th:text="${'GV: ' + scheduleInTuesday.teacherName}"></h3>
-                                        <h3 class="ghichu multiline"  th:text="${scheduleInTuesday.meetingInfo != 'null'} ?  ${scheduleInTuesday.meetingInfo} : ${'Phòng: ' + scheduleInTuesday.location}"></h3>
-                                    </div>
-                                </th:block>
-                            </div>
-
+                            <!--            Sang Thu 2-->
+                            <th:block th:each="scheduleInMonday : ${scheduleInMondays}" >
+                                <div class="lichhoc multiline" th:if="${scheduleInMonday.lesson == '1-3' || scheduleInMonday.lesson == '4-6'}">
+                                    <h2 class="ten multiline" th:text="${'Lớp ' + scheduleInMonday.classname}"></h2>
+                                    <h3 class="tiet multiline" th:text="${'Tiết: ' + scheduleInMonday.lesson}"></h3>
+                                    <h3 class="phong multiline" th:text="${'Hình thức: ' + scheduleInMonday.type}"></h3>
+                                    <h3 class="gianagvien multiline" th:text="${'GV: ' + scheduleInMonday.teacherName}"></h3>
+                                    <h3 class="ghichu multiline"  th:text="${scheduleInMonday.meetingInfo != 'null'} ?  ${scheduleInMonday.meetingInfo} : ${'Phòng: ' + scheduleInMonday.location}"></h3>
+                                </div>
+                            </th:block>
+                        </div>
+                        <div class="col-calendar col-tiet">
+                            <!--            Sang Thu 3-->
+                            <th:block th:each="scheduleInTuesday : ${scheduleInTuesdays}" >
+                                <div class="lichhoc multiline" th:if="${scheduleInTuesday.lesson == '1-3' || scheduleInTuesday.lesson == '4-6'}">
+                                    <h2 class="ten multiline" th:text="${'Lớp ' + scheduleInTuesday.classname}"></h2>
+                                    <h3 class="tiet multiline" th:text="${'Tiết: ' + scheduleInTuesday.lesson}"></h3>
+                                    <h3 class="phong multiline" th:text="${'Hình thức: ' + scheduleInTuesday.type}"></h3>
+                                    <h3 class="gianagvien multiline" th:text="${'GV: ' + scheduleInTuesday.teacherName}"></h3>
+                                    <h3 class="ghichu multiline"  th:text="${scheduleInTuesday.meetingInfo != 'null'} ?  ${scheduleInTuesday.meetingInfo} : ${'Phòng: ' + scheduleInTuesday.location}"></h3>
+                                </div>
+                            </th:block>
                         </div>
                         <div class="col-calendar col-tiet">
                             <!--            Sang Thu 4-->

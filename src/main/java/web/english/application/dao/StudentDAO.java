@@ -11,11 +11,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.RestTemplate;
 import web.english.application.entity.Notification;
 import web.english.application.entity.course.UsersCourseRequest;
+import web.english.application.entity.course.Course;
+import web.english.application.entity.exam.UsersExamScores;
+import web.english.application.entity.exam.UsersExamScoresKey;
 import web.english.application.entity.schedule.Classroom;
 import web.english.application.entity.user.Student;
 import web.english.application.entity.user.Teacher;
 import web.english.application.utils.UsersType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -162,5 +166,48 @@ public class StudentDAO {
                         });
         List<Notification> notifications = responseEntity.getBody();
         return  notifications;
+    }
+
+    public List<UsersCourseRequest> getCourseRequestOfStudent(int studentId){
+        ResponseEntity<List<UsersCourseRequest>> responseEntity =
+                restTemplate.exchange("http://localhost:8000/student/list/course/" + studentId,
+                        HttpMethod.GET, null, new ParameterizedTypeReference<List<UsersCourseRequest>>() {
+                        });
+        List<UsersCourseRequest> courseRequests = responseEntity.getBody();
+        List<UsersCourseRequest> usersCourseRequests = new ArrayList<>();
+        courseRequests.forEach(request -> {
+            Course course = restTemplate.getForObject(("http://localhost:8000/course/find/" + request.getUserRequestCourseKey().getCourseId()), Course.class);
+            UsersCourseRequest usersCourseRequest = new UsersCourseRequest();
+            usersCourseRequest.setUserRequestCourseKey(request.getUserRequestCourseKey());
+            usersCourseRequest.setCourse(course);
+            usersCourseRequest.setStatus(request.getStatus());
+
+            usersCourseRequests.add(usersCourseRequest);
+        });
+        return usersCourseRequests;
+    }
+
+    public List<UsersExamScores> getScoreOfStudent(int studentId){
+        ResponseEntity<List<UsersExamScores>> responseEntity =
+                restTemplate.exchange("http://localhost:8000/student/score/" + studentId,
+                        HttpMethod.GET, null, new ParameterizedTypeReference<List<UsersExamScores>>() {
+                        });
+        List<UsersExamScores> usersExamScores = responseEntity.getBody();
+        return usersExamScores;
+    }
+
+    public UsersExamScores saveScore(int studentId,int examId,int score){
+        UsersExamScoresKey key = new UsersExamScoresKey(studentId,examId);
+        UsersExamScores usersExamScores = new UsersExamScores();
+        usersExamScores.setUsersExamScoresKey(key);
+        usersExamScores.setScores(score);
+
+        UsersExamScores usersExamScores1 = restTemplate.postForObject("http://localhost:8000/student/score/save",usersExamScores,UsersExamScores.class);
+        return usersExamScores1;
+    }
+
+    public Integer getScoreOfStudentByExam(int studentId,int examId){
+        Integer score = restTemplate.getForObject("http://localhost:8000/student/score/get/"+studentId+"/"+examId,Integer.class);
+        return score;
     }
 }

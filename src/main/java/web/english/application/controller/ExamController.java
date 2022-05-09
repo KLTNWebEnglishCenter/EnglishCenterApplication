@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 @Controller
@@ -99,56 +100,44 @@ public class ExamController {
 
     @PostMapping("/exam/add")
     public String saveExam(HttpServletRequest request) throws IOException {
-        BufferedReader reader = request.getReader();
-        StringBuilder sb = new StringBuilder();
-        String line = reader.readLine();
-        while (line != null) {
-            sb.append(line);
-            line = reader.readLine();
-        }
-        reader.close();
-        String params = sb.toString();
-        String[] _params = params.split("&");
+        int teacherId = 0;
+        String name = "";
+        String description = "";
+        List<Integer> questionId = new ArrayList<>();
 
-        log.info(params);
-        String[] _n;
-        List<String> strings = new ArrayList<>();
-        for (String param : _params) {
-            log.info(param);
-            _n = param.split("=");
-            strings.add(_n[0]);
-            strings.add(_n[1]);
-        }
+        Enumeration<String> parameterNames = request.getParameterNames();
 
-        int id = Integer.parseInt(strings.get(1));
-        String name = strings.get(5);
-        String description = strings.get(7);
+        while (parameterNames.hasMoreElements()) {
 
-        int i = 0;
-        while(i < 8){
-            strings.remove(0);
-            i++;
-        }
+            String paramName = parameterNames.nextElement();
 
-        int j = 0;
-        List<Integer> integers = new ArrayList<>();
-        int size = strings.size();
-        while(j < size){
-            try {
-                int x = Integer.parseInt(strings.get(j));
-                integers.add(x);
-            }catch (Exception e){
+            String[] paramValues = request.getParameterValues(paramName);
+            for (int i = 0; i < paramValues.length; i++) {
+                String paramValue = paramValues[i];
 
+                if (paramName.equals("teacherId")){
+                    teacherId = Integer.parseInt(paramValue);
+                }else if (paramName.equals("teacherName")){
+
+                }
+                else if (paramName.equals("name")){
+                    name = paramValue;
+                }else if (paramName.equals("description")){
+                    description = paramValue;
+                }else {
+                    questionId.add(Integer.parseInt(paramValue));
+                }
             }
-            j++;
-
         }
+        log.info(teacherId+";"+name+";"+description+";"+questionId.toString());
 
+        log.info("================================================");
         Exam exam = new Exam(name,description,"Ready",new Teacher());
 
-        Exam temp =  examDAO.save(id,exam);
+        log.info(exam.toString());
+        Exam temp =  examDAO.save(teacherId,exam);
         log.info(temp.toString());
-        integers.forEach(integer -> {
+        questionId.forEach(integer -> {
             if(integer != 0){
                 examDAO.addQuestionToExam(temp.getId(),integer);
             }

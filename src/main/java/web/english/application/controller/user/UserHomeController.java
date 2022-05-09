@@ -6,14 +6,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import web.english.application.dao.CourseDAO;
-import web.english.application.dao.ExamDAO;
-import web.english.application.dao.PostDAO;
-import web.english.application.dao.UserDAO;
+import web.english.application.dao.*;
 import web.english.application.entity.Post;
 import web.english.application.entity.course.Course;
+import web.english.application.entity.course.UsersCourseRequest;
 import web.english.application.entity.exam.Exam;
 import web.english.application.entity.exam.Question;
+import web.english.application.entity.exam.UsersExamScores;
 import web.english.application.entity.user.Users;
 import web.english.application.utils.JwtHelper;
 import web.english.application.utils.StatusHelper;
@@ -43,6 +42,9 @@ public class UserHomeController {
 
     @Autowired
     private PostDAO postDAO;
+
+    @Autowired
+    private StudentDAO studentDAO;
 
     private JwtHelper jwtHelper=new JwtHelper();
 
@@ -138,12 +140,11 @@ public class UserHomeController {
 
         model.addAttribute("users",user);
 
-
         Exam exam = examDAO.getExamById(Utils.exam);
 
         model.addAttribute("exam",exam);
 
-        List<Question> questions = examDAO.getListQuestionByExam(exam.getId());
+        List<Question> questions = examDAO.getListQuestionByExam(Utils.exam);
 
         model.addAttribute("questions",questions);
 
@@ -152,20 +153,19 @@ public class UserHomeController {
 
     @PostMapping("/exam/result")
     public String testTheExam(HttpServletRequest httpServletRequest, Model model) throws IOException {
-        BufferedReader reader = httpServletRequest.getReader();
-        StringBuilder sb = new StringBuilder();
-        String line = reader.readLine();
-        while (line != null) {
-            sb.append(line);
-            line = reader.readLine();
-        }
-        reader.close();
-        String params = sb.toString();
-        String[] _params = params.split("&");
-
         List<String> theUserChoose = new ArrayList<>();
-        for (String param : _params) {
-            theUserChoose.add(param.substring(8));
+
+        Enumeration<String> parameterNames = httpServletRequest.getParameterNames();
+
+        while (parameterNames.hasMoreElements()) {
+
+            String paramName = parameterNames.nextElement();
+
+            String[] paramValues = httpServletRequest.getParameterValues(paramName);
+            for (int i = 0; i < paramValues.length; i++) {
+                String paramValue = paramValues[i];
+                theUserChoose.add(paramValue);
+            }
         }
 
         Exam exam = examDAO.getExamById(Utils.exam);
@@ -276,6 +276,10 @@ public class UserHomeController {
         model.addAttribute("exam",exam);
         model.addAttribute("questions",questions);
 
+        int score = studentDAO.getScoreOfStudentByExam(user.getId(),eId);
+        if (score < point){
+            UsersExamScores scores = studentDAO.saveScore(user.getId(),eId,point);
+        }
         return "student/studentExamResult";
     }
 
@@ -348,4 +352,53 @@ public class UserHomeController {
         postDAO.savePost(post);
         return "redirect:/myPost";
     }
+
+    @GetMapping("/course/{id}")
+    public String getMyCourse(@PathVariable int id,Model model,HttpServletRequest httpServletRequest){
+        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
+        String token=jwtHelper.createToken(jwt);
+
+        if(jwt == ""){
+            return "redirect:/login";
+        }
+        Users user = userDAO.getUserFromToken(token);
+        if(user == null){
+            return "redirect:/login";
+        }
+
+        model.addAttribute("users",user);
+
+        List<UsersCourseRequest> courseRequests = studentDAO.getCourseRequestOfStudent(id);
+
+        model.addAttribute("courseRequests",courseRequests);
+
+        return "student/myStudentCourse";
+    }
+
+    @GetMapping("/myPost/delete/{id}")
+    public String deletePost(@PathVariable int id){
+        Post post = postDAO.deletePost(id);
+        return "redirect:/myPost";
+    }
+
+    @GetMapping("/score")
+    public String getScoresPage(HttpServletRequest httpServletRequest,Model model){
+        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
+        String token=jwtHelper.createToken(jwt);
+
+        if(jwt == ""){
+            return "redirect:/login";
+        }
+        Users user = userDAO.getUserFromToken(token);
+        if(user == null){
+            return "redirect:/login";
+        }
+
+        model.addAttribute("users",user);
+
+        List<UsersExamScores> usersExamScores = studentDAO.getScoreOfStudent(user.getId());
+        model.addAttribute("scores",usersExamScores);
+        return "student/studentScores";
+    }
+
 }

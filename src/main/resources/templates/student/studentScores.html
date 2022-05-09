@@ -22,6 +22,7 @@
     <link rel="stylesheet" TH:href="@{/css/student-post.css}">
 
     <link rel="stylesheet" th:href="@{/css/exam.css}">
+    <link rel="stylesheet" th:href="@{/css/student-score.css}">
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
@@ -35,83 +36,7 @@
     <script src="/js/backtotop.js"></script>
 
     <title th:replace = "~{home :: title}">Title</title>
-    <style>
-        @import url(https://fonts.googleapis.com/css?family=Exo+2:400,200italic);
 
-        .btn {
-          background:transparent;
-          text-align:center;
-          letter-spacing:1px;
-          font-size:1.4em;
-          line-height:1.2em;
-          font-weight:300;
-          margin:auto;
-          width:100px;
-          height:50px;
-          padding:5px 0;
-          border:1px solid #363858;
-          overflow:hidden;
-          display:inline-block;
-          transition:all 0.5s;
-          box-shadow:0px 3px 0px #363858;
-          border-radius: 4px;
-        }
-
-        .btn:hover, .btn:active {
-          text-decoration: none;
-          color:#fff;
-          border-color:#363858;
-          background:red;
-          box-shadow:0 0 0 #363858;
-        }
-
-        .btn-label {
-          display:inline-block;
-          position:relative;
-          padding-right:0;
-          transition:padding-right 0.5s;
-          color:#363858;
-          font-family: 'Exo 2', sans-serif;
-          font-weight:200;
-        }
-        .btn-label:after {
-          content: "";
-          position:absolute;
-          right:-50px;
-          opacity:0;
-          top:22%;
-          width:10px;
-          height:10px;
-          margin-right:-10px;
-          background:rgba(0,0,0,0);
-          border:3px solid #fff;
-          border-top:none;
-          border-right:none;
-          transition: opacity 0.5s, top 0.5s, right 0.5s;
-          transform:rotate(225deg);
-        }
-
-        .btn:hover .btn-label,
-        .btn:active .btn-label {
-          padding-right:30px;
-          color:#f5f1e7;
-        }
-
-        .btn:hover .btn-label:after,
-        .btn:active .btn-label:after {
-          transition:opacity: 0.5s, top 0.5s, right 0.5s;
-          opacity:1;
-          right:10px;
-          top:22%;
-        }
-        .btn-group{
-            width: 100%;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            height:300px;
-        }
-    </style>
 </head>
 
 <body>
@@ -122,16 +47,30 @@
 
 <a href="#" class="cd-top">Back To Top</a>
 
-<div class="document-container">
-    <h1 th:unless="${posts}">Bạn chưa đăng bài nào cả</h1>
-    <div class="document-item" th:each="post : ${posts}">
-        <img src="/img/new_img.jpg" alt="">
-        <h1 th:text="${post.title}"></h1>
-        <span th:text="${post.createDate}"></span>
-        <p th:text="${post.content}"></p>
-        <button type="button" class="btn" th:onclick="'window.location.href = \'' + @{/myPost/delete/{id}(id=${post.id})} + '\''"><i class="fa fa-times"></i><span class="btn-label">Xóa</span></button>
-    </div>
-</div>
+<br><br>
+
+<table class="container">
+    <thead>
+    <tr>
+        <th>
+            <h1>STT</h1>
+        </th>
+        <th>
+            <h1>MÃ BÀI KIỂM TRA</h1>
+        </th>
+        <th>
+            <h1>ĐIỂM SỐ CAO NHẤT</h1>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="score,iter : ${scores}">
+        <td th:text="${iter.index}"></td>
+        <td th:text="${score.usersExamScoresKey.examId}"></td>
+        <td th:text="${score.scores}"></td>
+    </tr>
+    </tbody>
+</table>
 
 
 

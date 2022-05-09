@@ -247,7 +247,7 @@
 </div>
 
 
-<aside th:fragment="aside-fragment" class="sidebar" id="menu-sidebar2">
+<aside th:if="${users}" th:fragment="aside-fragment" class="sidebar" id="menu-sidebar2">
     <div id="leftside-navigation" class="nano">
         <ul class="nano-content">
             <li class="sub-menu">
@@ -275,6 +275,12 @@
                         <a th:href="@{/newPost}"><i class="fa fa-dashboard"></i><span>Tạo bài đăng mới</span></a>
                     </li>
                 </ul>
+            </li>
+            <li>
+                <a th:href="@{/course/{id}(id=${users.id})}"><i class="fa fa-dashboard"></i><span>Khóa học đang học</span></a>
+            </li>
+            <li>
+                <a th:href="@{/score}"><i class="fa fa-dashboard"></i><span>Xem bảng điểm</span></a>
             </li>
         </ul>
     </div>

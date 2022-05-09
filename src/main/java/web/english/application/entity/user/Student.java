@@ -13,6 +13,7 @@ import java.util.List;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Student extends Users implements Serializable {
 
     private List<UsersCourseRequest> userRequestCourses;
