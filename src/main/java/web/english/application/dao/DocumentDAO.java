@@ -76,7 +76,6 @@ public class DocumentDAO {
         map.add("id", id);
         map.add("name", name);
 
-
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
         ResponseEntity<List<Document>> responseEntity =  restTemplate.exchange("http://localhost:8000/document/search",HttpMethod.POST, request,new ParameterizedTypeReference<List<Document>>() {

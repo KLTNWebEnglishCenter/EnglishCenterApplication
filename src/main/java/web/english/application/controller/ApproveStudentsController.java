@@ -21,6 +21,7 @@ import web.english.application.entity.schedule.Classroom;
 import web.english.application.entity.course.Course;
 import web.english.application.entity.user.Student;
 import web.english.application.entity.user.Users;
+import web.english.application.utils.UserRequestStatus;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -168,7 +169,7 @@ public class ApproveStudentsController {
 
         for (Student student :
                 studentList) {
-            studentDAO.updateStudentRequestCourseStatus(student.getId(),courseId);
+            studentDAO.updateStudentRequestCourseStatus(student.getId(),courseId, UserRequestStatus.APPROVED);
         }
 
 //        log.info(studentList.size()+"");
