@@ -39,9 +39,9 @@ public class TeacherController {
     public String getTeacher(Model model, HttpServletRequest httpServletRequest){
         String token = "";
         Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
+//        if(httpServletRequest.getCookies() == null){
+//            return "redirect:/login";
+//        }
         for (Cookie cookie : httpServletRequest.getCookies()) {
             if(cookie.getName().equals("access_token")){
                 token = cookie.getValue();
@@ -52,9 +52,9 @@ public class TeacherController {
             user = userDAO.getUserFromToken(token_valid);
         }
 
-        if(user == null){
-            return "redirect:/login";
-        }
+//        if(user == null){
+//            return "redirect:/login";
+//        }
         model.addAttribute("users",user);
         List<Teacher> teachers=teacherDAO.findAllTeacher();
         model.addAttribute("teachers",teachers);

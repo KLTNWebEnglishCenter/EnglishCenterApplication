@@ -7,18 +7,40 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/css/dangky.css">
     <title>Document</title>
+
+    <script th:src="@{/admin/assets/js/jquery.min.js}"></script>
+    <script th:src="@{/admin/assets/js/sweetalert2.all.js}"></script>
+    <link rel="stylesheet" th:href="@{/admin/assets/css/sweetalert2.min.css}">
+
+    <script th:inline="javascript">
+  /*<![CDATA[*/
+
+    var msg = /*[[${msg}]]*/ '';
+
+    function yourfunction() {
+      if(msg!=""&&msg!=null){
+        Swal.fire({
+          text: msg,
+         })
+      }
+    }
+
+    window.onload = yourfunction;
+
+  /*]]>*/
+  </script>
 </head>
 <body>
 <div class="container">
     <h1>Đăng nhập</h1>
     <form method="post" th:action="@{/login}">
         <div class="form-control">
-            <input type="text" id="username" name="username" placeholder="Tên đăng nhập" />
+            <input type="text" required id="username" name="username" placeholder="Tên đăng nhập" />
             <span></span>
             <small></small>
         </div>
         <div class="form-control">
-            <input type="password" id="password" name="password" placeholder="Mật khẩu" />
+            <input type="password" required id="password" name="password" placeholder="Mật khẩu" />
             <span></span>
             <small></small>
         </div>

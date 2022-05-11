@@ -37,7 +37,18 @@ public class LoginController {
      * @return
      */
     @GetMapping("/login")
-    public String getLogin(){
+    public String getLogin(HttpServletRequest httpServletRequest, Model model){
+        String error="";
+        for (Cookie cookie : httpServletRequest.getCookies()) {
+            if(cookie.getName().equals("error")){
+                error = cookie.getValue();
+            }
+        }
+        String msg="";
+        if(error.equalsIgnoreCase("fail"))msg="Tên đăng nhập hoặc mật khẩu chưa chính xác!";
+        else if(error.equalsIgnoreCase("expired"))msg="Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!";
+
+        model.addAttribute("msg",msg);
         return "dangnhap";
     }
 
@@ -95,6 +106,7 @@ public class LoginController {
         response.addCookie(cookie);
 
         String token = "Bearer " + access_token;
+        log.info(token);
         String author = userDAO.getAuthorFromToken(token);
         if (author.equals(RoleType.STUDENT)){
             return "redirect:/home";
@@ -103,13 +115,13 @@ public class LoginController {
         }
     }
 
-    @GetMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response){
-        Cookie cookie = new Cookie("access_token", null);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
-        return "redirect:/login";
-    }
+//    @GetMapping("/logout")
+//    public String logout(HttpServletRequest request, HttpServletResponse response){
+//        Cookie cookie = new Cookie("access_token", null);
+//        cookie.setPath("/");
+//        cookie.setHttpOnly(true);
+//        cookie.setMaxAge(0);
+//        response.addCookie(cookie);
+//        return "redirect:/login";
+//    }
 }

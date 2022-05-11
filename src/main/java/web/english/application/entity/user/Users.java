@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Users implements Serializable {
 
     private int id;
@@ -67,18 +68,4 @@ public class Users implements Serializable {
         this.enable = enable;
     }
 
-    @Override
-    public String toString() {
-        return "Users{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", dob=" + dob +
-                ", gender='" + gender + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", enable=" + enable +
-                '}';
-    }
 }
