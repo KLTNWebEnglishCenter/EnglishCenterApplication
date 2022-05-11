@@ -83,11 +83,11 @@
                 
                   <div class="form-group">
                     <label for="input-1">Tên khóa học</label>
-                    <input type="text" th:field="*{name}" class="form-control" id="input-1" placeholder="Tên chuyên mục" name="course-name">
+                    <input type="text" th:field="*{name}" class="form-control" pattern="[A-Za-z0-9]{3,}" id="input-1" placeholder="Tên khóa học" name="course-name" required>
                   </div>
                   <div class="form-group">
                     <label for="input-2">Nội dung</label>
-                    <textarea class="form-control" th:field="*{description}" rows="4" id="input-2" name="course-content"></textarea>
+                    <textarea class="form-control" th:field="*{description}" pattern="[A-Za-z0-9]{3,}" rows="4" id="input-2" name="course-content" required></textarea>
                   </div>
 <!--                  <div class="form-group">-->
 <!--                    <label for="input-3">Ảnh đại diện</label>-->
@@ -95,13 +95,12 @@
 <!--                  </div>-->
                   <div class="form-group">
                     <label for="input-4">Giá</label>
-                    <input type="number" class="form-control" th:field="*{price}" id="input-4" placeholder="Giá" name="course-price">
+                    <input type="number" class="form-control" th:field="*{price}" min="1" id="input-4" required placeholder="Giá" name="course-price">
                   </div>
                   <div class="form-group">
 	                  <label for="input-0">Cấp độ</label>
                       <div>
                         <select id="input-0" class="form-control valid" th:name="level_id" required aria-invalid="false">
-                          <option value=""> -- </option>
                           <option th:each="level : ${levels}"
                                   th:value="${level.id}"
                                   th:utext="${level.name}"></option>
@@ -112,7 +111,6 @@
                     <label for="input-6">Loại</label>
                    <div>
                      <select id="input-6" class="form-control valid" th:name="category_id" required aria-invalid="false">
-                       <option value=""> -- </option>
                        <option th:each="category : ${categories}"
                                th:value="${category.id}"
                                th:utext="${category.name}"></option>
@@ -121,7 +119,7 @@
                   </div>
                   <div class="form-group">
                     <label for="input-7">Ngày tạo</label>
-                    <input type="date" class="form-control" th:field="*{createDate}" id="input-7" placeholder="Ngày tạo" value="" name="course-created">
+                    <input type="date" class="form-control" th:field="*{createDate}" id="input-7" placeholder="Ngày tạo" readonly name="course-created">
                   </div>
                   
                  <div class="form-footer">
@@ -151,6 +149,22 @@
       
       document.getElementById('input-7').value = today;
       </script>
+   <script>
+        var input1 = document.getElementById('input-1');
+        var input2 = document.getElementById('input-2');
+        var input4 = document.getElementById('input-4');
+
+        input1.oninvalid = function(event) {
+            event.target.setCustomValidity('Nhập tên lớp chỉ gồm kí tự chữ số và chữ cái, phải có tối thiểu 3 kí tự');
+        }
+        input2.oninvalid = function(event) {
+            event.target.setCustomValidity('Nhập tên lớp chỉ gồm kí tự chữ số và chữ cái, phải có tối thiểu 3 kí tự');
+        }
+        input4.oninvalid = function(event) {
+            event.target.setCustomValidity('Nhập giá tiền lớn hơn 0');
+        }
+
+    </script>
    <!-- Body -->
 
     <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>

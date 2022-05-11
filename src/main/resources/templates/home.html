@@ -212,7 +212,7 @@
 <div class="course" style="background-color: white">
     <div class="intro">
         <div>
-            <h6>CÁC KHÓA HỌC</h6>
+            <h6>CÁC KHÓA HỌC TIÊU BIỂU</h6>
             <h2>TRUNG TÂM ANH NGỮ TOPAL</h2>
         </div>
         <div>
@@ -222,7 +222,7 @@
     <div class="wrapper-box" >
         <div class="box" th:each="course:${courses}">
             <div class="course-list">
-                <img src="/img/1594367648195.png" alt="">
+                <img src="/img/course.jpg" alt="">
                 <div class="course-list-title">
                     <span>Khóa học</span>
                     <span th:text="${course.name}"></span>
@@ -230,17 +230,13 @@
                 </div>
                 <div class="course-list-lecturer">
                     <div class="lecturer">
-                        <i class="fa fa-medal"></i>
-                        <span>Giảng viên:</span>
-                        <span>Đỗ Vân Anh</span>
+                        <span>Mô tả:</span><span th:text="${course.description}"></span>
                     </div>
                     <div class="times">
-                        <i class="fa fa-clock-four"></i>
-                        <span>Thời lượng:</span>
-                        <span>26 buổi</span>
+                        <span>Giá:</span><span th:text="${course.price}"></span>
                     </div>
                 </div>
-                <a>XEM CHI TIẾT</a>
+                <a th:href="@{/course/home}">XEM THÊM</a>
             </div>
         </div>
     </div>

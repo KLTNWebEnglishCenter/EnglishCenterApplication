@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import web.english.application.dao.UserDAO;
 import web.english.application.entity.user.Users;
 import web.english.application.utils.RoleType;
@@ -40,9 +41,18 @@ public class UserController {
         String author = userDAO.getAuthorFromToken(token);
         if(author.equals(RoleType.STUDENT)){
             model.addAttribute("author",false);
-        }else{
+            model.addAttribute("type","STUDENT");
+        }else if (author.equals(RoleType.TEACHER)){
             model.addAttribute("author",true);
+            model.addAttribute("type","TEACHER");
+        }else if (author.equals(RoleType.EMPLOYEE)){
+            model.addAttribute("author",true);
+            model.addAttribute("type","EMPLOYEE");
+        }else if (author.equals(RoleType.ADMIN)){
+            model.addAttribute("author",true);
+            model.addAttribute("type","ADMIN");
         }
+
 
         model.addAttribute("users",users);
         if (a == true){
@@ -61,7 +71,11 @@ public class UserController {
     }
 
     @PostMapping("/info/update")
-    public String updateUser(@ModelAttribute Users users,Model model){
+    public String updateUser(@ModelAttribute Users users,Model model,@RequestPart(value = "profile") MultipartFile file){
+        if (file.getSize() > 0){
+            String url = userDAO.uploadFileProfile(file);
+            users.setImg(url);
+        }
         Users users1 = userDAO.update(users);
         a = true;
         return "redirect:/user/info/"+users.getId();

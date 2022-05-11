@@ -19,8 +19,27 @@
   <link th:href="@{/admin/assets/css/icons.css}" rel="stylesheet" type="text/css" />
   <link th:href="@{/admin/assets/css/sidebar-menu.css}" rel="stylesheet" />
   <link th:href="@{/admin/assets/css/app-style.css}" rel="stylesheet" />
-  
 
+  <script th:src="@{/admin/assets/js/jquery.min.js}"></script>
+  <script th:src="@{/admin/assets/js/sweetalert2.all.js}"></script>
+  <link rel="stylesheet" th:href="@{/admin/assets/css/sweetalert2.min.css}">
+
+  <script th:inline="javascript">
+      /*<![CDATA[*/
+
+        var msg = /*[[${msg}]]*/ '';
+
+        function yourfunction() {
+          if(msg!=""&&msg!=null){
+            Swal.fire({
+              text: msg,
+             })
+          }
+        }
+        window.onload = yourfunction;
+
+      /*]]>*/
+    </script>
 </head>
 
 <body class="bg-theme bg-theme1">
@@ -109,7 +128,8 @@
                         <td th:text="${post.content}"></td>
                         <td th:text="${users.fullName}"></td>
                         <td>
-                          <button class="btn btn-danger"><a th:href="@{/admin/post/delete/{id}(id=${post.id})}">Xóa</a></button>
+                          <a class="btn btn-danger" th:href="@{/admin/post/delete/{id}(id=${post.id})}" th:data-confirm-delete="|Bạn có chắc chắn xóa bài đăng ${post.title} này không?|"
+                             onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false">Xóa</a>
                           <button class="btn btn-success"><a th:href="@{/admin/post/update/{id}(id=${post.id})}">Sửa</a></button>
                         </td>
                      </tr>

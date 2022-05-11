@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
+import web.english.application.entity.Document;
 import web.english.application.entity.course.UsersCourseRequest;
 import web.english.application.entity.user.Authentication;
 import web.english.application.entity.user.Teacher;
@@ -139,5 +141,22 @@ public class UserDAO {
             return fieldName + " chưa nhập dữ liệu";
         }else
             return "";
+    }
+
+    public String uploadFileProfile(MultipartFile file){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        LinkedMultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
+        map.add("file", file.getResource());
+
+        HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<LinkedMultiValueMap<String, Object>>(
+                map, headers);
+
+        ResponseEntity<String> result = restTemplate.exchange(
+                "http://localhost:8000/user/profile/uploadImg", HttpMethod.POST, requestEntity,
+                String.class);
+       String rs = result.getBody();
+        return rs;
     }
 }

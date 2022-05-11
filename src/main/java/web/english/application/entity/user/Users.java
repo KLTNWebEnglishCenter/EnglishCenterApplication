@@ -25,7 +25,7 @@ public class Users implements Serializable {
     private String phoneNumber;
     private boolean enable;
     private String role;
-
+    private String img;
     /**
      *
      * @param username

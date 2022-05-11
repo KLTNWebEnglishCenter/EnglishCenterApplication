@@ -87,11 +87,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="input-1">Tên tin tức</label>
-                                    <input type="text" th:field="*{title}" class="form-control" id="input-1" placeholder="Tên tin tức" name="new-title">
+                                    <input type="text" th:field="*{title}" class="form-control" id="input-1" required placeholder="Tên tin tức" name="new-title">
                                 </div>
                                 <div class="form-group">
                                     <label for="input-2">Nội dung</label>
-                                    <textarea class="form-control" th:field="*{content}" rows="4" id="input-2" name="new-content"></textarea>
+                                    <textarea class="form-control" th:field="*{content}" rows="4" id="input-2" required name="new-content"></textarea>
                                 </div>
                                 <!--                  <div class="form-group">-->
                                 <!--                    <label for="input-3">Hình ảnh</label>-->
@@ -99,7 +99,7 @@
                                 <!--                  </div>-->
                                 <div class="form-group">
                                     <label for="input-4">Người đăng</label>
-                                    <input type="text" class="form-control" id="input-4" th:name="username" th:value="${post.users.username}" readonly>
+                                    <input type="text" class="form-control" id="input-4" th:name="username" required th:value="${post.users.username}" readonly>
                                 </div>
 <!--                                <div class="form-group">-->
 <!--                                    <label for="input-5">Ngày đăng</label>-->

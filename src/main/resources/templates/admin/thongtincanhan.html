@@ -138,11 +138,12 @@
                     <div class="card">
                         <div class="info-name">
                             <h1 th:text="${users.fullName}"></h1>
-                            <h3>IT developer</h3>
+                            <h3 th:text="${type}"></h3>
                         </div>
                         <div class="info-image">
-                            <img th:src="@{/admin/assets/images/anhbia2.jpg}" alt="" >
-                            <h4 th:text="${users.dob}"></h4>
+                            <img th:if="${users.img}" th:src="${users.img}" alt="" >
+                            <img th:unless="${users.img}" th:src="@{/admin/assets/images/anhbia2.jpg}" alt="" >
+                            <h4 th:text="${#temporals.format(users.dob, 'dd-MM-yyyy')}"></h4>
                         </div>
                         <div class="info-introduces">
                             <span th:text="${users.phoneNumber}"><i class="icon-phone mr-2"> </i></span><br>

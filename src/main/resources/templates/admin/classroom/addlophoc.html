@@ -84,7 +84,6 @@
                                     <label for="input-0">Khóa học</label>
                                     <div>
                                         <select id="input-0" class="form-control valid" th:name="course_id" required aria-invalid="false">
-                                            <option value=""> -- </option>
                                             <option th:each="course : ${courses}"
                                                     th:value="${course.id}"
                                                     th:utext="${course.name}"></option>
@@ -93,29 +92,28 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="input-1">Tên lớp học</label>
-                                    <input type="text" th:field="*{classname}" class="form-control" id="input-1" placeholder="Nhập tên lớp" name="user-name" >
+                                    <input type="text" th:field="*{classname}" class="form-control" id="input-1" pattern="[A-Za-z0-9]{3,}" required placeholder="Nhập tên lớp" name="user-name" >
                                 </div>
                                 <div class="form-group">
                                     <label for="input-2">Số lượng học viên tối đa</label>
-                                    <input type="number" th:field="*{maxMember}" class="form-control" id="input-2" placeholder="Nhập số lượng học viên tối đa" name="user-email">
+                                    <input type="number" th:field="*{maxMember}" class="form-control" id="input-2" min="1" required placeholder="Nhập số lượng học viên tối đa" name="user-email">
                                 </div>
                                 <div class="form-group">
                                     <label for="the-date1">Ngày bắt đầu</label>
-                                    <input type="date" th:field="*{startDate}" class="form-control" id="the-date1" placeholder="Ngày bắt đầu học" name="user-created">
+                                    <input type="date" th:field="*{startDate}" class="form-control" id="the-date1" required placeholder="Ngày bắt đầu học" name="user-created">
                                 </div>
                                 <div class="form-group">
                                     <label for="the-date3">Ngày kết thúc</label>
-                                    <input type="date" th:field="*{endDate}" class="form-control" id="the-date3" placeholder="Ngày kết thúc lớp học" name="user-created">
+                                    <input type="date" th:field="*{endDate}" class="form-control" id="the-date3" required placeholder="Ngày kết thúc lớp học" name="user-created">
                                 </div>
                                 <div class="form-group">
                                     <label for="the-date2">Ngày tạo</label>
-                                    <input type="date" th:field="*{createDate}" class="form-control" id="the-date2" placeholder="Ngày tạo" name="user-created">
+                                    <input type="date" th:field="*{createDate}" class="form-control" id="the-date2" required placeholder="Ngày tạo" name="user-created">
                                 </div>
                                 <div class="form-group">
                                     <label for="input-6">Giảng viên phụ trách</label>
                                     <div>
                                         <select id="input-6" class="form-control valid" th:name="teacher_id" required aria-invalid="false">
-                                            <option value=""> -- </option>
                                             <option th:each="teacher : ${teachers}"
                                                     th:value="${teacher.id}"
                                                     th:utext="${teacher.fullName}"></option>
@@ -146,10 +144,60 @@
 
 		var today = year + "-" + month + "-" + day;
 
+        var endMonth = date.getMonth() + 1 + 3;
+        if (endMonth < 10) endMonth = "0" + endMonth;
+        var endDay = year + "-" + endMonth + "-" + day;
 
-		document.getElementById('the-date1').value = today;
-        document.getElementById('the-date2').value = today;
-        document.getElementById('the-date3').value = today;
+        var date1 = document.getElementById('the-date1');
+        var date2 = document.getElementById('the-date2');
+        var date3 = document.getElementById('the-date3');
+
+        date3.value = endDay;
+        date2.value = today;
+        date1.value = today;
+
+        date1.min = today;
+        date3.min = endDay;
+
+        date1.onchange = function() {
+            var a = new Date(date1.value);
+            var aday = a.getDate();
+            var qmonth = a.getMonth() + 1;
+            var amonth = a.getMonth() + 1 + 3;
+            var ayear = a.getFullYear();
+
+            if (amonth < 10) amonth = "0" + amonth;
+            if (qmonth < 10) qmonth = "0" + qmonth;
+            if (aday < 10) aday = "0" + aday;
+
+            var b = ayear +"-"+amonth+"-"+ aday;
+            var c = ayear +"-"+qmonth+"-"+ aday;
+            date3.max = b
+            date3.min = c
+        }
+    </script>
+    <script>
+        var input1 = document.getElementById('input-1');
+        var input2 = document.getElementById('input-2');
+
+        input1.oninvalid = function(event) {
+            event.target.setCustomValidity('Nhập tên lớp chỉ gồm kí tự chữ số và chữ cái, phải có tối thiểu 3 kí tự');
+        }
+        input2.oninvalid = function(event) {
+            event.target.setCustomValidity('Nhập giá trị lớn hơn 0');
+        }
+
+        const start = document.getElementById('the-date1');
+        const now = document.getElementById('the-date2');
+        const end = document.getElementById('the-date3');
+
+        end.oninvalid = function(event) {
+            event.target.setCustomValidity('Nhập ngày kết thúc không trước ngày bắt đầu');
+        }
+
+        start.oninvalid = function(event) {
+            event.target.setCustomValidity('Nhập ngày bắt đầu không trước ngày hiện tại');
+        }
     </script>
     <!-- Body -->
 

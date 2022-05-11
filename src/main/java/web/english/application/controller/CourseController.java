@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import web.english.application.dao.CategoryDAO;
 import web.english.application.dao.CourseDAO;
 import web.english.application.dao.LevelDAO;
@@ -37,7 +38,7 @@ public class CourseController {
 
 
     @GetMapping("/courses")
-    public String getCourse(Model model, HttpServletRequest httpServletRequest){
+    public String getCourse(Model model, HttpServletRequest httpServletRequest,@ModelAttribute(name = "msg") String msg){
         String token = "";
         Users user = null;
         if(httpServletRequest.getCookies() == null){
@@ -59,6 +60,7 @@ public class CourseController {
         model.addAttribute("users",user);
         List<Course> courses = courseDAO.findAllCourse();
         model.addAttribute("courses",courses);
+        model.addAttribute("msg",msg);
         return "admin/course/khoahoc";
     }
 
@@ -129,35 +131,39 @@ public class CourseController {
     }
 
     @PostMapping("/course/add")
-    public String addCourse(@ModelAttribute("course") Course course, @RequestParam("level_id") String level_id,@RequestParam("category_id") String category_id){
+    public String addCourse(RedirectAttributes redirectAttributes, @ModelAttribute("course") Course course, @RequestParam("level_id") String level_id, @RequestParam("category_id") String category_id){
         int levelId = Integer.parseInt(level_id);
         int categoryId = Integer.parseInt(category_id);
         course.setEnable(true);
         courseDAO.saveCourse(course,levelId,categoryId);
+        redirectAttributes.addFlashAttribute("msg","Thêm khóa học thành công");
         return "redirect:/admin/courses";
     }
 
     @PostMapping("/course/update")
-    public String updateCourse(@ModelAttribute("course") Course course, @RequestParam("level_id") String level_id,@RequestParam("category_id") String category_id){
+    public String updateCourse(RedirectAttributes redirectAttributes,@ModelAttribute("course") Course course, @RequestParam("level_id") String level_id,@RequestParam("category_id") String category_id){
         int levelId = Integer.parseInt(level_id);
         int categoryId = Integer.parseInt(category_id);
         courseDAO.saveCourse(course,levelId,categoryId);
+        redirectAttributes.addFlashAttribute("msg","Cập nhật khóa học thành công");
         return "redirect:/admin/courses";
     }
 
     @GetMapping("/course/disable/{id}")
-    public String disableCourse(@PathVariable int id){
+    public String disableCourse(@PathVariable int id,RedirectAttributes redirectAttributes){
         Course course = courseDAO.findCourse(id);
         course.setEnable(false);
         courseDAO.disableCourse(course);
+        redirectAttributes.addFlashAttribute("msg","Cập nhật thành công");
         return "redirect:/admin/courses";
     }
 
     @GetMapping("/course/enable/{id}")
-    public String enableCourse(@PathVariable int id){
+    public String enableCourse(@PathVariable int id,RedirectAttributes redirectAttributes){
         Course course = courseDAO.findCourse(id);
         course.setEnable(true);
         courseDAO.disableCourse(course);
+        redirectAttributes.addFlashAttribute("msg","Cập nhật thành công");
         return "redirect:/admin/courses";
     }
 

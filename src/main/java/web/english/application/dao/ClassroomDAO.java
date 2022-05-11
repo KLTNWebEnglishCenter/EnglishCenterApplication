@@ -48,9 +48,9 @@ public class ClassroomDAO {
         return classroom;
     }
 
-    public Classroom deleteClassroom(int id){
-        Classroom classroom = restTemplate.getForObject("http://localhost:8000/classroom/delete/"+id,Classroom.class);
-        return classroom;
+    public String deleteClassroom(int id){
+        String rs = restTemplate.getForObject("http://localhost:8000/classroom/delete/"+id,String.class);
+        return rs;
     }
 
     public List<Classroom> findClassroomByCourseId(int courseId){

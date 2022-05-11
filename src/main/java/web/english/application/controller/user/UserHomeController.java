@@ -68,7 +68,7 @@ public class UserHomeController {
             }
         }
 
-        List<Course> courses = courseDAO.findAllCourse();
+        List<Course> courses = courseDAO.getListCourseLimit();
 
         model.addAttribute("users",user);
         model.addAttribute("courses",courses);
@@ -77,7 +77,6 @@ public class UserHomeController {
             model.addAttribute("msg",diem+"");
             diem = -1;
         }
-
 
         return "home";
     }
