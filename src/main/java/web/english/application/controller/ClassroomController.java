@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import web.english.application.dao.*;
 import web.english.application.entity.schedule.Classroom;
 import web.english.application.entity.ScheduleInfoHolder;
@@ -55,7 +56,7 @@ public class ClassroomController {
     private JwtHelper jwtHelper=new JwtHelper();
 
     @GetMapping("/classrooms")
-    public String getClassrooms(Model model, HttpServletRequest httpServletRequest){
+    public String getClassrooms(Model model, HttpServletRequest httpServletRequest,@ModelAttribute(name = "msg") String msg){
         String token = "";
         Users user = null;
         if(httpServletRequest.getCookies() == null){
@@ -77,6 +78,7 @@ public class ClassroomController {
         model.addAttribute("users",user);
         List<Classroom> classrooms = classroomDAO.findAll();
         model.addAttribute("classrooms",classrooms);
+        model.addAttribute("msg",msg);
         return "admin/classroom/lophoc";
     }
 
@@ -163,26 +165,34 @@ public class ClassroomController {
     }
 
     @PostMapping("/classroom/add")
-    public String addClassroom(@ModelAttribute("classroom") Classroom classroom,@RequestParam("course_id") String course_id,@RequestParam("teacher_id") String teacher_id, Model mode){
+    public String addClassroom(RedirectAttributes redirectAttributes,@ModelAttribute("classroom") Classroom classroom,@RequestParam("course_id") String course_id,@RequestParam("teacher_id") String teacher_id, Model mode){
         int courseId = Integer.parseInt(course_id);
         int teacherId = Integer.parseInt(teacher_id);
 
         classroom.setStatus("Openning");
         classroomDAO.saveClassroom(classroom,teacherId,courseId);
+        redirectAttributes.addFlashAttribute("msg","Thêm thành công");
         return "redirect:/admin/classrooms";
     }
 
     @PostMapping("/classroom/update")
-    public String updateClassroom(@ModelAttribute("classroom") Classroom classroom){
+    public String updateClassroom(@ModelAttribute("classroom") Classroom classroom,RedirectAttributes redirectAttributes){
         Classroom classroom1 = classroomDAO.getClassroom(classroom.getId());
         classroom.setModifiedDate(LocalDate.now());
+        classroom.setStatus("Openning");
         classroomDAO.saveClassroom(classroom,classroom1.getTeacher().getId(),classroom1.getCourse().getId());
+        redirectAttributes.addFlashAttribute("msg","Cập nhật thành công");
         return "redirect:/admin/classrooms";
     }
 
     @GetMapping("/classroom/delete/{id}")
-    public String deleteClassroom(@PathVariable("id") int id){
-        Classroom classroom = classroomDAO.deleteClassroom(id);
+    public String deleteClassroom(@PathVariable("id") int id, RedirectAttributes redirectAttributes){
+        String rs = classroomDAO.deleteClassroom(id);
+        if (rs.equals("DeleteAccess")){
+            redirectAttributes.addFlashAttribute("msg","Xóa thành công");
+        }else {
+            redirectAttributes.addFlashAttribute("msg","Xóa thất bại.Lớp học vẫn còn lịch");
+        }
         return "redirect:/admin/classrooms";
     }
 

@@ -41,9 +41,18 @@ public class UserController {
         String author = userDAO.getAuthorFromToken(token);
         if(author.equals(RoleType.STUDENT)){
             model.addAttribute("author",false);
-        }else{
+            model.addAttribute("type","STUDENT");
+        }else if (author.equals(RoleType.TEACHER)){
             model.addAttribute("author",true);
+            model.addAttribute("type","TEACHER");
+        }else if (author.equals(RoleType.EMPLOYEE)){
+            model.addAttribute("author",true);
+            model.addAttribute("type","EMPLOYEE");
+        }else if (author.equals(RoleType.ADMIN)){
+            model.addAttribute("author",true);
+            model.addAttribute("type","ADMIN");
         }
+
 
         model.addAttribute("users",users);
         if (a == true){

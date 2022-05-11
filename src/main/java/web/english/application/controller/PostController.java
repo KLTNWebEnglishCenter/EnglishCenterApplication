@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import web.english.application.dao.PostDAO;
 import web.english.application.dao.UserDAO;
 import web.english.application.entity.Post;
@@ -27,7 +28,7 @@ public class PostController {
     private UserDAO userDAO;
 
     @GetMapping("/posts")
-    public String getPostPage(Model model, HttpServletRequest httpServletRequest){
+    public String getPostPage(Model model, HttpServletRequest httpServletRequest,@ModelAttribute(name = "msg") String msg){
         String token = "";
         Users user = null;
         if(httpServletRequest.getCookies() == null){
@@ -51,6 +52,7 @@ public class PostController {
 
 
         model.addAttribute("posts",posts);
+        model.addAttribute("msg",msg);
         return "admin/post/baidang";
     }
 
@@ -83,11 +85,12 @@ public class PostController {
     }
 
     @PostMapping("/post/save")
-    public String savePost(@ModelAttribute Post post, @RequestParam("username") String username){
+    public String savePost(@ModelAttribute Post post, @RequestParam("username") String username, RedirectAttributes redirectAttributes){
         Users users = new Users(username);
         post.setUsers(users);
         post.setStatus(StatusHelper.STATUS_ACCEPT);
         postDAO.savePost(post);
+        redirectAttributes.addFlashAttribute("msg","Thêm/Cập nhật bài đăng thành công");
         return "redirect:/admin/posts";
     }
 
@@ -121,13 +124,14 @@ public class PostController {
     }
 
     @GetMapping("/post/delete/{id}")
-    public String deletePost(@PathVariable int id){
+    public String deletePost(@PathVariable int id,RedirectAttributes redirectAttributes){
         Post post = postDAO.deletePost(id);
+        redirectAttributes.addFlashAttribute("msg","Xóa thành công");
         return "redirect:/admin/posts";
     }
 
     @GetMapping("/post/accept")
-    public String getAcceptPage(HttpServletRequest httpServletRequest,Model model){
+    public String getAcceptPage(HttpServletRequest httpServletRequest,Model model,@ModelAttribute(name = "msg") String msg){
         String token = "";
         Users user = null;
         if(httpServletRequest.getCookies() == null){
@@ -153,22 +157,25 @@ public class PostController {
 
         model.addAttribute("users",user);
         model.addAttribute("posts",posts);
+        model.addAttribute("msg",msg);
         return "admin/post/duyetbaidang";
     }
 
     @GetMapping("/post/accept/yes/{id}")
-    public String acceptPost(@PathVariable int id){
+    public String acceptPost(@PathVariable int id,RedirectAttributes redirectAttributes){
         Post post = postDAO.getPostById(id);
         post.setStatus(StatusHelper.STATUS_ACCEPT);
         postDAO.savePost(post);
+        redirectAttributes.addFlashAttribute("msg","Duyệt thành công");
         return "redirect:/admin/post/accept";
     }
 
     @GetMapping("/post/accept/never/{id}")
-    public String neverPost(@PathVariable int id){
+    public String neverPost(@PathVariable int id,RedirectAttributes redirectAttributes){
         Post post = postDAO.getPostById(id);
         post.setStatus(StatusHelper.STATUS_DENI);
         postDAO.savePost(post);
+        redirectAttributes.addFlashAttribute("msg","Duyệt thành công");
         return "redirect:/admin/post/accept";
     }
 

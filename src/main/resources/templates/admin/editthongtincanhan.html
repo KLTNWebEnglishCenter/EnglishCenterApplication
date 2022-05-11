@@ -149,19 +149,19 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="input-2">Họ tên</label>
-                                    <input th:field="*{fullName}" type="text" class="form-control" id="input-2" placeholder="Họ tên" value="" name="teacher-name">
+                                    <input th:field="*{fullName}" type="text" class="form-control" id="input-2" placeholder="Họ tên" value="" required name="teacher-name">
                                 </div>
                                 <div class="form-group">
                                     <label for="input-2">Email</label>
-                                    <input th:field="*{email}" type="email" class="form-control" id="input-3" placeholder="Địa chỉ Email" value="" name="teacher-email">
+                                    <input th:field="*{email}" type="email" class="form-control" id="input-3" placeholder="Địa chỉ Email" value="" required name="teacher-email">
                                 </div>
                                 <div class="form-group">
                                     <label for="input-3">Số điện thoại</label>
-                                    <input th:field="*{phoneNumber}" type="text" class="form-control" id="input-4" placeholder="Số điện thoại" value="" name="teacher-phone">
+                                    <input th:field="*{phoneNumber}" type="text" class="form-control" id="input-4" placeholder="Số điện thoại" value="" required name="teacher-phone">
                                 </div>
                                 <div class="form-group">
                                   <label for="input-3">UserName</label>
-                                  <input th:field="*{username}" type="text" class="form-control" id="input-5" placeholder="Username" value="" name="teacher-userName">
+                                  <input th:field="*{username}" type="text" class="form-control" id="input-5" placeholder="Username" value="" required name="teacher-userName">
                                 </div>
 <!--                                <div class="form-group">-->
 <!--                                    <label for="input-4">Mật khẩu</label>-->
@@ -181,7 +181,7 @@
 
                                 <div class="form-group">
                                     <label for="input-6">Ngày sinh</label>
-                                    <input th:field="*{dob}" type="date" class="form-control" id="input-6" >
+                                    <input th:field="*{dob}" type="date" class="form-control" id="input-6" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Giới tính</label>

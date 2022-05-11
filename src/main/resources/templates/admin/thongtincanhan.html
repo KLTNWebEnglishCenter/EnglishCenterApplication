@@ -138,7 +138,7 @@
                     <div class="card">
                         <div class="info-name">
                             <h1 th:text="${users.fullName}"></h1>
-                            <h3>IT developer</h3>
+                            <h3 th:text="${type}"></h3>
                         </div>
                         <div class="info-image">
                             <img th:if="${users.img}" th:src="${users.img}" alt="" >

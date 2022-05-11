@@ -84,11 +84,11 @@
                 <form th:action="@{/admin/post/save}" method="post" th:object="${post}">
                   <div class="form-group">
                     <label for="input-1">Tên tin tức</label>
-                    <input type="text" th:field="*{title}" class="form-control" id="input-1" placeholder="Tên tin tức" name="new-title">
+                    <input type="text" th:field="*{title}" class="form-control" id="input-1" required placeholder="Tên tin tức" name="new-title">
                   </div>
                   <div class="form-group">
                     <label for="input-2">Nội dung</label>
-                    <textarea class="form-control" th:field="*{content}" rows="4" id="input-2" name="new-content"></textarea>
+                    <textarea class="form-control" th:field="*{content}" rows="4" id="input-2" required name="new-content"></textarea>
                   </div>
 <!--                  <div class="form-group">-->
 <!--                    <label for="input-3">Hình ảnh</label>-->
@@ -100,7 +100,7 @@
                   </div>
                   <div class="form-group">
                     <label for="input-5">Ngày đăng</label>
-                    <input type="date" class="form-control" id="input-5" name="new-created" th:field="*{createDate}">
+                    <input type="date" class="form-control" id="input-5" name="new-created" readonly th:field="*{createDate}">
                   </div>
                  <div class="form-footer">
                     <button class="btn btn-danger"><i class="fa fa-times"></i><a th:href="@{/admin/posts}">Hủy</a></button>
