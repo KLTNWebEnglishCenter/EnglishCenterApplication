@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <meta name="description" content=""/>
+  <meta name="author" content=""/>
+  <title>Admin</title>
+
+  <link th:href="@{/admin/assets/css/pace.min.css}" rel="stylesheet"/>
+  <script th:src="@{/admin/assets/js/pace.min.js}"></script>
+  <link rel="stylesheet" th:href="@{/admin/assets/plugins/summernote/dist/summernote-bs4.css}"/>
+  <link rel="icon" th:href="@{/admin/assets/images/favicon.ico}" type="image/x-icon">
+  <link th:href="@{/admin/assets/plugins/vectormap/jquery-jvectormap-2.0.2.css}" rel="stylesheet"/>
+  <link th:href="@{/admin/assets/plugins/simplebar/css/simplebar.css}" rel="stylesheet"/>
+  <link th:href="@{/admin/assets/css/bootstrap.min.css}" rel="stylesheet"/>
+  <link th:href="@{/admin/assets/css/animate.css}" rel="stylesheet" type="text/css"/>
+  <link th:href="@{/admin/assets/css/icons.css}" rel="stylesheet" type="text/css"/>
+  <link th:href="@{/admin/assets/css/sidebar-menu.css}" rel="stylesheet"/>
+  <link th:href="@{/admin/assets/css/app-style.css}" rel="stylesheet"/>
+
+
+  <script th:src="@{/admin/assets/js/jquery.min.js}"></script>
+  <script th:src="@{/admin/assets/js/sweetalert2.all.js}"></script>
+  <link rel="stylesheet" th:href="@{/admin/assets/css/sweetalert2.min.css}">
+
+  <script th:inline="javascript">
+  /*<![CDATA[*/
+
+    var msg = /*[[${msg}]]*/ '';
+
+    function yourfunction() {
+      if(msg!=""&&msg!=null){
+        Swal.fire({
+          text: msg,
+         })
+      }
+    }
+
+    window.onload = yourfunction;
+
+  /*]]>*/
+  </script>
+
+  <style type="">
+    .dropdown {
+      float: right;
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f1f1f1;
+      min-width: 160px;
+      overflow: auto;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      right: 0;
+      z-index: 1;
+    }
+
+    .dropdown-content label {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-content label:hover {background-color: #ddd;}
+
+    .show {display: block;}
+
+  </style>
+  <script>
+    /* When the user clicks on the button,
+    toggle between hiding and showing the dropdown content */
+    function myFunction(index) {
+      document.getElementsByClassName("myDropdown")[index].classList.toggle("show");
+    }
+
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function(event) {
+      if (!event.target.matches('.dropbtn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
+    }
+
+    function post(path, params, method='post') {
+
+      // The rest of this code assumes you are not using a library.
+      // It can be made less verbose if you use one.
+      const form = document.createElement('form');
+      form.method = method;
+      form.action = path;
+
+      for (const key in params) {
+        if (params.hasOwnProperty(key)) {
+          const hiddenField = document.createElement('input');
+          hiddenField.type = 'hidden';
+          hiddenField.name = key;
+          hiddenField.value = params[key];
+
+          form.appendChild(hiddenField);
+        }
+      }
+
+      document.body.appendChild(form);
+      form.submit();
+    }
+  </script>
+
+</head>
+
+<body class="bg-theme bg-theme1">
+
+<!-- start loader -->
+<div id="pageloader-overlay" class="visible incoming">
+  <div class="loader-wrapper-outer">
+    <div class="loader-wrapper-inner">
+      <div class="loader"></div>
+    </div>
+  </div>
+</div>
+
+<div id="wrapper">
+  <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
+    <div class="brand-logo">
+      <a th:href="@{/admin/home}">
+        <img src="/admin/assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
+        <h5 class="logo-text">TOPAL</h5>
+      </a>
+    </div>
+    <ul th:replace="~{admin/index::menu-fragment}">
+    </ul>
+  </div>
+  <header class="topbar-nav">
+    <nav class="navbar navbar-expand fixed-top">
+      <ul class="navbar-nav mr-auto align-items-center">
+        <li class="nav-item">
+          <a class="nav-link toggle-menu" href="javascript:void();">
+            <i class="icon-menu menu-icon"></i>
+          </a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav align-items-center right-nav-link">
+        <li class="nav-item">
+          <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" href="#">
+              <span class="user-profile"><img src="/admin/assets/images/avatar-admin.png" class="img-circle"
+                                              alt="user avatar"></span>
+          </a>
+          <ul th:replace="~{admin/index::admin-fragment}">
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <div class="clearfix"></div>
+
+  <!-- Body -->
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <div class="row mt-3">
+        <form th:action="@{/admin/requestcourse/search}" method="post" class="col-12" style="display:flex; align-items: top; ">
+          <div class="col-lg-11 col-sm-9 col-xs-6">
+            <div class="form-group col-12">
+              <input type="text" name="studentIdOrFullName" class="form-control" placeholder="Mã học viên/ Tên học viên" >
+            </div>
+            <div class="form-group col-12">
+              <input type="text" name="courseIdOrName" class="form-control" placeholder="Mã khóa học/ Tên khóa học" >
+              </div>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-light" >Tìm kiếm</button>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="row">
+<!--        <div class="col-lg-12 mb-3" style="display:flex; justify-content: right;">-->
+<!--          <button class="btn btn-light"><a th:href="@{/admin/addteacher}">Thêm giảng viên</a></button>-->
+<!--        </div>-->
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Danh sách yêu cầu</h5>
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Mã học viên</th>
+                    <th scope="col">Tên học viên</th>
+                    <th scope="col">Mã khóa học</th>
+                    <th scope="col">Tên khóa học</th>
+                    <th scope="col">Cấp độ</th>
+                    <th scope="col">Loại</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col">Hành động</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr th:each="usersCourseRequest,iter : ${usersCourseRequests}">
+                    <td th:text="${iter.index}"></td>
+                    <td th:text="${usersCourseRequest.student.id}"></td>
+                    <td th:text="${usersCourseRequest.student.fullName}"></td>
+                    <td th:text="${usersCourseRequest.course.id}"></td>
+                    <td th:text="${usersCourseRequest.course.name}"></td>
+                    <td th:text="${usersCourseRequest.course.level.name}"></td>
+                    <td th:text="${usersCourseRequest.course.category.name}"></td>
+                    <td th:text="${usersCourseRequest.status}"></td>
+                    <td>
+                      <button class="btn btn-success dropbtn" th:onclick="myFunction([[${iter.index}]])">Cập
+                        nhật</button>
+                      <div class="myDropdown dropdown-content">
+                        <label th:onclick="post('/admin/requestcourse/status/update', {studentId: [[${usersCourseRequest.student.id}]],courseId:[[${usersCourseRequest.course.id}]],status:'Xác nhận'} );">Xác nhận</label>
+                        <label th:onclick="post('/admin/requestcourse/status/update', {studentId: [[${usersCourseRequest.student.id}]],courseId:[[${usersCourseRequest.course.id}]],status:'Hoàn tất học phí'} );">Hoàn tất học phí</label>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="overlay toggle-menu"></div>
+    </div>
+  </div>
+
+  <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
+</div>
+
+<script src="/admin/assets/js/jquery.min.js"></script>
+<script src="/admin/assets/js/popper.min.js"></script>
+<script src="/admin/assets/js/bootstrap.min.js"></script>
+<script src="/admin/assets/plugins/simplebar/js/simplebar.js"></script>
+<script src="/admin/assets/js/sidebar-menu.js"></script>
+<script src="/admin/assets/js/jquery.loading-indicator.js"></script>
+<script src="/admin/assets/js/app-script.js"></script>
+<script src="/admin/assets/plugins/Chart.js/Chart.min.js"></script>
+<script src="/admin/assets/js/index.js"></script>
+<script src="/admin/assets/plugins/summernote/dist/summernote-bs4.min.js"></script>
+</body>
+
+</html>

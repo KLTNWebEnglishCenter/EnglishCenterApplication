@@ -10,8 +10,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.RestTemplate;
 import web.english.application.entity.Notification;
-import web.english.application.entity.course.Course;
 import web.english.application.entity.course.UsersCourseRequest;
+import web.english.application.entity.course.Course;
 import web.english.application.entity.exam.UsersExamScores;
 import web.english.application.entity.exam.UsersExamScoresKey;
 import web.english.application.entity.schedule.Classroom;
@@ -101,13 +101,25 @@ public class StudentDAO {
      * @param courseId
      * @return
      */
-    public String updateStudentRequestCourseStatus(int studentId, int courseId){
-//        /student/requestcourse/status/{studentId}/{courseId}
+    public String updateStudentRequestCourseStatus(int studentId, int courseId,String status){
         try{
-           restTemplate.put("http://localhost:8000/student/requestcourse/status/"+studentId+"/"+courseId,null);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+            MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+            map.add("studentId", studentId+"");
+            map.add("courseId", courseId+"");
+            map.add("status", status);
+
+            HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+
+            ResponseEntity<UsersCourseRequest> responseEntity =  restTemplate.exchange("http://localhost:8000/student/requestcourse/status/",HttpMethod.POST, request,new ParameterizedTypeReference<UsersCourseRequest>() {
+            });
+//           restTemplate.put("http://localhost:8000/student/requestcourse/status/"+studentId+"/"+courseId+"/"+status,null);
            return "Cập nhật thành công";
         }catch (Exception exception){
-            log.info("addStudentToClassroom Error:"+ exception.getMessage());
+//            exception.printStackTrace();
+            log.info("updateStudentRequestCourseStatus Error:"+ exception.getMessage());
             return "Cập nhật không thành công";
         }
     }
