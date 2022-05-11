@@ -121,4 +121,13 @@ public class CourseDAO {
         return courses;
     }
 
+    public List<Course> getListCourseLimit(){
+        ResponseEntity<List<Course>> responseEntity =
+                restTemplate.exchange("http://localhost:8000//course/find/limit/4",
+                        HttpMethod.GET, null, new ParameterizedTypeReference<List<Course>>() {
+                        });
+        List<Course> courses = responseEntity.getBody();
+
+        return courses;
+    }
 }

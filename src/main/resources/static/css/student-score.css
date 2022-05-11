@@ -13,7 +13,7 @@ h1 {
     font-weight: 300;
     line-height: 1em;
     text-align: center;
-    color: #4DC3FA;
+    color: white;
 }
 
 h2 {
@@ -45,7 +45,7 @@ h2 a {
     font-weight: bold;
     font-size: 1em;
     text-align: left;
-    color: #185875;
+    color: white;
 }
 
 .container td {
@@ -74,16 +74,16 @@ h2 a {
 
 /* Background-color of the odd rows */
 .container tr:nth-child(odd) {
-    background-color: #323C50;
+    background-color: #5a6e97;
 }
 
 /* Background-color of the even rows */
 .container tr:nth-child(even) {
-    background-color: #2C3446;
+    background-color: #5a6e97;
 }
 
 .container th {
-    background-color: #1F2739;
+    background-color: #182749;
 }
 
 .container td:first-child {
@@ -91,7 +91,7 @@ h2 a {
 }
 
 .container tr:hover {
-    background-color: #464A52;
+    background-color: #698acb;
     -webkit-box-shadow: 0 6px 6px -6px #0E1119;
     -moz-box-shadow: 0 6px 6px -6px #0E1119;
     box-shadow: 0 6px 6px -6px #0E1119;
