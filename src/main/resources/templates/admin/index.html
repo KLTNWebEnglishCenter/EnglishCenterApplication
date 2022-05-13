@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -135,17 +135,17 @@
     </div>
     <ul th:fragment="menu-fragment" class="sidebar-menu do-nicescrol">
       <li class="sidebar-header">MENU ADMIN</li>
-      <li>
+      <li sec:authorize="hasAuthority('ROLE_GIANGVIEN')">
         <a th:href="@{/admin/home}">
           <i class="zmdi zmdi-view-dashboard"></i> <span>Lịch</span>
         </a>
       </li>
-       <li>
+       <li sec:authorize="hasAuthority('ROLE_ADMIN')">
         <a th:href="@{/admin/employee}">
           <i class="zmdi zmdi-account-box"></i> <span>Quản lí Nhân viên</span>
         </a>
       </li>
-      <li>
+      <li sec:authorize="hasAnyAuthority('ROLE_NHANVIEN','ROLE_ADMIN')">
         <a th:href="@{/admin/student}">
           <i class="zmdi zmdi-accounts"></i> <span>Quản lí Học viên</span>
         </a>

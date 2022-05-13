@@ -50,7 +50,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
             }catch (Exception exception){
                 log.error("login error: {}", exception.getMessage());
-
+                exception.printStackTrace();
                 String error = "fail";
                 Cookie cookie_error=new Cookie("error",error);
                 cookie_error.setMaxAge(2);
@@ -82,6 +82,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
                     filterChain.doFilter(request, response);
                 }catch (Exception exception){
+                    exception.printStackTrace();
                     log.error("login error: {}", exception.getMessage());
                     Cookie cookie=new Cookie("access_token",null);
                     cookie.setMaxAge(0);
@@ -102,7 +103,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     filterChain.doFilter(request, response);
                 }catch (Exception exception){
                     log.error("login error: {}", exception.getMessage());
-
+                    exception.printStackTrace();
                     error = "fail";
                     Cookie cookie_error=new Cookie("error",error);
                     cookie_error.setMaxAge(2);

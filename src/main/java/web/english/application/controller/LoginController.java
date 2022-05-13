@@ -85,7 +85,9 @@ public class LoginController {
             model.addAttribute("errorEmail",checkRequiredEmail);
             model.addAttribute("errorPassword",checkRequiredPassword);
             model.addAttribute("errorPasswordMatch",checkRequiredPasswordMatch);
+
             Users users1 = userDAO.save(users);
+            log.info(users1.toString());
             return "dangky";
         }
     }

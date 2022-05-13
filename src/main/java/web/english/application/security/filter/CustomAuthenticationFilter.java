@@ -55,7 +55,9 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         log.info("Auth:"+user.getAuthorities().toString());
         if(user.getUsers().getRole().equals(RoleType.STUDENT)){
             response.sendRedirect("/home");
-        }else{
+        }else if (user.getUsers().getRole().equals(RoleType.EMPLOYEE)){
+            response.sendRedirect("admin/teacher");
+        }else {
             response.sendRedirect("admin/schedule");
         }
 
