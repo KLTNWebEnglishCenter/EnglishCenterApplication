@@ -110,7 +110,7 @@
         <li class="nav-item">
             <a th:href="@{/contact}" class="nav-link" >Liên hệ</a>
         </li>
-        <li sec:authorize="hasAnyAuthority('ROLE_HOCVIEN','ROLE_NHANVIEN','ROLE_GIANGVIEN')" class="nav-item">
+        <li sec:authorize="hasAuthority('ROLE_HOCVIEN')" class="nav-item">
             <a th:href="@{/exam}" class="nav-link">Kiểm tra thử</a>
         </li>
     </ul>

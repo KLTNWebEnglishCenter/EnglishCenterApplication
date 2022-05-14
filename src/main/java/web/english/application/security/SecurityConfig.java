@@ -46,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/admin/exam/**", "/admin/notification/**", "/admin/addnotification/**", "/admin/notificationinfo/**",
                 "/admin/editnotification/**").hasAnyAuthority(RoleType.TEACHER);
 
-        http.authorizeRequests().antMatchers(  "/user/exam/**", "/posts/**", "/myPost/**", "/newPost/**",
+        http.authorizeRequests().antMatchers(  "/exam/**","/user/exam/**", "/posts/**", "/myPost/**", "/newPost/**",
                 "/new/post/**", "/score/**", "/schedule/**", "/classroom/**",
                 "/student/classroom/**").hasAnyAuthority(RoleType.STUDENT);
 
@@ -56,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/admin/posts/**", "/admin/addPost/**",
                 "/admin/post/**").hasAnyAuthority(RoleType.TEACHER,RoleType.EMPLOYEE);
 
-        http.authorizeRequests().antMatchers("/exam/**").hasAnyAuthority(RoleType.TEACHER,RoleType.EMPLOYEE,RoleType.STUDENT);
+//        http.authorizeRequests().antMatchers("/exam/**").hasAnyAuthority(RoleType.TEACHER,RoleType.EMPLOYEE,RoleType.STUDENT);
 
         http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/access-denied");
 
