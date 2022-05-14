@@ -35,8 +35,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         // Các trang không yêu cầu login
-        http.authorizeRequests().antMatchers("/admin/assets/**","/css/**","/img/**","/js/**","/home/**", "/about/**", "/contact/**", "/login", "/logout", "/info/**",
-                "/password/**", "/course/**","/register").permitAll();
+        http.authorizeRequests().antMatchers("/admin/assets/**","/css/**","/img/**","/js/**","/home/**", "/about/**", "/contact/**", "/login", "/logout","/info/**",
+                "/password/**", "/course/**","/register/**").permitAll();
         // Nếu chưa login, nó sẽ redirect tới trang login.
         http.authorizeRequests().antMatchers("/admin/approvestudent/**", "/admin/classrooms/**", "/admin/classroom/**",
                 "/admin/addClassroom/**", "/admin/updateClassroom/**", "/admin/courses/**", "/admin/course/**", "/admin/student/**",

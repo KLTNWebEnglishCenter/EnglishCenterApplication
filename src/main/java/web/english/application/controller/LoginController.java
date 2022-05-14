@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import web.english.application.dao.UserDAO;
 import web.english.application.entity.user.Authentication;
 import web.english.application.entity.user.Users;
@@ -37,7 +38,7 @@ public class LoginController {
      * @return
      */
     @GetMapping("/login")
-    public String getLogin(HttpServletRequest httpServletRequest, Model model){
+    public String getLogin(HttpServletRequest httpServletRequest, Model model,@ModelAttribute(name = "success") String success){
         String error="";
         for (Cookie cookie : httpServletRequest.getCookies()) {
             if(cookie.getName().equals("error")){
@@ -49,11 +50,12 @@ public class LoginController {
         else if(error.equalsIgnoreCase("expired"))msg="Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!";
 
         model.addAttribute("msg",msg);
+        model.addAttribute("success",success);
         return "dangnhap";
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute("users") Users users, @RequestParam("passwordMatch") String passwordMatch, Model model){
+    public String register(@ModelAttribute("users") Users users, @RequestParam("passwordMatch") String passwordMatch, Model model, RedirectAttributes redirectAttributes){
         String checkEmail = userDAO.checkRequired("Email",users.getEmail());
         String checkLengthUsername = userDAO.checkLength("Username",users.getUsername(),8,20);
         String checkLengthPassword = userDAO.checkLength("Password",users.getPassword(),6,20);
@@ -68,8 +70,9 @@ public class LoginController {
         if(checkRequiredUsername.equals("") && checkRequiredEmail.equals("") && checkRequiredPassword.equals("") && checkRequiredPasswordMatch.equals("")){
             if(checkLengthUsername.equals("") && checkLengthPassword.equals("")){
                 if(checkEmail.equals("") && checkPasswordMatch.equals("")){
-                    Users users1 = userDAO.save(users);
-                    return "dangnhap";
+//                    Users users1 = userDAO.save(users);
+                    redirectAttributes.addFlashAttribute("users",users);
+                    return "redirect:/register/generateOtp";
                 }else{
                     model.addAttribute("errorEmail",checkEmail);
                     model.addAttribute("errorPasswordMatch",checkPasswordMatch);

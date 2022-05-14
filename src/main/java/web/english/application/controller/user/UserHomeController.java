@@ -14,6 +14,7 @@ import web.english.application.entity.exam.Exam;
 import web.english.application.entity.exam.Question;
 import web.english.application.entity.exam.UsersExamScores;
 import web.english.application.entity.user.Users;
+import web.english.application.service.MyEmailService;
 import web.english.application.utils.JwtHelper;
 import web.english.application.utils.StatusHelper;
 import web.english.application.utils.Utils;
@@ -45,6 +46,9 @@ public class UserHomeController {
 
     @Autowired
     private StudentDAO studentDAO;
+
+    @Autowired
+    public MyEmailService myEmailService;
 
     private JwtHelper jwtHelper=new JwtHelper();
 
@@ -102,7 +106,7 @@ public class UserHomeController {
     }
 
     @GetMapping("/contact")
-    public String getContact(HttpServletRequest httpServletRequest, Model model){
+    public String getContact(HttpServletRequest httpServletRequest, Model model,@ModelAttribute("msg") String msg){
         String token = "";
         Users user = null;
         if(httpServletRequest.getCookies() != null){
@@ -118,7 +122,21 @@ public class UserHomeController {
         }
 
         model.addAttribute("users",user);
+        model.addAttribute("msg",msg);
         return "contact";
+    }
+
+    @PostMapping("/contact/sendmail")
+    public String sendMail(@RequestParam("name") String name,@RequestParam("email") String email,@RequestParam("phone") String phone,@RequestParam("message") String message,RedirectAttributes redirectAttributes){
+        try {
+            String n = "Tên:"+ name + "<br>" + "Email:" + email + "<br>" + "Nội dung:" + message;
+            myEmailService.sendOtpMessage("nguyenlamit0609@gmail.com", "Khách hàng phản ảnh", n);
+            redirectAttributes.addFlashAttribute("msg","Đã gửi thành công");
+            return "redirect:/contact";
+        }catch (Exception e){
+            redirectAttributes.addFlashAttribute("msg","Không thể gửi");
+            return "redirect:/contact";
+        }
     }
 
     @GetMapping("/exam")
