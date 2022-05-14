@@ -112,9 +112,12 @@ public class NotificationController {
      * @return
      */
     @PostMapping("/notification/add")
-    public String saveNotification(HttpServletRequest httpServletRequest, @ModelAttribute Notification notification, int[] selectedClassroom){
+    public String saveNotification(HttpServletRequest httpServletRequest, @ModelAttribute Notification notification, int[] selectedClassroom, RedirectAttributes redirectAttributes){
         //Cần xử lý thông báo khi người dùng không chọn lớp nào cả
-        if(selectedClassroom.length==0)return "redirect:/admin/addnotification";
+        if(selectedClassroom==null||selectedClassroom.length==0){
+            redirectAttributes.addFlashAttribute("msg","Vui lòng chọn lớp học để đăng thông báo!");
+            return "redirect:/admin/addnotification";
+        }
 
         String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
         String token=jwtHelper.createToken(jwt);

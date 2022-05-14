@@ -23,8 +23,31 @@
   .redText {
     color: red;
   }
-
   </style>
+
+  <script th:src="@{/admin/assets/js/jquery.min.js}"></script>
+  <script th:src="@{/admin/assets/js/sweetalert2.all.js}"></script>
+  <link rel="stylesheet" th:href="@{/admin/assets/css/sweetalert2.min.css}">
+
+  <script th:inline="javascript">
+  /*<![CDATA[*/
+
+    var msg = /*[[${msg}]]*/ '';
+
+    function yourfunction() {
+      if(msg!=""&&msg!=null){
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: msg,
+         })
+      }
+    }
+
+    window.onload = yourfunction;
+
+  /*]]>*/
+  </script>
 
 </head>
 

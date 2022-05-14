@@ -136,66 +136,66 @@
     <ul th:fragment="menu-fragment" class="sidebar-menu do-nicescrol">
       <li class="sidebar-header">MENU ADMIN</li>
       <li>
-        <a th:href="@{/admin/home}">
+        <a sec:authorize="hasAuthority('ROLE_GIANGVIEN')" th:href="@{/admin/home}">
           <i class="zmdi zmdi-view-dashboard"></i> <span>Lịch</span>
         </a>
       </li>
        <li>
-        <a th:href="@{/admin/employee}">
+        <a sec:authorize="hasAuthority('ROLE_ADMIN')" th:href="@{/admin/employee}">
           <i class="zmdi zmdi-account-box"></i> <span>Quản lí Nhân viên</span>
         </a>
       </li>
       <li>
-        <a th:href="@{/admin/student}">
+        <a sec:authorize="hasAuthority('ROLE_NHANVIEN')" th:href="@{/admin/student}">
           <i class="zmdi zmdi-accounts"></i> <span>Quản lí Học viên</span>
         </a>
       </li>
       <li>
-        <a th:href="@{/admin/teacher}">
+        <a sec:authorize="hasAuthority('ROLE_NHANVIEN')" th:href="@{/admin/teacher}">
           <i class="zmdi zmdi-accounts"></i> <span>Quản lí Giảng viên</span>
         </a>
       </li>
       <li>
-        <a th:href="@{/admin/courses}">
+        <a sec:authorize="hasAuthority('ROLE_NHANVIEN')" th:href="@{/admin/courses}">
           <i class="zmdi zmdi-widgets"></i> <span>Quản lí Khóa học</span>
         </a>
       </li>
       <li>
-        <a th:href="@{/admin/classrooms}">
+        <a sec:authorize="hasAuthority('ROLE_NHANVIEN')" th:href="@{/admin/classrooms}">
           <i class="zmdi zmdi-widgets"></i> <span>Quản lí Lớp học</span>
         </a>
       </li>
       <li>
-        <a th:href="@{/admin/posts}">
+        <a sec:authorize="hasAuthority('ROLE_NHANVIEN')" th:href="@{/admin/posts}">
           <i class="zmdi zmdi-collection-bookmark"></i> <span>Quản lí Bài đăng</span>
         </a>
       </li>
       <li>
-        <a th:href="@{/admin/notification}">
+        <a sec:authorize="hasAuthority('ROLE_GIANGVIEN')" th:href="@{/admin/notification}">
           <i class="zmdi zmdi-collection-bookmark"></i> <span>Quản lí Thông báo</span>
         </a>
       </li>
       <li>
-        <a th:href="@{/admin/document}">
+        <a sec:authorize="hasAuthority('ROLE_GIANGVIEN')" th:href="@{/admin/document}">
           <i class="zmdi zmdi-collection-bookmark"></i> <span>Quản lí Tài liệu</span>
         </a>
       </li>
       <li>
-        <a th:href="@{/admin/requestcourse}">
+        <a sec:authorize="hasAuthority('ROLE_NHANVIEN')" th:href="@{/admin/requestcourse}">
           <i class="zmdi zmdi-assignment-check"></i> <span>Xác nhận học phí</span>
         </a>
       </li>
       <li>
-        <a th:href="@{/admin/approvestudent}">
+        <a sec:authorize="hasAuthority('ROLE_NHANVIEN')" th:href="@{/admin/approvestudent}">
           <i class="zmdi zmdi-assignment-check"></i> <span>Duyệt học viên</span>
         </a>
       </li>
       <li>
-        <a th:href="@{/admin/post/accept}">
+        <a sec:authorize="hasAuthority('ROLE_NHANVIEN')" th:href="@{/admin/post/accept}">
           <i class="zmdi zmdi-assignment-check"></i> <span>Duyệt bài đăng</span>
         </a>   
       </li>
-      <li th:if="${users.role == 'ROLE_GIANGVIEN'}">
+      <li sec:authorize="hasAuthority('ROLE_GIANGVIEN')" th:if="${users.role == 'ROLE_GIANGVIEN'}">
         <a th:href="@{/admin/exam}">
           <i class="zmdi zmdi-assignment-check"></i> <span>Quản lý bài kiểm tra</span>
         </a>

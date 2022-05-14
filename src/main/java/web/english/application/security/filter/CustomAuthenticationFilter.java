@@ -3,6 +3,7 @@ package web.english.application.security.filter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -35,13 +36,17 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        log.info("Username is: {}", username);
-        log.info("Password is: {}", password);
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
-        return authenticationManager.authenticate(authenticationToken);
+//        try {
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+            log.info("Username is: {}", username);
+            log.info("Password is: {}", password);
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+            return authenticationManager.authenticate(authenticationToken);
+//        }catch (Exception exception){
+//            exception.printStackTrace();
+//            throw new InternalAuthenticationServiceException(exception.getMessage());
+//        }
     }
 
     @Override
@@ -52,13 +57,27 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         Cookie cookie=new Cookie("access_token",access_token);
         response.addCookie(cookie);
 
-        log.info("Auth:"+user.getAuthorities().toString());
+//        log.info("SecurityContextHolder:"+SecurityContextHolder.getContext().getAuthentication().toString());
+
+        log.info("Auth:"+user.getUsers().getRole());
         if(user.getUsers().getRole().equals(RoleType.STUDENT)){
             response.sendRedirect("/home");
+        }else if(user.getUsers().getRole().equals(RoleType.TEACHER)){
+            response.sendRedirect("/admin/schedule");
+        }else if(user.getUsers().getRole().equals(RoleType.EMPLOYEE)){
+            response.sendRedirect("/admin/teacher");
+        }else if(user.getUsers().getRole().equals(RoleType.ADMIN)){
+            response.sendRedirect("/admin/employee");
         }else{
-            response.sendRedirect("admin/schedule");
+            response.sendRedirect("/home");
         }
+    }
 
-//        log.info(SecurityContextHolder.getContext().getAuthentication().toString());
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        failed.printStackTrace();
+        log.error("login error: {}", failed.getMessage());
+
+        response.sendRedirect("/login/disable");
     }
 }

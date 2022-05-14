@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -35,8 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         // Các trang không yêu cầu login
-        http.authorizeRequests().antMatchers("/home/**", "/about/**", "/contact/**", "/login", "/logout", "/info/**",
-                "/password/**", "/course/**").permitAll();
+        http.authorizeRequests().antMatchers("/home/**", "/about/**", "/contact/**", "/login/**", "/logout", "/info/**",
+                "/password/**", "/course/**","/register/**","/css/**", "/js/**","/images/**").permitAll();
 
         // Nếu chưa login, nó sẽ redirect tới trang login.
         http.authorizeRequests().antMatchers("/admin/approvestudent/**", "/admin/classrooms/**", "/admin/classroom/**",
@@ -57,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/admin/employee/**", "/admin/addemployee/**", "/admin/editemployee/**",
                 "/admin/employeeinfo/**").hasAnyAuthority(RoleType.ADMIN);
 
-        http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
+        http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/access-denied");
 
         http.authorizeRequests()
                 // Cấu hình cho Login Form.
@@ -73,6 +72,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(userDAO), UsernamePasswordAuthenticationFilter.class);
+
+//        http.exceptionHandling().authenticationEntryPoint(new CustomEntryPoint());
     }
 
     @Bean

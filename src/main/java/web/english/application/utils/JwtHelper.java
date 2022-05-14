@@ -13,11 +13,12 @@ public class JwtHelper {
      */
     public String getJwtFromCookie(HttpServletRequest httpServletRequest){
         String jwt="";
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("access_token")){
-                jwt = cookie.getValue();
+        if(httpServletRequest.getCookies()!=null)
+            for (Cookie cookie : httpServletRequest.getCookies()) {
+                if(cookie.getName().equals("access_token")){
+                    jwt = cookie.getValue();
+                }
             }
-        }
         return jwt;
     }
 

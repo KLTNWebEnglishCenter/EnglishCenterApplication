@@ -1,10 +1,9 @@
 package web.english.application.security.filter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -12,7 +11,6 @@ import web.english.application.dao.UserDAO;
 import web.english.application.entity.user.Users;
 import web.english.application.security.entity.CustomUserDetails;
 import web.english.application.utils.JwtHelper;
-import web.english.application.utils.RoleType;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -20,15 +18,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-import static java.util.Arrays.stream;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
@@ -45,32 +34,25 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        //Người dùng truy cập vào trang login
         if (request.getServletPath().equals("/login")) {
             try{
                 filterChain.doFilter(request, response);
             }catch (Exception exception){
+                exception.printStackTrace();
                 log.error("login error: {}", exception.getMessage());
 
-                String error = "fail";
-                Cookie cookie_error=new Cookie("error",error);
-                cookie_error.setMaxAge(2);
-                response.addCookie(cookie_error);
-
-                response.sendRedirect("/login");
+                response.sendRedirect("/login/fail");
             }
-
+        // Người dùng truy cập vào trang logout
         }else if(request.getServletPath().equals("/logout")){
-            log.info("logout && delete cookie");
-            Cookie cookie=new Cookie("access_token",null);
-            cookie.setMaxAge(0);
-            response.addCookie(cookie);
             response.sendRedirect("/login");
-        }
-        else{
+        }else{
             String jwt=jwtHelper.getJwtFromCookie(request);
-            String error="";
+            //Nếu đã tồn tại jwt
             if(!jwt.equals("")){
                 try {
+                    //Lấy user từ server
                     Users users=userDAO.getUserFromToken(jwtHelper.createToken(jwt));
 
                     if(users!=null){
@@ -82,33 +64,23 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
                     filterChain.doFilter(request, response);
                 }catch (Exception exception){
+                    exception.printStackTrace();
                     log.error("login error: {}", exception.getMessage());
                     Cookie cookie=new Cookie("access_token",null);
                     cookie.setMaxAge(0);
                     response.addCookie(cookie);
 
-                    error = "expired";
-
-                    Cookie cookie_error=new Cookie("error",error);
-                    cookie_error.setMaxAge(2);
-                    response.addCookie(cookie_error);
-
-                    response.sendRedirect("/login");
-
+                    response.sendRedirect("/login/expired");
                 }
             }else{
                 try {
-                    log.info("jwt empty - 1");
+                    log.info("jwt empty");
                     filterChain.doFilter(request, response);
                 }catch (Exception exception){
+                    exception.printStackTrace();
                     log.error("login error: {}", exception.getMessage());
 
-                    error = "fail";
-                    Cookie cookie_error=new Cookie("error",error);
-                    cookie_error.setMaxAge(2);
-                    response.addCookie(cookie_error);
-
-                    response.sendRedirect("/login");
+                    response.sendRedirect("/login/fail");
                 }
             }
         }

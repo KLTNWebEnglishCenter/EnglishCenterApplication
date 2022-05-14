@@ -76,10 +76,10 @@
                                 <h4 class="inline" >Mã lớp: </h4> <p class="inline" th:text="${classroom?.id}"></p>
                             </div>
                             <div class="halfWidth">
-                                <h4 class="inline">Giảng viên: </h4> <p class="inline" th:text="${classroom?.teacher.fullName}"></p>
+                                <h4 class="inline">Giảng viên: </h4> <p class="inline" th:text="${classroom?.teacher?.fullName}"></p>
                             </div>
                             <div class="halfWidth">
-                                <h4 class="inline">Khóa học: </h4> <p class="inline" th:text="${classroom?.course.name}"></p>
+                                <h4 class="inline">Khóa học: </h4> <p class="inline" th:text="${classroom?.course?.name}"></p>
                             </div>
                             <div class="halfWidth">
                                 <h4 class="inline">Số lượng học viên: </h4> <p class="inline" th:text="${classroom?.maxMember}"></p>
@@ -93,16 +93,19 @@
                         </div>
                         <div class="classroomNotifyLayout">
                             <h3 class="title-color">Thông báo</h3>
-                            <div class="classroomAllNotifyLayout">
-                                <th:block th:each="notification : ${classroom.notifications}">
-                                    <section class="classroomOneNotifyLayout">
-                                        <h4 class="inline" th:text="${notification.title}"></h4> <p class="inline" th:text="${'(' + classroom?.classname +')'}"></p>
-                                        <p class="multiline" style="font-size: small;" th:text="${notification.content}"></p>
-                                        <p style="text-align: end; font-size: smaller;" th:text="${#temporals.format(notification.modifiedDate, 'dd/MM/yyyy')}"></p>
-                                    </section>
-                                </th:block>
-                                
+                            <div th:if="${classroom != null}">
+                                <div class="classroomAllNotifyLayout">
+                                    <th:block  th:each="notification : ${classroom.notifications}">
+                                        <section class="classroomOneNotifyLayout">
+                                            <h4 class="inline" th:text="${notification?.title}"></h4> <p class="inline" th:text="${'(' + classroom?.classname +')'}"></p>
+                                            <p class="multiline" style="font-size: small;" th:text="${notification?.content}"></p>
+                                            <p style="text-align: end; font-size: smaller;" th:text="${#temporals.format(notification?.modifiedDate, 'dd/MM/yyyy')}"></p>
+                                        </section>
+                                    </th:block>
+
+                                </div>
                             </div>
+
                         </div>
                         
                     </div>

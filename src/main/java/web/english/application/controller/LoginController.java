@@ -37,18 +37,22 @@ public class LoginController {
      * @return
      */
     @GetMapping("/login")
-    public String getLogin(HttpServletRequest httpServletRequest, Model model){
-        String error="";
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("error")){
-                error = cookie.getValue();
-            }
-        }
-        String msg="";
-        if(error.equalsIgnoreCase("fail"))msg="Tên đăng nhập hoặc mật khẩu chưa chính xác!";
-        else if(error.equalsIgnoreCase("expired"))msg="Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!";
+    public String getLogin(){
 
-        model.addAttribute("msg",msg);
+        return "dangnhap";
+    }
+
+    /**
+     * get logging page
+     * @author VQKHANH
+     * @return
+     */
+    @GetMapping("/login/{error}")
+    public String getLogin(HttpServletRequest httpServletRequest, Model model, @PathVariable String error){
+        log.info(error);
+        if(error.equals("fail"))model.addAttribute("msg","Tên đăng nhập hoặc mật khẩu không chính xác!");
+        if(error.equals("expired"))model.addAttribute("msg","Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!");
+        if(error.equals("disable"))model.addAttribute("msg","Tài khoản của bạn đã bị vô hiệu!");
         return "dangnhap";
     }
 
@@ -90,31 +94,35 @@ public class LoginController {
         }
     }
 
-    /**
-     * login to the system, get access_token(jwt) and save it in the cookie
-     * @author VQKHANH
-     * @param username
-     * @param password
-     * @param response
-     * @return
-     */
-    @PostMapping("/login")
-    public String login(@RequestParam("username") String username,@RequestParam("password") String password, HttpServletResponse response){
-        String access_token = userDAO.login(username,password);
+//    /**
+//     * login to the system, get access_token(jwt) and save it in the cookie
+//     * @author VQKHANH
+//     * @param username
+//     * @param password
+//     * @param response
+//     * @return
+//     */
+//    @PostMapping("/login")
+//    public String login(@RequestParam("username") String username,@RequestParam("password") String password, HttpServletResponse response){
+//        String access_token = userDAO.login(username,password);
 //        log.info(access_token);
-        Cookie cookie=new Cookie("access_token",access_token);
-        response.addCookie(cookie);
+//        Cookie cookie=new Cookie("access_token",access_token);
+//        response.addCookie(cookie);
+//
+//        String token = "Bearer " + access_token;
+//        log.info(token);
+//        String author = userDAO.getAuthorFromToken(token);
+//        if (author.equals(RoleType.STUDENT)){
+//            return "redirect:/home";
+//        }else {
+//            return "redirect:/admin/schedule";
+//        }
+//    }
 
-        String token = "Bearer " + access_token;
-        log.info(token);
-        String author = userDAO.getAuthorFromToken(token);
-        if (author.equals(RoleType.STUDENT)){
-            return "redirect:/home";
-        }else {
-            return "redirect:/admin/schedule";
-        }
+    @GetMapping("/access-denied")
+    public String accessDenied(){
+        return "/access-denied";
     }
-
 //    @GetMapping("/logout")
 //    public String logout(HttpServletRequest request, HttpServletResponse response){
 //        Cookie cookie = new Cookie("access_token", null);

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title>Admin</title>
+
+  <link href="/admin/assets/css/pace.min.css" rel="stylesheet" />
+  <script src="/admin/assets/js/pace.min.js"></script>
+  <link rel="stylesheet" href="/admin/assets/plugins/summernote/dist/summernote-bs4.css"/>
+  <link rel="icon" href="/admin/assets/images/favicon.ico" type="image/x-icon">
+  <link href="/admin/assets/plugins/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
+  <link href="/admin/assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
+  <link href="/admin/assets/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="/admin/assets/css/animate.css" rel="stylesheet" type="text/css" />
+  <link href="/admin/assets/css/icons.css" rel="stylesheet" type="text/css" />
+  <link href="/admin/assets/css/sidebar-menu.css" rel="stylesheet" />
+  <link href="/admin/assets/css/app-style.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+  <style>
+      body {
+          background-color: rgba(35, 28, 28, 0.852);
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+      }
+      .error {
+          font-size: 50px;
+          color: red;
+      }
+  </style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="row" style="margin-top: 200px;">
+            <div class="col-lg-12">
+                <div class="card">
+                  <div class="card-body" style="text-align: center; color: white; font-size: 28px;font-family: 'Times New Roman', Times, serif;font-weight: bolder;">
+                    <div class="error">
+                        <i class="fas fa-ban"></i><span>4</span><span>0</span><samp>4</samp>
+                    </div>
+                    <p>Truy cập bị từ chối</p>
+                    <p>Vui lòng đăng nhập nếu bạn có tài khoản ở trang web của chúng tôi.</p>
+                    <div class="form-group">
+                        <button class="btn btn-light" th:onclick="history.back()">Trở lại</button>
+                        <button class="btn btn-info"><a th:href="@{/login}">Đăng nhập</a></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+    </div>
+</body>
+</html>
