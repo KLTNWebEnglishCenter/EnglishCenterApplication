@@ -3,6 +3,7 @@ package web.english.application.controller.user;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import web.english.application.entity.Notification;
 import web.english.application.entity.ScheduleInfoHolder;
 import web.english.application.entity.schedule.Classroom;
 import web.english.application.entity.user.Users;
+import web.english.application.security.entity.CustomUserDetails;
 import web.english.application.utils.JwtHelper;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,18 +40,12 @@ public class ManageClassController {
     private JwtHelper jwtHelper=new JwtHelper();
 
     @GetMapping("/schedule")
-    public String getScheduleOfStudent(HttpServletRequest httpServletRequest, Model model){
+    public String getScheduleOfStudent(HttpServletRequest httpServletRequest, Model model, Authentication authentication){
         String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
         String token=jwtHelper.createToken(jwt);
 
-        if(jwt == ""){
-            return "redirect:/login";
-        }
-        Users user = userDAO.getUserFromToken(token);
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         //get current date
         LocalDate today=LocalDate.now();
@@ -95,18 +91,12 @@ public class ManageClassController {
     }
 
     @PostMapping("/schedule/next")
-    public  String getScheduleOfStudentInNextWeek(HttpServletRequest httpServletRequest, Model model,@RequestParam @DateTimeFormat(pattern = "M/d/yyyy") LocalDate nextMonday){
+    public  String getScheduleOfStudentInNextWeek(HttpServletRequest httpServletRequest, Model model,@RequestParam @DateTimeFormat(pattern = "M/d/yyyy") LocalDate nextMonday, Authentication authentication){
         String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
         String token=jwtHelper.createToken(jwt);
 
-        if(jwt == ""){
-            return "redirect:/login";
-        }
-        Users user = userDAO.getUserFromToken(token);
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         //get other date of week sequentially
         LocalDate tuesday=nextMonday.plusDays(1);
@@ -144,19 +134,13 @@ public class ManageClassController {
     }
 
     @PostMapping("/schedule/previous")
-    public String getScheduleOfStudentInPreviousWeek(HttpServletRequest httpServletRequest, Model model,@RequestParam @DateTimeFormat(pattern = "M/d/yyyy") LocalDate lastMonday){
+    public String getScheduleOfStudentInPreviousWeek(HttpServletRequest httpServletRequest, Model model,@RequestParam @DateTimeFormat(pattern = "M/d/yyyy") LocalDate lastMonday, Authentication authentication){
 
         String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
         String token=jwtHelper.createToken(jwt);
 
-        if(jwt == ""){
-            return "redirect:/login";
-        }
-        Users user = userDAO.getUserFromToken(token);
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         //get other date of week sequentially
         LocalDate tuesday=lastMonday.plusDays(1);
@@ -194,17 +178,12 @@ public class ManageClassController {
     }
 
     @GetMapping("/classroom")
-    public String getManageClassroomPage(HttpServletRequest httpServletRequest,Model model){
+    public String getManageClassroomPage(HttpServletRequest httpServletRequest,Model model, Authentication authentication){
         String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
         String token=jwtHelper.createToken(jwt);
-        if(jwt == ""){
-            return "redirect:/login";
-        }
-        Users user = userDAO.getUserFromToken(token);
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         List<Classroom> classrooms=studentDAO.getAllClassroomOfStudent(token);
         List<Notification> notifications=studentDAO.getNotificationsOfStudent(token);
@@ -221,18 +200,13 @@ public class ManageClassController {
     }
 
     @GetMapping("/student/classroom/{id}")
-    public  String getOneClassInManagePage(@PathVariable int id,HttpServletRequest httpServletRequest,Model model){
+    public  String getOneClassInManagePage(@PathVariable int id,HttpServletRequest httpServletRequest,Model model, Authentication authentication){
 
         String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
         String token=jwtHelper.createToken(jwt);
-        if(jwt == ""){
-            return "redirect:/login";
-        }
-        Users user = userDAO.getUserFromToken(token);
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         List<Classroom> classrooms=studentDAO.getAllClassroomOfStudent(token);
         List<Notification> notifications=studentDAO.getNotificationsOfStudent(token);

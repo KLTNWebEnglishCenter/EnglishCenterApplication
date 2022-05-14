@@ -2,6 +2,7 @@ package web.english.application.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import web.english.application.entity.exam.Exam;
 import web.english.application.entity.exam.Question;
 import web.english.application.entity.user.Teacher;
 import web.english.application.entity.user.Users;
+import web.english.application.security.entity.CustomUserDetails;
 import web.english.application.utils.JwtHelper;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,21 +43,9 @@ public class ExamController {
     private static List<Question> questionsChoose = new ArrayList<>();
 
     @GetMapping("/exam")
-    public String getExamPage(Model model, HttpServletRequest httpServletRequest){
-        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
-        String token=jwtHelper.createToken(jwt);
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        if(token != ""){
-            user = userDAO.getUserFromToken(token);
-        }
-
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+    public String getExamPage(Model model, HttpServletRequest httpServletRequest, Authentication authentication){
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         List<Exam> exams = examDAO.getAll();
 
@@ -65,21 +55,10 @@ public class ExamController {
     }
 
     @GetMapping("/exam/add")
-    public String getAddExamPage(Model model,HttpServletRequest httpServletRequest){
-        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
-        String token=jwtHelper.createToken(jwt);
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        if(token != ""){
-            user = userDAO.getUserFromToken(token);
-        }
+    public String getAddExamPage(Model model,HttpServletRequest httpServletRequest, Authentication authentication){
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         Exam exam = new Exam();
 
@@ -163,22 +142,9 @@ public class ExamController {
 
 
     @GetMapping("/exam/detail/{id}")
-    public String examDetail(Model model, HttpServletRequest httpServletRequest, @PathVariable int id){
-        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
-        String token=jwtHelper.createToken(jwt);
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        if(token != ""){
-            user = userDAO.getUserFromToken(token);
-        }
-
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
-
+    public String examDetail(Model model, HttpServletRequest httpServletRequest, @PathVariable int id, Authentication authentication){
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         Exam exam = examDAO.getExamById(id);
 

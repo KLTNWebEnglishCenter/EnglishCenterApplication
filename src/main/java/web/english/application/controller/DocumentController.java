@@ -2,6 +2,7 @@ package web.english.application.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import web.english.application.dao.DocumentDAO;
 import web.english.application.dao.UserDAO;
 import web.english.application.entity.Document;
 import web.english.application.entity.user.Users;
+import web.english.application.security.entity.CustomUserDetails;
 import web.english.application.utils.JwtHelper;
 import web.english.application.utils.Utils;
 
@@ -34,21 +36,12 @@ public class DocumentController {
     private Utils utils=new Utils();
 
     @GetMapping("/document")
-    public String getDocumentPage(HttpServletRequest httpServletRequest, Model model){
+    public String getDocumentPage(HttpServletRequest httpServletRequest, Model model, Authentication authentication){
         String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
         String token=jwtHelper.createToken(jwt);
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        if(token != ""){
-            user = userDAO.getUserFromToken(token);
-        }
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         List<Document> documents=documentDAO.findAllDocument(token);
 
@@ -58,21 +51,20 @@ public class DocumentController {
     }
 
     @GetMapping("/adddocument")
-    public String getUploadFilePage(HttpServletRequest httpServletRequest,Model model){
+    public String getUploadFilePage(HttpServletRequest httpServletRequest,Model model, Authentication authentication){
 
         String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
         String token=jwtHelper.createToken(jwt);
-        Users users = userDAO.getUserFromToken(token);
-        model.addAttribute("users",users);
+
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         return "admin/document/adddocument";
     }
 
     @PostMapping("/document/add")
     public String uploadFile(HttpServletRequest httpServletRequest,Model model, @RequestPart(value = "file") MultipartFile file, @RequestParam String name, @RequestParam String description){
-//        log.info(name);
-//        log.info(description);
-//        log.info(file.getOriginalFilename());
+
 
         if(!utils.checkMaxLength(name)){
             model.addAttribute("errorName", Utils.maxLengthRequire);
@@ -103,14 +95,13 @@ public class DocumentController {
     }
 
     @PostMapping("/document/search")
-    public String searchDocument(HttpServletRequest httpServletRequest, Model model,@RequestParam String id,@RequestParam String name){
-        log.info(id);
-        log.info(name);
+    public String searchDocument(HttpServletRequest httpServletRequest, Model model,@RequestParam String id,@RequestParam String name, Authentication authentication){
+
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
         String token=jwtHelper.createToken(jwt);
-        Users users = userDAO.getUserFromToken(token);
-        model.addAttribute("users",users);
 
         List<Document> documents=documentDAO.searchDocument(token,id,name);
         model.addAttribute("documents",documents);

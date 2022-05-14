@@ -2,6 +2,7 @@ package web.english.application.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import web.english.application.dao.UserDAO;
 import web.english.application.entity.user.Student;
 import web.english.application.entity.user.Teacher;
 import web.english.application.entity.user.Users;
+import web.english.application.security.entity.CustomUserDetails;
 import web.english.application.utils.Utils;
 
 import javax.servlet.http.Cookie;
@@ -35,26 +37,10 @@ public class StudentController {
      * @return
      */
     @GetMapping("/student")
-    public String getStudent(Model model, HttpServletRequest httpServletRequest){
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("access_token")){
-                token = cookie.getValue();
-            }
-        }
-        String token_valid = "Bearer "+token;
-        if(token != ""){
-            user = userDAO.getUserFromToken(token_valid);
-        }
+    public String getStudent(Model model, HttpServletRequest httpServletRequest, Authentication authentication){
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
         List<Student> students=studentDAO.findAllStudent();
         model.addAttribute("students",students);
         return "admin/student/student";

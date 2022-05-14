@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         // Các trang không yêu cầu login
 
-        http.authorizeRequests().antMatchers("/admin/assets/**","/css/**","/img/**","/js/**","/home/**", "/about/**", "/contact/**", "/login", "/logout","/info/**",
+        http.authorizeRequests().antMatchers("/admin/assets/**","/css/**","/img/**","/js/**","/home/**", "/about/**", "/contact/**", "/login/**", "/logout","/info/**",
                 "/password/**", "/course/**","/register/**").permitAll();
 
         // Nếu chưa login, nó sẽ redirect tới trang login.

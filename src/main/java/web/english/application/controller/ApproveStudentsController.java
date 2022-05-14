@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import web.english.application.entity.schedule.Classroom;
 import web.english.application.entity.course.Course;
 import web.english.application.entity.user.Student;
 import web.english.application.entity.user.Users;
+import web.english.application.security.entity.CustomUserDetails;
 import web.english.application.utils.UserRequestStatus;
 
 import javax.servlet.http.Cookie;
@@ -50,26 +52,11 @@ public class ApproveStudentsController {
      * @return
      */
     @GetMapping("/approvestudent")
-    public String getApproveStudentsPage( Model model,HttpServletRequest httpServletRequest){
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("access_token")){
-                token = cookie.getValue();
-            }
-        }
-        String token_valid = "Bearer "+token;
-        if(token != ""){
-            user = userDAO.getUserFromToken(token_valid);
-        }
+    public String getApproveStudentsPage(Model model, HttpServletRequest httpServletRequest, Authentication authentication){
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
         List<Course> courses=courseDAO.findAllCourse();
         model.addAttribute("courses",courses);
         return "admin/approvestudent";
@@ -82,27 +69,11 @@ public class ApproveStudentsController {
      * @return
      */
     @PostMapping("/approvestudent/course/search")
-    public String searchCourseById(@RequestParam String idOrCourseName,Model model,HttpServletRequest httpServletRequest){
-        log.info(idOrCourseName);
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("access_token")){
-                token = cookie.getValue();
-            }
-        }
-        String token_valid = "Bearer "+token;
-        if(token != ""){
-            user = userDAO.getUserFromToken(token_valid);
-        }
+    public String searchCourseById(@RequestParam String idOrCourseName,Model model,HttpServletRequest httpServletRequest, Authentication authentication){
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
         List<Course> courses=courseDAO.findByIdOrCourseName(idOrCourseName);
         model.addAttribute("courses",courses);
         return "admin/approvestudent";
@@ -115,26 +86,11 @@ public class ApproveStudentsController {
      * @return
      */
     @PostMapping("/approvestudent/search")
-    public String searchClassroomAndStudentWithSpecifyCourse(@RequestParam int id, Model model,HttpServletRequest httpServletRequest){
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("access_token")){
-                token = cookie.getValue();
-            }
-        }
-        String token_valid = "Bearer "+token;
-        if(token != ""){
-            user = userDAO.getUserFromToken(token_valid);
-        }
+    public String searchClassroomAndStudentWithSpecifyCourse(@RequestParam int id, Model model,HttpServletRequest httpServletRequest, Authentication authentication){
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
         List<Course> courses=courseDAO.findAllCourse();
         List<Classroom> classrooms=classroomDAO.findClassroomByCourseId(id);
         List<Student> students=studentDAO.findStudentRequestToJoinByCourseId(id);
@@ -154,8 +110,6 @@ public class ApproveStudentsController {
      */
     @PostMapping("/approvestudent/addstudenttoclassroom")
     public String addStudentToClassroom(@RequestParam int classroomId,@RequestParam String students, RedirectAttributes redirectAttributes) throws JsonProcessingException {
-//        log.info(classroomId+"");
-//        log.info(students);
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
@@ -172,7 +126,6 @@ public class ApproveStudentsController {
             studentDAO.updateStudentRequestCourseStatus(student.getId(),courseId, UserRequestStatus.APPROVED);
         }
 
-//        log.info(studentList.size()+"");
         return "redirect:/admin/approvestudent";
     }
 }

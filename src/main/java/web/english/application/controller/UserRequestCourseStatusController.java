@@ -2,6 +2,7 @@ package web.english.application.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import web.english.application.dao.UserRequestCourseStatusDAO;
 import web.english.application.entity.course.Course;
 import web.english.application.entity.course.UsersCourseRequest;
 import web.english.application.entity.user.Users;
+import web.english.application.security.entity.CustomUserDetails;
 import web.english.application.utils.JwtHelper;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,22 +38,10 @@ public class UserRequestCourseStatusController {
     private JwtHelper jwtHelper=new JwtHelper();
 
     @GetMapping("/requestcourse")
-    public String getUpdateUserRequestCourseStatusPage(HttpServletRequest httpServletRequest, Model model){
+    public String getUpdateUserRequestCourseStatusPage(HttpServletRequest httpServletRequest, Model model, Authentication authentication){
 
-        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
-        String token=jwtHelper.createToken(jwt);
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        if(token != ""){
-            user = userDAO.getUserFromToken(token);
-        }
-
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         List<UsersCourseRequest> usersCourseRequests=userRequestCourseStatusDAO.findAllUsersCourseRequest();
         model.addAttribute("usersCourseRequests",usersCourseRequests);
@@ -61,9 +51,6 @@ public class UserRequestCourseStatusController {
 
     @PostMapping("/requestcourse/status/update")
     public String updateUserRequestCourseStatus(@RequestParam int studentId,@RequestParam int courseId,@RequestParam String status, RedirectAttributes redirectAttributes){
-//        log.info(studentId+"");
-//        log.info(courseId+"");
-//        log.info(status);
 
         String msg=studentDAO.updateStudentRequestCourseStatus(studentId,courseId,status);
         redirectAttributes.addFlashAttribute("msg",msg);
@@ -72,11 +59,9 @@ public class UserRequestCourseStatusController {
     }
 
     @PostMapping("/requestcourse/search")
-    public String search(HttpServletRequest httpServletRequest,Model model,@RequestParam String courseIdOrName,@RequestParam String studentIdOrFullName){
-        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
-        String token=jwtHelper.createToken(jwt);
-        Users users = userDAO.getUserFromToken(token);
-        model.addAttribute("users",users);
+    public String search(HttpServletRequest httpServletRequest,Model model,@RequestParam String courseIdOrName,@RequestParam String studentIdOrFullName, Authentication authentication){
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         List<UsersCourseRequest> usersCourseRequests=userRequestCourseStatusDAO.search(courseIdOrName, studentIdOrFullName);
         model.addAttribute("usersCourseRequests",usersCourseRequests);

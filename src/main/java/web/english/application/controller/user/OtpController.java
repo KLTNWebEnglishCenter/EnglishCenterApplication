@@ -86,12 +86,12 @@ public class OtpController {
 					return "redirect:/register/generateOtp";
 				}
 			}else {
-				redirectAttributes.addFlashAttribute("msg","Chưa đăng nhập.Mời đăng nhập trước");
+				redirectAttributes.addFlashAttribute("msg","Nhập OTP không chính xác.Mời nhập lại");
 				redirectAttributes.addFlashAttribute("users",users);
 				return "redirect:/register/generateOtp";
 			}
 		}else {
-			redirectAttributes.addFlashAttribute("msg","Chưa nhập OTP.Mời nhập lại");
+			redirectAttributes.addFlashAttribute("msg","Nhập OTP không chính xác.Mời nhập lại");
 			redirectAttributes.addFlashAttribute("users",users);
 			return "redirect:/register/generateOtp";
 		}

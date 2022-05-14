@@ -2,6 +2,7 @@ package web.english.application.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import web.english.application.dao.UserDAO;
 import web.english.application.entity.user.Employee;
 import web.english.application.entity.user.Student;
 import web.english.application.entity.user.Users;
+import web.english.application.security.entity.CustomUserDetails;
 import web.english.application.utils.Utils;
 
 import javax.servlet.http.Cookie;
@@ -37,26 +39,11 @@ public class EmployeeController {
      * @return
      */
     @GetMapping("/employee")
-    public String getEmployee(Model model, HttpServletRequest httpServletRequest){
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("access_token")){
-                token = cookie.getValue();
-            }
-        }
-        String token_valid = "Bearer "+token;
-        if(token != ""){
-            user = userDAO.getUserFromToken(token_valid);
-        }
+    public String getEmployee(Model model, HttpServletRequest httpServletRequest, Authentication authentication){
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
         List<Employee> employees=employeeDAO.findAllEmployee();
         model.addAttribute("employees",employees);
         return "admin/employee/employee";
@@ -69,26 +56,11 @@ public class EmployeeController {
      * @return
      */
     @GetMapping("/addemployee")
-    public String getAddEmployeePage(Model model,HttpServletRequest httpServletRequest){
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("access_token")){
-                token = cookie.getValue();
-            }
-        }
-        String token_valid = "Bearer "+token;
-        if(token != ""){
-            user = userDAO.getUserFromToken(token_valid);
-        }
+    public String getAddEmployeePage(Model model,HttpServletRequest httpServletRequest, Authentication authentication){
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
         Employee employee=new Employee();
         employee.setGender("Nam");
         model.addAttribute("employee",employee);
@@ -103,26 +75,10 @@ public class EmployeeController {
      * @return
      */
     @PostMapping("/employee/add")
-    public String saveEmployee(@ModelAttribute Employee employee, Model model,HttpServletRequest httpServletRequest){
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("access_token")){
-                token = cookie.getValue();
-            }
-        }
-        String token_valid = "Bearer "+token;
-        if(token != ""){
-            user = userDAO.getUserFromToken(token_valid);
-        }
+    public String saveEmployee(@ModelAttribute Employee employee, Model model,HttpServletRequest httpServletRequest, Authentication authentication){
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         if(!utils.checkFullNameFormat(employee.getFullName())){
             model.addAttribute("errorFullName",Utils.fullNameRequire);
@@ -149,7 +105,6 @@ public class EmployeeController {
 
 
         employee.setEnable(true);
-        log.info(employee.toString());
         employeeDAO.saveEmployee(employee);
         return "redirect:/admin/employee";
     }
@@ -162,30 +117,13 @@ public class EmployeeController {
      * @return
      */
     @GetMapping("/editemployee/{id}")
-    public String getEditEmployeePage(@PathVariable("id") int id, Model model,HttpServletRequest httpServletRequest){
-//        log.info(id+"");
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("access_token")){
-                token = cookie.getValue();
-            }
-        }
-        String token_valid = "Bearer "+token;
-        if(token != ""){
-            user = userDAO.getUserFromToken(token_valid);
-        }
+    public String getEditEmployeePage(@PathVariable("id") int id, Model model,HttpServletRequest httpServletRequest, Authentication authentication){
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
         Employee employee=employeeDAO.findEmployeeById(id);
         if(employee.getGender()==null)employee.setGender("Nam");
-//        log.info(teacher.toString());
         model.addAttribute("employee",employee);
         return "admin/employee/editemployee";
     }
@@ -198,26 +136,10 @@ public class EmployeeController {
      * @return
      */
     @PostMapping("/employee/edit")
-    public String editEmployee(@ModelAttribute Employee employee,Model model,HttpServletRequest httpServletRequest){
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("access_token")){
-                token = cookie.getValue();
-            }
-        }
-        String token_valid = "Bearer "+token;
-        if(token != ""){
-            user = userDAO.getUserFromToken(token_valid);
-        }
+    public String editEmployee(@ModelAttribute Employee employee,Model model,HttpServletRequest httpServletRequest, Authentication authentication){
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         if(!utils.checkFullNameFormat(employee.getFullName())){
             model.addAttribute("errorFullName",Utils.fullNameRequire);
@@ -244,7 +166,6 @@ public class EmployeeController {
 
 
         employee.setEnable(true);
-        log.info(employee.toString());
         employeeDAO.saveEmployee(employee);
         return "redirect:/admin/employee";
     }
@@ -257,29 +178,12 @@ public class EmployeeController {
      * @return
      */
     @GetMapping("/employeeinfo/{id}")
-    public String getStudentInfoPage(@PathVariable("id") int id,Model model,HttpServletRequest httpServletRequest){
-//        log.info(id+"");
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("access_token")){
-                token = cookie.getValue();
-            }
-        }
-        String token_valid = "Bearer "+token;
-        if(token != ""){
-            user = userDAO.getUserFromToken(token_valid);
-        }
+    public String getStudentInfoPage(@PathVariable("id") int id,Model model,HttpServletRequest httpServletRequest, Authentication authentication){
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
         Employee employee=employeeDAO.findEmployeeById(id);
-//        log.info(teacher.toString());
         model.addAttribute("employee",employee);
         return "admin/employee/employeeinfo";
     }
@@ -293,30 +197,12 @@ public class EmployeeController {
      * @return
      */
     @PostMapping("/employee/search")
-    public String searchEmployee(@RequestParam String idOrUsername, @RequestParam String fullName,Model model,HttpServletRequest httpServletRequest){
-//        log.info(idOrUsername);
-//        log.info(fullName);
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("access_token")){
-                token = cookie.getValue();
-            }
-        }
-        String token_valid = "Bearer "+token;
-        if(token != ""){
-            user = userDAO.getUserFromToken(token_valid);
-        }
+    public String searchEmployee(@RequestParam String idOrUsername, @RequestParam String fullName,Model model,HttpServletRequest httpServletRequest, Authentication authentication){
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
         List<Employee> employees=employeeDAO.searchUser(idOrUsername,fullName);
-
         model.addAttribute("employees",employees);
         return "admin/employee/employee";
     }

@@ -2,6 +2,7 @@ package web.english.application.controller.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import web.english.application.entity.course.UsersCourseRequest;
 import web.english.application.entity.course.UsersCourseRequestKey;
 import web.english.application.entity.user.Student;
 import web.english.application.entity.user.Users;
+import web.english.application.security.entity.CustomUserDetails;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -31,26 +33,16 @@ public class CourseHomeController {
     private UserDAO userDAO;
 
     @GetMapping("/course/home")
-    public String getCourseHome(Model model,HttpServletRequest httpServletRequest){
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() != null){
-            for (Cookie cookie : httpServletRequest.getCookies()) {
-                if(cookie.getName().equals("access_token")){
-                    token = cookie.getValue();
-                }
-            }
-            String token_valid = "Bearer "+token;
-            if(token != ""){
-                user = userDAO.getUserFromToken(token_valid);
-            }
-        }
+    public String getCourseHome(Model model, HttpServletRequest httpServletRequest, Authentication authentication){
+
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         List<Course> courses = courseDAO.findAllCourse();
         List<UsersCourseRequest> courseRequests = courseDAO.getAllSignupCourse();
         List<Course> courseList = new ArrayList<>();
         try {
-            courseList = courseDAO.getListCourseFromUserCourseRequest(user.getId(),courseRequests);
+            courseList = courseDAO.getListCourseFromUserCourseRequest(userDetails.getUsers().getId(),courseRequests);
         }catch (Exception e){
 
         }
@@ -66,7 +58,6 @@ public class CourseHomeController {
             });
         }
 
-        model.addAttribute("users",user);
         model.addAttribute("courses",courses1);
         model.addAttribute("flag", false);
         model.addAttribute("flag1", false);
@@ -75,27 +66,12 @@ public class CourseHomeController {
     }
 
     @GetMapping("/course/signup/{id}")
-    public String signupCourse(@PathVariable int id, Model model, HttpServletRequest httpServletRequest, RedirectAttributes redirectAttributes){
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("access_token")){
-                token = cookie.getValue();
-            }
-        }
-//        log.info(token);
-        String token_valid = "Bearer "+token;
-//        log.info(token_valid);
-        if(token != ""){
-            user = userDAO.getUserFromToken(token_valid);
-        }
+    public String signupCourse(@PathVariable int id, Model model, HttpServletRequest httpServletRequest, RedirectAttributes redirectAttributes, Authentication authentication){
 
-        if(user == null){
-            return "redirect:/login";
-        }
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        Users user=userDetails.getUsers();
+        model.addAttribute("users",user);
+
         Course course = courseDAO.getCourse(id);
         Student student = new Student(user.getId(),user.getUsername(),user.getPassword(),user.getFullName(),user.getDob(),user.getGender(),user.getEmail(),user.getPhoneNumber(),user.isEnable());
         UsersCourseRequestKey key = new UsersCourseRequestKey(user.getId(),id);
@@ -111,20 +87,12 @@ public class CourseHomeController {
     }
 
     @GetMapping("/course/signup/toeic/{rs}")
-    public String changeCourse(Model model,HttpServletRequest httpServletRequest,@PathVariable boolean rs){
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() != null){
-            for (Cookie cookie : httpServletRequest.getCookies()) {
-                if(cookie.getName().equals("access_token")){
-                    token = cookie.getValue();
-                }
-            }
-            String token_valid = "Bearer "+token;
-            if(token != ""){
-                user = userDAO.getUserFromToken(token_valid);
-            }
-        }
+    public String changeCourse(Model model,HttpServletRequest httpServletRequest,@PathVariable boolean rs, Authentication authentication){
+
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        Users user=userDetails.getUsers();
+        model.addAttribute("users",user);
+
         List<Course> courses = new ArrayList<>();
         if (rs == true){
             rs = false;
@@ -154,9 +122,6 @@ public class CourseHomeController {
             });
         }
 
-
-
-        model.addAttribute("users",user);
         model.addAttribute("courses",courses1);
         model.addAttribute("flag", rs);
         model.addAttribute("flag1", false);
@@ -165,20 +130,11 @@ public class CourseHomeController {
     }
 
     @GetMapping("/course/signup/communicate/{rs}")
-    public String changeCourseTwo(Model model,HttpServletRequest httpServletRequest,@PathVariable boolean rs){
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() != null){
-            for (Cookie cookie : httpServletRequest.getCookies()) {
-                if(cookie.getName().equals("access_token")){
-                    token = cookie.getValue();
-                }
-            }
-            String token_valid = "Bearer "+token;
-            if(token != ""){
-                user = userDAO.getUserFromToken(token_valid);
-            }
-        }
+    public String changeCourseTwo(Model model,HttpServletRequest httpServletRequest,@PathVariable boolean rs, Authentication authentication){
+
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        Users user=userDetails.getUsers();
+        model.addAttribute("users",user);
 
         List<Course> courses = new ArrayList<>();
         if (rs == true){
@@ -208,7 +164,6 @@ public class CourseHomeController {
             });
         }
 
-        model.addAttribute("users",user);
         model.addAttribute("courses",courses1);
         model.addAttribute("flag", false);
         model.addAttribute("flag1", rs);
@@ -217,20 +172,11 @@ public class CourseHomeController {
     }
 
     @GetMapping("/course/signup/school/{rs}")
-    public String changeCourseThree(Model model,HttpServletRequest httpServletRequest,@PathVariable boolean rs){
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() != null){
-            for (Cookie cookie : httpServletRequest.getCookies()) {
-                if(cookie.getName().equals("access_token")){
-                    token = cookie.getValue();
-                }
-            }
-            String token_valid = "Bearer "+token;
-            if(token != ""){
-                user = userDAO.getUserFromToken(token_valid);
-            }
-        }
+    public String changeCourseThree(Model model,HttpServletRequest httpServletRequest,@PathVariable boolean rs, Authentication authentication){
+
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        Users user=userDetails.getUsers();
+        model.addAttribute("users",user);
 
         List<Course> courses = new ArrayList<>();
         if (rs == true){
@@ -260,7 +206,6 @@ public class CourseHomeController {
             });
         }
 
-        model.addAttribute("users",user);
         model.addAttribute("courses",courses1);
         model.addAttribute("flag", false);
         model.addAttribute("flag1", false);
@@ -270,20 +215,11 @@ public class CourseHomeController {
 
 
     @PostMapping("/course/search")
-    public String searchCourse(@RequestParam("idOrName") String idOrName, HttpServletRequest httpServletRequest, Model model){
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() != null){
-            for (Cookie cookie : httpServletRequest.getCookies()) {
-                if(cookie.getName().equals("access_token")){
-                    token = cookie.getValue();
-                }
-            }
-            String token_valid = "Bearer "+token;
-            if(token != ""){
-                user = userDAO.getUserFromToken(token_valid);
-            }
-        }
+    public String searchCourse(@RequestParam("idOrName") String idOrName, HttpServletRequest httpServletRequest, Model model, Authentication authentication){
+
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        Users user=userDetails.getUsers();
+        model.addAttribute("users",user);
 
         List<Course> courses = courseDAO.findByIdOrCourseName(idOrName);
         List<UsersCourseRequest> courseRequests = courseDAO.getAllSignupCourse();
@@ -305,7 +241,6 @@ public class CourseHomeController {
             });
         }
 
-        model.addAttribute("users",user);
         model.addAttribute("courses",courses1);
         model.addAttribute("flag", false);
         model.addAttribute("flag1", false);

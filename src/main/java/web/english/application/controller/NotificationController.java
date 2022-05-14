@@ -2,6 +2,7 @@ package web.english.application.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import web.english.application.dao.UserDAO;
 import web.english.application.entity.schedule.Classroom;
 import web.english.application.entity.Notification;
 import web.english.application.entity.user.Users;
+import web.english.application.security.entity.CustomUserDetails;
 import web.english.application.utils.JwtHelper;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,21 +44,13 @@ public class NotificationController {
      * @return
      */
     @GetMapping("/notification")
-    public String getNotification(HttpServletRequest httpServletRequest, Model model){
+    public String getNotification(HttpServletRequest httpServletRequest, Model model, Authentication authentication){
+
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
         String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
         String token=jwtHelper.createToken(jwt);
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        if(token != ""){
-            user = userDAO.getUserFromToken(token);
-        }
-
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
 
         List<Notification> notifications=notificationDAO.findAllNotification(token);
         model.addAttribute("notifications",notifications);
@@ -88,16 +82,15 @@ public class NotificationController {
      * @return
      */
     @GetMapping("/addnotification")
-    public String getAddNotificationPage(HttpServletRequest httpServletRequest,Model model){
+    public String getAddNotificationPage(HttpServletRequest httpServletRequest,Model model, Authentication authentication){
         Notification notification=new Notification();
         model.addAttribute("notification",notification);
 
-        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
-        String token=jwtHelper.createToken(jwt);
-        Users users = userDAO.getUserFromToken(token);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
         //get classroom list of specify teacher
-        List<Classroom> classrooms=teacherDAO.getAllClassroomOfTeacher(users.getId());
-        model.addAttribute("users",users);
+        List<Classroom> classrooms=teacherDAO.getAllClassroomOfTeacher(userDetails.getUsers().getId());
         model.addAttribute("classrooms",classrooms);
 
         return "admin/notification/addnotification";
@@ -134,22 +127,14 @@ public class NotificationController {
      * @return
      */
     @GetMapping("/notificationinfo/{id}")
-    public String getNotificationInfoPage(HttpServletRequest httpServletRequest,@PathVariable("id") int id,Model model){
+    public String getNotificationInfoPage(HttpServletRequest httpServletRequest,@PathVariable("id") int id,Model model, Authentication authentication){
         String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
         String token=jwtHelper.createToken(jwt);
         Notification notification=notificationDAO.findNotificationById(id,token);
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        if(token != ""){
-            user = userDAO.getUserFromToken(token);
-        }
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
         model.addAttribute("notification",notification);
         return "admin/notification/notificationinfo";
     }
@@ -161,24 +146,14 @@ public class NotificationController {
      * @return
      */
     @GetMapping("/editnotification/{id}")
-    public String getEditNotificationPage(HttpServletRequest httpServletRequest,@PathVariable("id") int id, Model model){
+    public String getEditNotificationPage(HttpServletRequest httpServletRequest,@PathVariable("id") int id, Model model, Authentication authentication){
 
         String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
         String token=jwtHelper.createToken(jwt);
         Notification notification=notificationDAO.findNotificationById(id,token);
 
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        if(token != ""){
-            user = userDAO.getUserFromToken(token);
-        }
-
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         model.addAttribute("notification",notification);
         return "admin/notification/editnotification";
@@ -195,24 +170,15 @@ public class NotificationController {
     }
 
     @PostMapping("/notification/search")
-    public String searchTeacher(HttpServletRequest httpServletRequest,@RequestParam String id, @RequestParam(value = "classroomIdOrClassname") String classroomIdOrClassname,Model model){
+    public String searchTeacher(HttpServletRequest httpServletRequest,@RequestParam String id, @RequestParam(value = "classroomIdOrClassname") String classroomIdOrClassname,Model model, Authentication authentication){
         String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
         String token=jwtHelper.createToken(jwt);
 
         List<Notification> notifications=notificationDAO.searchNotification(id,classroomIdOrClassname,token);
 
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        if(token != ""){
-            user = userDAO.getUserFromToken(token);
-        }
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
         model.addAttribute("notifications",notifications);
         return "admin/notification/notification";
     }

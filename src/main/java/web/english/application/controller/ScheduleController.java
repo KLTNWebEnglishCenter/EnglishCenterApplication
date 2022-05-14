@@ -3,6 +3,9 @@ package web.english.application.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +16,12 @@ import web.english.application.dao.ScheduleDAO;
 import web.english.application.dao.UserDAO;
 import web.english.application.entity.ScheduleInfoHolder;
 import web.english.application.entity.user.Users;
+import web.english.application.security.entity.CustomUserDetails;
 import web.english.application.utils.JwtHelper;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
@@ -36,18 +41,12 @@ public class ScheduleController {
     private JwtHelper jwtHelper=new JwtHelper();
 
     @GetMapping("/schedule")
-    public String getScheduleOfTeacher(HttpServletRequest httpServletRequest, Model model){
+    public String getScheduleOfTeacher(HttpServletRequest httpServletRequest, Model model, Authentication authentication){
         String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
         String token=jwtHelper.createToken(jwt);
 
-        if(jwt == ""){
-            return "redirect:/login";
-        }
-        Users user = userDAO.getUserFromToken(token);
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         //get current date
         LocalDate today=LocalDate.now();
@@ -101,19 +100,13 @@ public class ScheduleController {
     }
 
     @PostMapping("/schedule/next")
-    public String getScheduleOfTeacherInNextWeek(HttpServletRequest httpServletRequest, Model model,@RequestParam @DateTimeFormat(pattern = "M/d/yyyy") LocalDate nextMonday){
+    public String getScheduleOfTeacherInNextWeek(HttpServletRequest httpServletRequest, Model model,@RequestParam @DateTimeFormat(pattern = "M/d/yyyy") LocalDate nextMonday, Authentication authentication){
 
         String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
         String token=jwtHelper.createToken(jwt);
 
-        if(jwt == ""){
-            return "redirect:/login";
-        }
-        Users user = userDAO.getUserFromToken(token);
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         //get other date of week sequentially
         LocalDate tuesday=nextMonday.plusDays(1);
@@ -151,19 +144,13 @@ public class ScheduleController {
     }
 
     @PostMapping("/schedule/previous")
-    public String getScheduleOfTeacherInPreviousWeek(HttpServletRequest httpServletRequest, Model model,@RequestParam @DateTimeFormat(pattern = "M/d/yyyy") LocalDate lastMonday){
+    public String getScheduleOfTeacherInPreviousWeek(HttpServletRequest httpServletRequest, Model model,@RequestParam @DateTimeFormat(pattern = "M/d/yyyy") LocalDate lastMonday, Authentication authentication){
 
         String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
         String token=jwtHelper.createToken(jwt);
 
-        if(jwt == ""){
-            return "redirect:/login";
-        }
-        Users user = userDAO.getUserFromToken(token);
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         //get other date of week sequentially
         LocalDate tuesday=lastMonday.plusDays(1);

@@ -2,6 +2,7 @@ package web.english.application.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import web.english.application.entity.course.Category;
 import web.english.application.entity.course.Course;
 import web.english.application.entity.course.Level;
 import web.english.application.entity.user.Users;
+import web.english.application.security.entity.CustomUserDetails;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -38,26 +40,11 @@ public class CourseController {
 
 
     @GetMapping("/courses")
-    public String getCourse(Model model, HttpServletRequest httpServletRequest,@ModelAttribute(name = "msg") String msg){
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("access_token")){
-                token = cookie.getValue();
-            }
-        }
-        String token_valid = "Bearer "+token;
-        if(token != ""){
-            user = userDAO.getUserFromToken(token_valid);
-        }
+    public String getCourse(Model model, HttpServletRequest httpServletRequest, @ModelAttribute(name = "msg") String msg, Authentication authentication){
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
         List<Course> courses = courseDAO.findAllCourse();
         model.addAttribute("courses",courses);
         model.addAttribute("msg",msg);
@@ -65,26 +52,11 @@ public class CourseController {
     }
 
     @GetMapping("/course/addCourse")
-    public String getAddCoursePage(Model model,HttpServletRequest httpServletRequest){
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("access_token")){
-                token = cookie.getValue();
-            }
-        }
-        String token_valid = "Bearer "+token;
-        if(token != ""){
-            user = userDAO.getUserFromToken(token_valid);
-        }
+    public String getAddCoursePage(Model model,HttpServletRequest httpServletRequest, Authentication authentication){
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
         Course course = new Course();
         List<Category> categories = categoryDAO.findAllCategory();
         List<Level> levels = levelDAO.findAllLevel();
@@ -95,26 +67,11 @@ public class CourseController {
     }
 
     @GetMapping("/course/updateCourse/{courseId}")
-    public String getUpdateCoursePage(@PathVariable("courseId") int courseId,Model model,HttpServletRequest httpServletRequest){
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("access_token")){
-                token = cookie.getValue();
-            }
-        }
-        String token_valid = "Bearer "+token;
-        if(token != ""){
-            user = userDAO.getUserFromToken(token_valid);
-        }
+    public String getUpdateCoursePage(@PathVariable("courseId") int courseId,Model model,HttpServletRequest httpServletRequest, Authentication authentication){
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
         Course course = courseDAO.getCourse(courseId);
         List<Category> categories = categoryDAO.findAllCategory();
         List<Level> levels = levelDAO.findAllLevel();
@@ -168,52 +125,22 @@ public class CourseController {
     }
 
     @PostMapping("/course/search")
-    public String searchCourse(@RequestParam("idOrName") String idOrName,HttpServletRequest httpServletRequest,Model model){
-       List<Course> courses = courseDAO.findByIdOrCourseName(idOrName);
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("access_token")){
-                token = cookie.getValue();
-            }
-        }
-        String token_valid = "Bearer "+token;
-        if(token != ""){
-            user = userDAO.getUserFromToken(token_valid);
-        }
+    public String searchCourse(@RequestParam("idOrName") String idOrName,HttpServletRequest httpServletRequest,Model model, Authentication authentication){
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
+        List<Course> courses = courseDAO.findByIdOrCourseName(idOrName);
         model.addAttribute("courses",courses);
         return "admin/course/khoahoc";
     }
 
     @GetMapping("/course/detail/{id}")
-    public String getDetailPage(@PathVariable int id,Model model,HttpServletRequest httpServletRequest){
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("access_token")){
-                token = cookie.getValue();
-            }
-        }
-        String token_valid = "Bearer "+token;
-        if(token != ""){
-            user = userDAO.getUserFromToken(token_valid);
-        }
+    public String getDetailPage(@PathVariable int id,Model model,HttpServletRequest httpServletRequest, Authentication authentication){
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
         Course course = courseDAO.findCourse(id);
         model.addAttribute("course",course);
         return "admin/course/chitietkhoahoc";

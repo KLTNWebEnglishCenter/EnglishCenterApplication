@@ -2,6 +2,7 @@ package web.english.application.controller.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import web.english.application.entity.exam.Exam;
 import web.english.application.entity.exam.Question;
 import web.english.application.entity.exam.UsersExamScores;
 import web.english.application.entity.user.Users;
+import web.english.application.security.entity.CustomUserDetails;
 import web.english.application.service.MyEmailService;
 import web.english.application.utils.JwtHelper;
 import web.english.application.utils.StatusHelper;
@@ -106,22 +108,11 @@ public class UserHomeController {
     }
 
     @GetMapping("/contact")
-    public String getContact(HttpServletRequest httpServletRequest, Model model,@ModelAttribute("msg") String msg){
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() != null){
-            for (Cookie cookie : httpServletRequest.getCookies()) {
-                if(cookie.getName().equals("access_token")){
-                    token = cookie.getValue();
-                }
-            }
-            String token_valid = "Bearer "+token;
-            if(token != ""){
-                user = userDAO.getUserFromToken(token_valid);
-            }
-        }
+    public String getContact(HttpServletRequest httpServletRequest, Model model, @ModelAttribute("msg") String msg, Authentication authentication){
 
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
         model.addAttribute("msg",msg);
         return "contact";
     }
@@ -140,22 +131,10 @@ public class UserHomeController {
     }
 
     @GetMapping("/exam")
-    public String getExamTest(HttpServletRequest httpServletRequest, Model model){
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() != null){
-            for (Cookie cookie : httpServletRequest.getCookies()) {
-                if(cookie.getName().equals("access_token")){
-                    token = cookie.getValue();
-                }
-            }
-            String token_valid = "Bearer "+token;
-            if(token != ""){
-                user = userDAO.getUserFromToken(token_valid);
-            }
-        }
+    public String getExamTest(HttpServletRequest httpServletRequest, Model model, Authentication authentication){
 
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         Exam exam = examDAO.getExamById(Utils.exam);
 
@@ -200,18 +179,10 @@ public class UserHomeController {
     }
 
     @GetMapping("/user/exam")
-    public String getExamPage(HttpServletRequest httpServletRequest,Model model){
-        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
-        String token=jwtHelper.createToken(jwt);
+    public String getExamPage(HttpServletRequest httpServletRequest,Model model, Authentication authentication){
 
-        if(jwt == ""){
-            return "redirect:/login";
-        }
-        Users user = userDAO.getUserFromToken(token);
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         List<Exam> exams = examDAO.getAll();
 
@@ -221,18 +192,10 @@ public class UserHomeController {
     }
 
     @GetMapping("/user/exam/{id}")
-    public String getExam(HttpServletRequest httpServletRequest, Model model, @PathVariable int id){
-        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
-        String token=jwtHelper.createToken(jwt);
+    public String getExam(HttpServletRequest httpServletRequest, Model model, @PathVariable int id, Authentication authentication){
 
-        if(jwt == ""){
-            return "redirect:/login";
-        }
-        Users user = userDAO.getUserFromToken(token);
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         Exam exam = examDAO.getExamById(id);
 
@@ -246,7 +209,11 @@ public class UserHomeController {
     }
 
     @PostMapping("/user/exam/result")
-    public String markTheExam(HttpServletRequest req, Model model) throws IOException {
+    public String markTheExam(HttpServletRequest req, Model model, Authentication authentication) throws IOException {
+
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
         List<String> theUserChoose = new ArrayList<>();
 
         Enumeration<String> parameterNames = req.getParameterNames();
@@ -276,44 +243,23 @@ public class UserHomeController {
 
         int point = utils.checkPoint(theUserChoose,theResult);
 
-        String jwt=jwtHelper.getJwtFromCookie(req);
-        String token=jwtHelper.createToken(jwt);
-
-        if(jwt == ""){
-            return "redirect:/login";
-        }
-        Users user = userDAO.getUserFromToken(token);
-        if(user == null){
-            return "redirect:/login";
-        }
-
-        model.addAttribute("users",user);
         model.addAttribute("point",point);
         model.addAttribute("sl",theResult.size());
         model.addAttribute("exam",exam);
         model.addAttribute("questions",questions);
 
-        int score = studentDAO.getScoreOfStudentByExam(user.getId(),eId);
+        int score = studentDAO.getScoreOfStudentByExam(userDetails.getUsers().getId(),eId);
         if (score < point){
-            UsersExamScores scores = studentDAO.saveScore(user.getId(),eId,point);
+            UsersExamScores scores = studentDAO.saveScore(userDetails.getUsers().getId(),eId,point);
         }
         return "student/studentExamResult";
     }
 
     @GetMapping("/posts")
-    public String getPostPage(HttpServletRequest httpServletRequest,Model model){
-        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
-        String token=jwtHelper.createToken(jwt);
+    public String getPostPage(HttpServletRequest httpServletRequest,Model model, Authentication authentication){
 
-        if(jwt == ""){
-            return "redirect:/login";
-        }
-        Users user = userDAO.getUserFromToken(token);
-        if(user == null){
-            return "redirect:/login";
-        }
-
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         List<Post> posts = postDAO.getAllPostWithStatusHasAccept();
         model.addAttribute("posts",posts);
@@ -322,41 +268,24 @@ public class UserHomeController {
     }
 
     @GetMapping("/myPost")
-    public String getMyPostPage(HttpServletRequest httpServletRequest,Model model){
-        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
-        String token=jwtHelper.createToken(jwt);
+    public String getMyPostPage(HttpServletRequest httpServletRequest,Model model, Authentication authentication){
 
-        if(jwt == ""){
-            return "redirect:/login";
-        }
-        Users user = userDAO.getUserFromToken(token);
-        if(user == null){
-            return "redirect:/login";
-        }
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
-        model.addAttribute("users",user);
-
-        List<Post> posts = postDAO.getMyPost(user.getId());
+        List<Post> posts = postDAO.getMyPost(userDetails.getUsers().getId());
         model.addAttribute("posts",posts);
 
         return "student/myStudentPost";
     }
 
     @GetMapping("/newPost")
-    public String getSavePostPage(HttpServletRequest httpServletRequest,Model model){
-        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
-        String token=jwtHelper.createToken(jwt);
+    public String getSavePostPage(HttpServletRequest httpServletRequest,Model model, Authentication authentication){
 
-        if(jwt == ""){
-            return "redirect:/login";
-        }
-        Users user = userDAO.getUserFromToken(token);
-        if(user == null){
-            return "redirect:/login";
-        }
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         Post post = new Post();
-        model.addAttribute("users",user);
         model.addAttribute("post",post);
         return "student/addnewpost";
     }
@@ -371,19 +300,10 @@ public class UserHomeController {
     }
 
     @GetMapping("/course/{id}")
-    public String getMyCourse(@PathVariable int id,Model model,HttpServletRequest httpServletRequest){
-        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
-        String token=jwtHelper.createToken(jwt);
+    public String getMyCourse(@PathVariable int id,Model model,HttpServletRequest httpServletRequest, Authentication authentication){
 
-        if(jwt == ""){
-            return "redirect:/login";
-        }
-        Users user = userDAO.getUserFromToken(token);
-        if(user == null){
-            return "redirect:/login";
-        }
-
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         List<UsersCourseRequest> courseRequests = studentDAO.getCourseRequestOfStudent(id);
 
@@ -399,21 +319,12 @@ public class UserHomeController {
     }
 
     @GetMapping("/score")
-    public String getScoresPage(HttpServletRequest httpServletRequest,Model model){
-        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
-        String token=jwtHelper.createToken(jwt);
+    public String getScoresPage(HttpServletRequest httpServletRequest,Model model, Authentication authentication){
 
-        if(jwt == ""){
-            return "redirect:/login";
-        }
-        Users user = userDAO.getUserFromToken(token);
-        if(user == null){
-            return "redirect:/login";
-        }
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
-        model.addAttribute("users",user);
-
-        List<UsersExamScores> usersExamScores = studentDAO.getScoreOfStudent(user.getId());
+        List<UsersExamScores> usersExamScores = studentDAO.getScoreOfStudent(userDetails.getUsers().getId());
         model.addAttribute("scores",usersExamScores);
         return "student/studentScores";
     }

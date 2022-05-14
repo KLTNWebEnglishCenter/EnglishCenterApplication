@@ -3,6 +3,7 @@ package web.english.application.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import web.english.application.entity.schedule.Schedule;
 import web.english.application.entity.user.Student;
 import web.english.application.entity.user.Teacher;
 import web.english.application.entity.user.Users;
+import web.english.application.security.entity.CustomUserDetails;
 import web.english.application.utils.JwtHelper;
 
 import javax.servlet.http.Cookie;
@@ -56,26 +58,11 @@ public class ClassroomController {
     private JwtHelper jwtHelper=new JwtHelper();
 
     @GetMapping("/classrooms")
-    public String getClassrooms(Model model, HttpServletRequest httpServletRequest,@ModelAttribute(name = "msg") String msg){
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("access_token")){
-                token = cookie.getValue();
-            }
-        }
-        String token_valid = "Bearer "+token;
-        if(token != ""){
-            user = userDAO.getUserFromToken(token_valid);
-        }
+    public String getClassrooms(Model model, HttpServletRequest httpServletRequest, @ModelAttribute(name = "msg") String msg, Authentication authentication){
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
         List<Classroom> classrooms = classroomDAO.findAll();
         model.addAttribute("classrooms",classrooms);
         model.addAttribute("msg",msg);
@@ -83,26 +70,11 @@ public class ClassroomController {
     }
 
     @GetMapping("/addClassroom")
-    public String getAddClassroomPage(Model model,HttpServletRequest httpServletRequest){
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("access_token")){
-                token = cookie.getValue();
-            }
-        }
-        String token_valid = "Bearer "+token;
-        if(token != ""){
-            user = userDAO.getUserFromToken(token_valid);
-        }
+    public String getAddClassroomPage(Model model,HttpServletRequest httpServletRequest, Authentication authentication){
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
         Classroom classroom = new Classroom();
         List<Course> courses = courseDAO.findAllCourse();
         List<Teacher> teachers = teacherDAO.findAllTeacher();
@@ -113,52 +85,22 @@ public class ClassroomController {
     }
 
     @GetMapping("/updateClassroom/{id}")
-    public String getUpdateClassroomPage(@PathVariable("id") int id,Model model,HttpServletRequest httpServletRequest){
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("access_token")){
-                token = cookie.getValue();
-            }
-        }
-        String token_valid = "Bearer "+token;
-        if(token != ""){
-            user = userDAO.getUserFromToken(token_valid);
-        }
+    public String getUpdateClassroomPage(@PathVariable("id") int id,Model model,HttpServletRequest httpServletRequest, Authentication authentication){
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
         Classroom classroom = classroomDAO.getClassroom(id);
         model.addAttribute("classroom",classroom);
         return "admin/classroom/editlophoc";
     }
 
     @GetMapping("/classroom/info/{id}")
-    public String getInformationPage(@PathVariable("id") int id,Model model,HttpServletRequest httpServletRequest){
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("access_token")){
-                token = cookie.getValue();
-            }
-        }
-        String token_valid = "Bearer "+token;
-        if(token != ""){
-            user = userDAO.getUserFromToken(token_valid);
-        }
+    public String getInformationPage(@PathVariable("id") int id,Model model,HttpServletRequest httpServletRequest, Authentication authentication){
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
         Classroom classroom = classroomDAO.getClassroom(id);
         model.addAttribute("classroom",classroom);
         return "admin/classroom/xemthongtinlophoc";
@@ -197,52 +139,22 @@ public class ClassroomController {
     }
 
     @PostMapping("/classroom/search")
-    public String searchCourse(@RequestParam("idOrName") String idOrName,HttpServletRequest httpServletRequest,Model model){
-        List<Classroom> classrooms = classroomDAO.findByIdOrClassName(idOrName);
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("access_token")){
-                token = cookie.getValue();
-            }
-        }
-        String token_valid = "Bearer "+token;
-        if(token != ""){
-            user = userDAO.getUserFromToken(token_valid);
-        }
+    public String searchCourse(@RequestParam("idOrName") String idOrName,HttpServletRequest httpServletRequest,Model model, Authentication authentication){
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
+        List<Classroom> classrooms = classroomDAO.findByIdOrClassName(idOrName);
         model.addAttribute("classrooms",classrooms);
         return "admin/classroom/lophoc";
     }
 
     @GetMapping("/classroom/students/{id}")
-    public String getListStudentPage(HttpServletRequest httpServletRequest, Model model, @PathVariable int id){
-        String token = "";
-        Users user = null;
-        if(httpServletRequest.getCookies() == null){
-            return "redirect:/login";
-        }
-        for (Cookie cookie : httpServletRequest.getCookies()) {
-            if(cookie.getName().equals("access_token")){
-                token = cookie.getValue();
-            }
-        }
-        String token_valid = "Bearer "+token;
-        if(token != ""){
-            user = userDAO.getUserFromToken(token_valid);
-        }
+    public String getListStudentPage(HttpServletRequest httpServletRequest, Model model, @PathVariable int id, Authentication authentication){
 
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
         List<Student> students= classroomDAO.getStudentFromClassroom(id);
         model.addAttribute("classroomId",id);
         model.addAttribute("students",students);
@@ -251,18 +163,10 @@ public class ClassroomController {
 
 //    ============================================================================================
     @GetMapping("/classroom/schedule/{id}")
-    public String getScheduleOfClassroom(HttpServletRequest httpServletRequest, Model model,@PathVariable int id){
-        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
-        String token=jwtHelper.createToken(jwt);
+    public String getScheduleOfClassroom(HttpServletRequest httpServletRequest, Model model,@PathVariable int id, Authentication authentication){
 
-        if(jwt == ""){
-            return "redirect:/login";
-        }
-        Users user = userDAO.getUserFromToken(token);
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         //get current date
         LocalDate today=LocalDate.now();
@@ -310,19 +214,10 @@ public class ClassroomController {
     }
 
     @PostMapping("/classroom/schedule/next/{id}")
-    public String getScheduleOfClassroomInNextWeek(@PathVariable int id,HttpServletRequest httpServletRequest, Model model,@RequestParam @DateTimeFormat(pattern = "M/d/yyyy") LocalDate nextMonday){
+    public String getScheduleOfClassroomInNextWeek(@PathVariable int id,HttpServletRequest httpServletRequest, Model model,@RequestParam @DateTimeFormat(pattern = "M/d/yyyy") LocalDate nextMonday, Authentication authentication){
 
-        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
-        String token=jwtHelper.createToken(jwt);
-
-        if(jwt == ""){
-            return "redirect:/login";
-        }
-        Users user = userDAO.getUserFromToken(token);
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         //get other date of week sequentially
         LocalDate tuesday=nextMonday.plusDays(1);
@@ -360,19 +255,10 @@ public class ClassroomController {
     }
 
     @PostMapping("/classroom/schedule/previous/{id}")
-    public String getScheduleOfClassroomInPreviousWeek(@PathVariable int id,HttpServletRequest httpServletRequest, Model model,@RequestParam @DateTimeFormat(pattern = "M/d/yyyy") LocalDate lastMonday){
+    public String getScheduleOfClassroomInPreviousWeek(@PathVariable int id,HttpServletRequest httpServletRequest, Model model,@RequestParam @DateTimeFormat(pattern = "M/d/yyyy") LocalDate lastMonday, Authentication authentication){
 
-        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
-        String token=jwtHelper.createToken(jwt);
-
-        if(jwt == ""){
-            return "redirect:/login";
-        }
-        Users user = userDAO.getUserFromToken(token);
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         //get other date of week sequentially
         LocalDate tuesday=lastMonday.plusDays(1);
@@ -410,18 +296,10 @@ public class ClassroomController {
     }
 
     @GetMapping("/classroom/schedule/update/{id}")
-    public String updateSchedule(@PathVariable int id,HttpServletRequest httpServletRequest, Model model){
-        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
-        String token=jwtHelper.createToken(jwt);
+    public String updateSchedule(@PathVariable int id,HttpServletRequest httpServletRequest, Model model, Authentication authentication){
 
-        if(jwt == ""){
-            return "redirect:/login";
-        }
-        Users user = userDAO.getUserFromToken(token);
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
 
         List<Schedule> schedules = scheduleDAO.getAll();
         model.addAttribute("schedules",schedules);
@@ -485,22 +363,15 @@ public class ClassroomController {
     }
 
     @PostMapping("/classroom/schedule/updateOne")
-    public String updateClassroomSchedule(HttpServletRequest httpServletRequest,Model model){
+    public String updateClassroomSchedule(HttpServletRequest httpServletRequest,Model model, Authentication authentication){
+
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
         String[] c = httpServletRequest.getParameterValues("classroomId");
         String[] s = httpServletRequest.getParameterValues("scheduleId");
         int id = Integer.parseInt(c[0]);
         int scheduleId = Integer.parseInt(s[0]);
-        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
-        String token=jwtHelper.createToken(jwt);
-
-        if(jwt == ""){
-            return "redirect:/login";
-        }
-        Users user = userDAO.getUserFromToken(token);
-        if(user == null){
-            return "redirect:/login";
-        }
-        model.addAttribute("users",user);
 
         model.addAttribute("scheduleId",scheduleId);
         Classroom  classroom = classroomDAO.getClassroom(id);

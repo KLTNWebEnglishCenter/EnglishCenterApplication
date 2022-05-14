@@ -99,42 +99,9 @@ public class LoginController {
         }
     }
 
-//    /**
-//     * login to the system, get access_token(jwt) and save it in the cookie
-//     * @author VQKHANH
-//     * @param username
-//     * @param password
-//     * @param response
-//     * @return
-//     */
-//    @PostMapping("/login")
-//    public String login(@RequestParam("username") String username,@RequestParam("password") String password, HttpServletResponse response){
-//        String access_token = userDAO.login(username,password);
-//        log.info(access_token);
-//        Cookie cookie=new Cookie("access_token",access_token);
-//        response.addCookie(cookie);
-//
-//        String token = "Bearer " + access_token;
-//        log.info(token);
-//        String author = userDAO.getAuthorFromToken(token);
-//        if (author.equals(RoleType.STUDENT)){
-//            return "redirect:/home";
-//        }else {
-//            return "redirect:/admin/schedule";
-//        }
-//    }
-
     @GetMapping("/access-denied")
     public String accessDenied(){
         return "/access-denied";
     }
-//    @GetMapping("/logout")
-//    public String logout(HttpServletRequest request, HttpServletResponse response){
-//        Cookie cookie = new Cookie("access_token", null);
-//        cookie.setPath("/");
-//        cookie.setHttpOnly(true);
-//        cookie.setMaxAge(0);
-//        response.addCookie(cookie);
-//        return "redirect:/login";
-//    }
+
 }
