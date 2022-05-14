@@ -110,7 +110,7 @@
         <li class="nav-item">
             <a th:href="@{/contact}" class="nav-link" >Liên hệ</a>
         </li>
-        <li class="nav-item">
+        <li sec:authorize="hasAnyAuthority('ROLE_HOCVIEN','ROLE_NHANVIEN','ROLE_GIANGVIEN')" class="nav-item">
             <a th:href="@{/exam}" class="nav-link">Kiểm tra thử</a>
         </li>
     </ul>
@@ -234,7 +234,7 @@
 <aside th:if="${users}" th:fragment="aside-fragment" class="sidebar" id="menu-sidebar2">
     <div id="leftside-navigation" class="nano">
         <ul class="nano-content">
-            <li class="sub-menu">
+            <li sec:authorize="hasAuthority('ROLE_HOCVIEN')" class="sub-menu">
                 <a href="javascript:void(0);"><i class="fa fa-cogs"></i><span>Quản lý lớp học</span><i class="arrow fa fa-angle-right pull-right"></i></a>
                 <ul>
                     <li><a th:href="@{/classroom}">Vào lớp học</a>
@@ -244,7 +244,7 @@
                 </ul>
             </li>
             <li>
-                <a th:href="@{/schedule}"><i class="fa fa-calendar"></i><span>Xem lịch học</span></a>
+                <a sec:authorize="hasAuthority('ROLE_HOCVIEN')" th:href="@{/schedule}"><i class="fa fa-calendar"></i><span>Xem lịch học</span></a>
             </li>
             <li class="sub-menu">
                 <a href="javascript:void(0);"><i class="fa-solid fa-blog"></i><span>Quản lý bài đăng</span><i class="arrow fa fa-angle-right pull-right"></i></a>
@@ -253,18 +253,18 @@
                         <a th:href="@{/posts}"><i class="fa fa-dashboard"></i><span>Xem bài đăng</span></a>
                     </li>
                     <li>
-                        <a th:href="@{/myPost}"><i class="fa fa-dashboard"></i><span>Bài đăng của tôi</span></a>
+                        <a sec:authorize="hasAuthority('ROLE_HOCVIEN')" th:href="@{/myPost}"><i class="fa fa-dashboard"></i><span>Bài đăng của tôi</span></a>
                     </li>
                     <li>
-                        <a th:href="@{/newPost}"><i class="fa fa-dashboard"></i><span>Tạo bài đăng mới</span></a>
+                        <a sec:authorize="hasAuthority('ROLE_HOCVIEN')" th:href="@{/newPost}"><i class="fa fa-dashboard"></i><span>Tạo bài đăng mới</span></a>
                     </li>
                 </ul>
             </li>
             <li>
-                <a th:href="@{/course/{id}(id=${users.id})}"><i class="fa fa-dashboard"></i><span>Khóa học đang học</span></a>
+                <a sec:authorize="hasAuthority('ROLE_HOCVIEN')" th:href="@{/course/{id}(id=${users.id})}"><i class="fa-solid fa-book"></i><span>Khóa học đang học</span></a>
             </li>
             <li>
-                <a th:href="@{/score}"><i class="fa-solid fa-table-list"></i><span>Xem bảng điểm</span></a>
+                <a sec:authorize="hasAuthority('ROLE_HOCVIEN')" th:href="@{/score}"><i class="fa-solid fa-table-list"></i><span>Xem bảng điểm</span></a>
             </li>
         </ul>
     </div>

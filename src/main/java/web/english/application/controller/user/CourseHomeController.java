@@ -15,6 +15,7 @@ import web.english.application.entity.course.UsersCourseRequestKey;
 import web.english.application.entity.user.Student;
 import web.english.application.entity.user.Users;
 import web.english.application.security.entity.CustomUserDetails;
+import web.english.application.utils.JwtHelper;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -32,17 +33,24 @@ public class CourseHomeController {
     @Autowired
     private UserDAO userDAO;
 
-    @GetMapping("/course/home")
-    public String getCourseHome(Model model, HttpServletRequest httpServletRequest, Authentication authentication){
+    private JwtHelper jwtHelper=new JwtHelper();
 
-        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
-        model.addAttribute("users",userDetails.getUsers());
+    @GetMapping("/course/home")
+    public String getCourseHome(Model model, HttpServletRequest httpServletRequest){
+        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
+        Users user =null;
+        if(!jwt.equals("")){
+            String token=jwtHelper.createToken(jwt);
+            user = userDAO.getUserFromToken(token);
+        }
+
+        model.addAttribute("users",user);
 
         List<Course> courses = courseDAO.findAllCourse();
         List<UsersCourseRequest> courseRequests = courseDAO.getAllSignupCourse();
         List<Course> courseList = new ArrayList<>();
         try {
-            courseList = courseDAO.getListCourseFromUserCourseRequest(userDetails.getUsers().getId(),courseRequests);
+            courseList = courseDAO.getListCourseFromUserCourseRequest(user.getId(),courseRequests);
         }catch (Exception e){
 
         }
@@ -66,10 +74,19 @@ public class CourseHomeController {
     }
 
     @GetMapping("/course/signup/{id}")
-    public String signupCourse(@PathVariable int id, Model model, HttpServletRequest httpServletRequest, RedirectAttributes redirectAttributes, Authentication authentication){
+    public String signupCourse(@PathVariable int id, Model model, HttpServletRequest httpServletRequest, RedirectAttributes redirectAttributes){
 
-        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
-        Users user=userDetails.getUsers();
+        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
+        Users user =null;
+        if(!jwt.equals("")){
+            String token=jwtHelper.createToken(jwt);
+            user = userDAO.getUserFromToken(token);
+        }
+
+        if(user == null){
+            redirectAttributes.addFlashAttribute("msg","Vui lòng đăng nhập trước khi đăng ký khóa học!");
+            return "redirect:/course/home";
+        }
         model.addAttribute("users",user);
 
         Course course = courseDAO.getCourse(id);
@@ -87,10 +104,15 @@ public class CourseHomeController {
     }
 
     @GetMapping("/course/signup/toeic/{rs}")
-    public String changeCourse(Model model,HttpServletRequest httpServletRequest,@PathVariable boolean rs, Authentication authentication){
+    public String changeCourse(Model model,HttpServletRequest httpServletRequest,@PathVariable boolean rs){
 
-        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
-        Users user=userDetails.getUsers();
+        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
+        Users user =null;
+        if(!jwt.equals("")){
+            String token=jwtHelper.createToken(jwt);
+            user = userDAO.getUserFromToken(token);
+        }
+
         model.addAttribute("users",user);
 
         List<Course> courses = new ArrayList<>();
@@ -130,10 +152,15 @@ public class CourseHomeController {
     }
 
     @GetMapping("/course/signup/communicate/{rs}")
-    public String changeCourseTwo(Model model,HttpServletRequest httpServletRequest,@PathVariable boolean rs, Authentication authentication){
+    public String changeCourseTwo(Model model,HttpServletRequest httpServletRequest,@PathVariable boolean rs){
 
-        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
-        Users user=userDetails.getUsers();
+        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
+        Users user =null;
+        if(!jwt.equals("")){
+            String token=jwtHelper.createToken(jwt);
+            user = userDAO.getUserFromToken(token);
+        }
+
         model.addAttribute("users",user);
 
         List<Course> courses = new ArrayList<>();
@@ -172,10 +199,15 @@ public class CourseHomeController {
     }
 
     @GetMapping("/course/signup/school/{rs}")
-    public String changeCourseThree(Model model,HttpServletRequest httpServletRequest,@PathVariable boolean rs, Authentication authentication){
+    public String changeCourseThree(Model model,HttpServletRequest httpServletRequest,@PathVariable boolean rs){
 
-        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
-        Users user=userDetails.getUsers();
+        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
+        Users user =null;
+        if(!jwt.equals("")){
+            String token=jwtHelper.createToken(jwt);
+            user = userDAO.getUserFromToken(token);
+        }
+
         model.addAttribute("users",user);
 
         List<Course> courses = new ArrayList<>();
@@ -215,10 +247,15 @@ public class CourseHomeController {
 
 
     @PostMapping("/course/search")
-    public String searchCourse(@RequestParam("idOrName") String idOrName, HttpServletRequest httpServletRequest, Model model, Authentication authentication){
+    public String searchCourse(@RequestParam("idOrName") String idOrName, HttpServletRequest httpServletRequest, Model model){
 
-        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
-        Users user=userDetails.getUsers();
+        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
+        Users user =null;
+        if(!jwt.equals("")){
+            String token=jwtHelper.createToken(jwt);
+            user = userDAO.getUserFromToken(token);
+        }
+
         model.addAttribute("users",user);
 
         List<Course> courses = courseDAO.findByIdOrCourseName(idOrName);

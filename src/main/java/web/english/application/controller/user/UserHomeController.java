@@ -131,10 +131,16 @@ public class UserHomeController {
     }
 
     @GetMapping("/exam")
-    public String getExamTest(HttpServletRequest httpServletRequest, Model model, Authentication authentication){
+    public String getExamTest(HttpServletRequest httpServletRequest, Model model){
 
-        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
-        model.addAttribute("users",userDetails.getUsers());
+        String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
+        Users user =null;
+        if(!jwt.equals("")){
+            String token=jwtHelper.createToken(jwt);
+            user = userDAO.getUserFromToken(token);
+        }
+
+        model.addAttribute("users",user);
 
         Exam exam = examDAO.getExamById(Utils.exam);
 

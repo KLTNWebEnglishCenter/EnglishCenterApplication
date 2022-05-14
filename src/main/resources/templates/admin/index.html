@@ -166,7 +166,7 @@
         </a>
       </li>
       <li>
-        <a sec:authorize="hasAuthority('ROLE_NHANVIEN')" th:href="@{/admin/posts}">
+        <a sec:authorize="hasAnyAuthority('ROLE_NHANVIEN','ROLE_GIANGVIEN')" th:href="@{/admin/posts}">
           <i class="zmdi zmdi-collection-bookmark"></i> <span>Quản lí Bài đăng</span>
         </a>
       </li>
