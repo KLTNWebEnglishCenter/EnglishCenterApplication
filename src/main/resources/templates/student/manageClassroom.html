@@ -130,26 +130,6 @@
                         </div>
                     </div>
                 </div>
-                <div id="showExam" class="show-my-notification">
-                    <div class="show-my-notification-body">
-                        <div class="classroomTitleLayout">
-                            <h3 class="title-color">Bài kiểm tra</h3>
-                        </div>
-
-                        <div class="classroomNotifyLayout">
-                            <div class="classroomAllNotifyLayout">
-                                <th:block th:each="notification : ${notifications}">
-                                    <section class="classroomOneNotifyLayout">
-                                        <h4 class="inline" th:text="${notification.title}"></h4> <p class="inline" th:text="${'(' + notification.classroom.classname +')'}"></p>
-                                        <p class="multiline" style="font-size: small;" th:text="${notification.content}"></p>
-                                        <p style="text-align: end; font-size: smaller;" th:text="${#temporals.format(notification.modifiedDate, 'dd/MM/yyyy')}"></p>
-                                    </section>
-                                </th:block>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -242,7 +222,7 @@
         const a = document.getElementsByClassName("li-item")
         const showmyaction = document.getElementById("showAction")
         const showNotification = document.getElementById("showNotification")
-        const showExam = document.getElementById("showExam")
+
         function change(id) {
             for (let i = 0; i < a.length; i++) {
                 a[i].classList.remove("choice-item")
@@ -252,21 +232,16 @@
                 case 0: {
                     showNotification.classList.remove("actives")
                     showmyaction.classList.add("actives")
-                    showExam.classList.remove("actives")
+
                     break   
                 }
                 case 1: {
                     showmyaction.classList.remove("actives")
                     showNotification.classList.add("actives")
-                    showExam.classList.remove("actives")
+
                     break
                 }
-                case 2: {
-                    showmyaction.classList.remove("actives")
-                    showNotification.classList.remove("actives")
-                    showExam.classList.add("actives")
-                    break
-                }
+
             }
         }
     </script>

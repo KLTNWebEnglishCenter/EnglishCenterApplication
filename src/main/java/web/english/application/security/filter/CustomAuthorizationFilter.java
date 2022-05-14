@@ -41,7 +41,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             }catch (Exception exception){
                 exception.printStackTrace();
                 log.error("login error: {}", exception.getMessage());
-
                 response.sendRedirect("/login/fail");
             }
         // Người dùng truy cập vào trang logout
@@ -79,7 +78,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 }catch (Exception exception){
                     exception.printStackTrace();
                     log.error("login error: {}", exception.getMessage());
-
                     response.sendRedirect("/login/fail");
                 }
             }

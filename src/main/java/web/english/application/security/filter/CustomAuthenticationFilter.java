@@ -3,16 +3,13 @@ package web.english.application.security.filter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import web.english.application.security.entity.CustomUserDetails;
 import web.english.application.utils.JwtHelper;
 import web.english.application.utils.RoleType;
-import web.english.application.utils.UsersType;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

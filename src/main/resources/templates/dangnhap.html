@@ -18,11 +18,18 @@
   /*<![CDATA[*/
 
     var msg = /*[[${msg}]]*/ '';
+    var success = /*[[${success}]]*/ '';
 
     function yourfunction() {
       if(msg!=""&&msg!=null){
         Swal.fire({
           text: msg,
+         })
+      }
+      if(success!=""&&success!=null){
+        Swal.fire({
+          icon:'success',
+          text: success,
          })
       }
     }

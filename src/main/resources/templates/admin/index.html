@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -249,23 +249,6 @@
          <h3>Lịch theo tuần</h3>
        </div>
        <div class="row">
-<!--          <div class="col" style="width: 255px;float: right;padding: 5px 0px 0px 0px;">-->
-<!--            <label class="" style="padding-left: 25px;margin-bottom: 0px;">-->
-<!--                <input checked="checked" id="rdoLoaiLich1" name="rdoLoaiLich" type="radio" value="0"> <label lang="lichtheotuan-tatca">Tất cả</label>-->
-<!--                <span></span>-->
-<!--            </label>-->
-<!--            <label class="" style="padding-left: 25px;margin-bottom: 0px;">-->
-<!--                <input id="rdoLoaiLich2" name="rdoLoaiLich" type="radio" value="1"> <label lang="lichtheotuan-lichhoc">Lịch học</label>-->
-<!--                <span></span>-->
-<!--            </label>-->
-<!--            <label class="" style="padding-left: 25px;margin-bottom: 0px;">-->
-<!--                <input id="rdoLoaiLich3" name="rdoLoaiLich" type="radio" value="2"> <label lang="lichtheotuan-lichthi">Lịch thi</label>-->
-<!--                <span></span>-->
-<!--            </label>-->
-<!--          </div>-->
-<!--          <div class="col">-->
-<!--            <input type="date" id="date" name="date" class="chonngay" placeholder="dd-mm-yyyy" value="2022-03-07" min="2000-01-01" max="2099-12-31" >-->
-<!--          </div>-->
           <div class="col" style="padding: 5px; display: flex; flex:1; justify-content:right;">
             <button class="btnlich"><a th:href="@{/admin/schedule}">Hiện tại</a> </button>
             <button class="btnlich" th:onclick="postPreviousWeek()">Trở về</button>
@@ -278,7 +261,6 @@
           </div>
           <div class="col thu">
             <h5>Thứ 2</h5>
-<!--            th:value="${#temporals.format(teacher.dob, 'dd-MM-yyyy')}"-->
             <h6 th:text="${#temporals.format(monday, 'dd/MM/yyyy')}"></h6>
           </div>
           <div class="col thu">
@@ -580,36 +562,6 @@
    <!-- Body -->
    
     <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
-    <!-- <div class="right-sidebar">
-      <div class="switcher-icon">
-        <i class="zmdi zmdi-settings zmdi-hc-spin"></i>
-      </div>
-      <div class="right-sidebar-content">
-        <p class="mb-0">Màu nền admin</p>
-        <hr>
-        <ul class="switcher">
-          <li id="theme1"></li>
-          <li id="theme2"></li>
-          <li id="theme3"></li>
-          <li id="theme4"></li>
-          <li id="theme5"></li>
-          <li id="theme6"></li>
-        </ul>
-        <p class="mb-0">Màu nền gradient</p>
-        <hr>
-        <ul class="switcher">
-          <li id="theme7"></li>
-          <li id="theme8"></li>
-          <li id="theme9"></li>
-          <li id="theme10"></li>
-          <li id="theme11"></li>
-          <li id="theme12"></li>
-          <li id="theme13"></li>
-          <li id="theme14"></li>
-          <li id="theme15"></li>
-        </ul>
-      </div>
-    </div> -->
   </div>
 
     <script th:src="@{/admin/assets/js/jquery.min.js}"></script>

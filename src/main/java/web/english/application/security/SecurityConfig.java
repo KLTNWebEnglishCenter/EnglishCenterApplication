@@ -34,8 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         // Các trang không yêu cầu login
-        http.authorizeRequests().antMatchers("/home/**", "/about/**", "/contact/**", "/login/**", "/logout", "/info/**",
-                "/password/**", "/course/**","/register/**","/css/**", "/js/**","/images/**").permitAll();
+
+        http.authorizeRequests().antMatchers("/admin/assets/**","/css/**","/img/**","/js/**","/home/**", "/about/**", "/contact/**", "/login", "/logout","/info/**",
+                "/password/**", "/course/**","/register/**").permitAll();
 
         // Nếu chưa login, nó sẽ redirect tới trang login.
         http.authorizeRequests().antMatchers("/admin/approvestudent/**", "/admin/classrooms/**", "/admin/classroom/**",
@@ -48,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/admin/exam/**", "/admin/notification/**", "/admin/addnotification/**", "/admin/notificationinfo/**",
                 "/admin/editnotification/**").hasAnyAuthority(RoleType.TEACHER);
 
-        http.authorizeRequests().antMatchers("/register", "/exam/**", "/user/exam/**", "/posts/**", "/myPost/**", "/newPost/**",
+        http.authorizeRequests().antMatchers( "/exam/**", "/user/exam/**", "/posts/**", "/myPost/**", "/newPost/**",
                 "/new/post/**", "/course/**", "/score/**", "/schedule/**", "/classroom/**",
                 "/student/classroom/**").hasAnyAuthority(RoleType.STUDENT);
 
