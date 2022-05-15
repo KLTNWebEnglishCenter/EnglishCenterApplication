@@ -65,7 +65,6 @@ public class UserDAO {
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
         ResponseEntity<String> response = restTemplate.postForEntity( "http://localhost:8000/api/login", request , String.class );
-//        return response.getBody();
         return response.getHeaders().getFirst("access_token");
     }
 
@@ -74,9 +73,12 @@ public class UserDAO {
         headers.set("Authorization",token);
 
         HttpEntity<Void> request = new HttpEntity<>(headers);
-        Users users = restTemplate.postForObject("http://localhost:8000/user/fromToken/",request,Users.class);
+        Users users = null;
+
+        users = restTemplate.postForObject("http://localhost:8000/user/fromToken/",request,Users.class);
         String author = getAuthorFromToken(token);
         users.setRole(author);
+
         return users;
     }
 
@@ -102,6 +104,11 @@ public class UserDAO {
         String rs =  restTemplate.postForObject("http://localhost:8000/user/change/password", request,String.class);
 
         return rs;
+    }
+
+    public Users updatePassword(Users users){
+        Users users1 = restTemplate.postForObject("http://localhost:8000/user/update/password",users,Users.class);
+        return users1;
     }
 
     public String checkEmail(String email){

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import web.english.application.dao.UserDAO;
 import web.english.application.entity.user.Users;
 import web.english.application.utils.RoleType;
@@ -24,7 +25,7 @@ public class UserController {
     private boolean a = false;
 
     @GetMapping("/info/{id}")
-    public String getProfilePage(@PathVariable("id") int id, Model model,HttpServletRequest httpServletRequest){
+    public String getProfilePage(@PathVariable("id") int id, Model model,HttpServletRequest httpServletRequest,@ModelAttribute(name = "success") String success){
         String token = "";
         Users user = null;
         if(httpServletRequest.getCookies() != null){
@@ -60,6 +61,7 @@ public class UserController {
         }else {
             model.addAttribute("msg","");
         }
+        model.addAttribute("success",success);
         return "admin/thongtincanhan";
     }
 
@@ -91,7 +93,7 @@ public class UserController {
     }
 
     @PostMapping("/password/update")
-    public String updatePassUser(@RequestParam String userId,@RequestParam String oldPass, @RequestParam String newPass,@RequestParam String newPassCheck,Model model){
+    public String updatePassUser(RedirectAttributes redirectAttributes, @RequestParam String userId, @RequestParam String oldPass, @RequestParam String newPass, @RequestParam String newPassCheck, Model model){
         Users users = userDAO.getUser(Integer.parseInt(userId));
         model.addAttribute("users",users);
         model.addAttribute("oldp",oldPass);
@@ -106,7 +108,9 @@ public class UserController {
             return "admin/doimatkhau";
         }else {
             a = true;
-            return "redirect:/user/info/"+users.getId();
+            users.setPassword(newPass);
+            redirectAttributes.addFlashAttribute("users",users);
+            return "redirect:/user/password/generateOtp";
         }
     }
 }
