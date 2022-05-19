@@ -33,7 +33,7 @@ public class NotificationDAO {
         headers.set("Authorization", token);
         HttpEntity<Void> request = new HttpEntity<>(headers);
         ResponseEntity<List<Notification>> responseEntity =
-                restTemplate.exchange("http://localhost:8000/notifications/",
+                restTemplate.exchange("http://54.169.60.141:8000/notifications/",
                         HttpMethod.GET, request, new ParameterizedTypeReference<List<Notification>>() {
                         });
         List<Notification> notifications = responseEntity.getBody();
@@ -49,7 +49,7 @@ public class NotificationDAO {
     public String deleteNotificationById(int id){
         String message="";
         try {
-            ResponseEntity<String> response  = restTemplate.exchange("http://localhost:8000/notification/"+id, HttpMethod.DELETE, null, String.class);
+            ResponseEntity<String> response  = restTemplate.exchange("http://54.169.60.141:8000/notification/"+id, HttpMethod.DELETE, null, String.class);
             message=response.getBody();
         } catch (HttpClientErrorException|HttpServerErrorException ex) {
              message = ex.getResponseBodyAsString();
@@ -67,7 +67,7 @@ public class NotificationDAO {
         headers.set("Authorization", token);
         HttpEntity<Void> request = new HttpEntity<>(headers);
 
-        ResponseEntity<Notification> responseEntity=restTemplate.exchange("http://localhost:8000/notification/"+id,
+        ResponseEntity<Notification> responseEntity=restTemplate.exchange("http://54.169.60.141:8000/notification/"+id,
                 HttpMethod.GET, request, new ParameterizedTypeReference<Notification>() {
                 });
         Notification notification=responseEntity.getBody();
@@ -106,12 +106,12 @@ public class NotificationDAO {
         HttpEntity<Notification> request = new HttpEntity<>(notification,headers);
 
         ResponseEntity<Notification> responseEntity =
-                restTemplate.exchange("http://localhost:8000/notification/save",
+                restTemplate.exchange("http://54.169.60.141:8000/notification/save",
                         HttpMethod.POST, request, new ParameterizedTypeReference<Notification>() {
                         });
         Notification notification1 = responseEntity.getBody();
 
-//        Notification notification1=restTemplate.postForObject("http://localhost:8000/notification/save",notification,Notification.class);
+//        Notification notification1=restTemplate.postForObject("http://54.169.60.141:8000/notification/save",notification,Notification.class);
         return  notification1;
     }
 
@@ -127,7 +127,7 @@ public class NotificationDAO {
 
         HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<MultiValueMap<String, Object>>(map, headers);
 
-        ResponseEntity<List<Notification>> responseEntity =  restTemplate.exchange("http://localhost:8000/notification/search",HttpMethod.POST, request,new ParameterizedTypeReference<List<Notification>>() {
+        ResponseEntity<List<Notification>> responseEntity =  restTemplate.exchange("http://54.169.60.141:8000/notification/search",HttpMethod.POST, request,new ParameterizedTypeReference<List<Notification>>() {
         });
         List<Notification> notifications = responseEntity.getBody();
         return notifications;

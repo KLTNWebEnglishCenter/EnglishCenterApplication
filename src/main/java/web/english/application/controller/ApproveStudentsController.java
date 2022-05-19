@@ -118,12 +118,14 @@ public class ApproveStudentsController {
         String msg=classroomDAO.addStudentToClassroom(classroomId,studentList);
         redirectAttributes.addFlashAttribute("msg",msg);
 
-        Classroom classroom=classroomDAO.getClassroom(classroomId);
-        int courseId=classroom.getCourse().getId();
+        if(msg.equalsIgnoreCase("Cập nhật thành công")){
+            Classroom classroom=classroomDAO.getClassroom(classroomId);
+            int courseId=classroom.getCourse().getId();
 
-        for (Student student :
-                studentList) {
-            studentDAO.updateStudentRequestCourseStatus(student.getId(),courseId, UserRequestStatus.APPROVED);
+            for (Student student :
+                    studentList) {
+                studentDAO.updateStudentRequestCourseStatus(student.getId(),courseId, UserRequestStatus.APPROVED);
+            }
         }
 
         return "redirect:/admin/approvestudent";

@@ -23,7 +23,7 @@ public class UserRequestCourseStatusDAO {
     public List<UsersCourseRequest> findAllUsersCourseRequest(){
 
         ResponseEntity<List<UsersCourseRequest>> responseEntity =
-                restTemplate.exchange("http://localhost:8000/requestcourses/",
+                restTemplate.exchange("http://54.169.60.141:8000/requestcourses/",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<UsersCourseRequest>>() {
                         });
         List<UsersCourseRequest> usersCourseRequests = responseEntity.getBody();
@@ -41,7 +41,7 @@ public class UserRequestCourseStatusDAO {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
-        ResponseEntity<List<UsersCourseRequest>> responseEntity =  restTemplate.exchange("http://localhost:8000/requestcourse/search/",HttpMethod.POST, request,new ParameterizedTypeReference<List<UsersCourseRequest>>() {
+        ResponseEntity<List<UsersCourseRequest>> responseEntity =  restTemplate.exchange("http://54.169.60.141:8000/requestcourse/search/",HttpMethod.POST, request,new ParameterizedTypeReference<List<UsersCourseRequest>>() {
         });
         List<UsersCourseRequest> usersCourseRequests = responseEntity.getBody();
 

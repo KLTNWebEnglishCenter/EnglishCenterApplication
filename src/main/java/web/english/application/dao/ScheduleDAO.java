@@ -42,7 +42,7 @@ public class ScheduleDAO {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
         try {
-            ResponseEntity<List<ScheduleInfoHolder>> responseEntity=restTemplate.exchange("http://localhost:8000/schedule/teacher",
+            ResponseEntity<List<ScheduleInfoHolder>> responseEntity=restTemplate.exchange("http://54.169.60.141:8000/schedule/teacher",
                     HttpMethod.POST, request, new ParameterizedTypeReference<List<ScheduleInfoHolder>>() {
                     });
             List<ScheduleInfoHolder> scheduleInfoHolders=responseEntity.getBody();
@@ -72,7 +72,7 @@ public class ScheduleDAO {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
-        ResponseEntity<List<ScheduleInfoHolder>> responseEntity=restTemplate.exchange("http://localhost:8000/schedule/student",
+        ResponseEntity<List<ScheduleInfoHolder>> responseEntity=restTemplate.exchange("http://54.169.60.141:8000/schedule/student",
                 HttpMethod.POST, request, new ParameterizedTypeReference<List<ScheduleInfoHolder>>() {
                 });
         List<ScheduleInfoHolder> scheduleInfoHolders=responseEntity.getBody();
@@ -80,20 +80,20 @@ public class ScheduleDAO {
     }
 
     public ClassroomSchedule save(ClassroomSchedule classroomSchedule){
-        ClassroomSchedule schedule = restTemplate.postForObject("http://localhost:8000/classroom/schedule/save",classroomSchedule,ClassroomSchedule.class);
+        ClassroomSchedule schedule = restTemplate.postForObject("http://54.169.60.141:8000/classroom/schedule/save",classroomSchedule,ClassroomSchedule.class);
         return schedule;
     }
 
     public List<Schedule> getAll(){
         ResponseEntity<List<Schedule>> responseEntity =
-                restTemplate.exchange("http://localhost:8000/schedules", HttpMethod.GET, null, new ParameterizedTypeReference<List<Schedule>>() {
+                restTemplate.exchange("http://54.169.60.141:8000/schedules", HttpMethod.GET, null, new ParameterizedTypeReference<List<Schedule>>() {
                 });
         List<Schedule> schedules = responseEntity.getBody();
         return schedules;
     }
 
     public Schedule getSchedule(int id){
-        Schedule schedule = restTemplate.getForObject("http://localhost:8000/schedule/"+id,Schedule.class);
+        Schedule schedule = restTemplate.getForObject("http://54.169.60.141:8000/schedule/"+id,Schedule.class);
         return schedule;
     }
 }

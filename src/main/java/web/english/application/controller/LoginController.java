@@ -61,7 +61,7 @@ public class LoginController {
     @PostMapping("/register")
     public String register(@ModelAttribute("users") Users users, @RequestParam("passwordMatch") String passwordMatch, Model model, RedirectAttributes redirectAttributes){
         String checkEmail = userDAO.checkRequired("Email",users.getEmail());
-        String checkLengthUsername = userDAO.checkLength("Username",users.getUsername(),8,20);
+        String checkLengthUsername = userDAO.checkLength("Username",users.getUsername(),6,20);
         String checkLengthPassword = userDAO.checkLength("Password",users.getPassword(),6,20);
         String checkPasswordMatch = userDAO.checkPasswordMatch(users.getPassword(),passwordMatch);
         String checkRequiredUsername = userDAO.checkRequired("Username",users.getUsername());

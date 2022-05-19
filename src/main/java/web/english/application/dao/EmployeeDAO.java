@@ -25,7 +25,7 @@ public class EmployeeDAO {
      */
     public List<Employee> findAllEmployee(){
         ResponseEntity<List<Employee>> responseEntity =
-                restTemplate.exchange("http://localhost:8000/employees/",
+                restTemplate.exchange("http://54.169.60.141:8000/employees/",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Employee>>() {
                         });
         List<Employee> employees = responseEntity.getBody();
@@ -39,7 +39,7 @@ public class EmployeeDAO {
      * @return employee data after saved to db
      */
     public Employee saveEmployee(Employee employee){
-        Employee employee1=restTemplate.postForObject("http://localhost:8000/employee/save",employee,Employee.class);
+        Employee employee1=restTemplate.postForObject("http://54.169.60.141:8000/employee/save",employee,Employee.class);
         return  employee1;
     }
 
@@ -49,7 +49,7 @@ public class EmployeeDAO {
      * @return
      */
     public Employee findEmployeeById(int id){
-        Employee employee=restTemplate.getForObject("http://localhost:8000/employee/"+id,Employee.class);
+        Employee employee=restTemplate.getForObject("http://54.169.60.141:8000/employee/"+id,Employee.class);
         return  employee;
     }
 
@@ -71,7 +71,7 @@ public class EmployeeDAO {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
-        ResponseEntity<List<Employee>> responseEntity =  restTemplate.exchange("http://localhost:8000/user/search",HttpMethod.POST, request,new ParameterizedTypeReference<List<Employee>>() {
+        ResponseEntity<List<Employee>> responseEntity =  restTemplate.exchange("http://54.169.60.141:8000/user/search",HttpMethod.POST, request,new ParameterizedTypeReference<List<Employee>>() {
         });
         List<Employee> employees = responseEntity.getBody();
         return employees;

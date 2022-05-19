@@ -21,7 +21,7 @@ public class CategoryDAO {
 
     public List<Category> findAllCategory(){
         ResponseEntity<List<Category>> responseEntity =
-                restTemplate.exchange("http://localhost:8000/category/",
+                restTemplate.exchange("http://54.169.60.141:8000/category/",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Category>>() {
                         });
         List<Category> categories = responseEntity.getBody();
@@ -30,12 +30,12 @@ public class CategoryDAO {
     }
 
 //    public Level getCourse(int id){
-//        Level level = restTemplate.getForObject(("http://localhost:8000/course/"+id),Course.class);
+//        Level level = restTemplate.getForObject(("http://54.169.60.141:8000/course/"+id),Course.class);
 //        return level;
 //    }
 
     public Category saveCategory(Category category){
-        Category category1 = restTemplate.postForObject("http://localhost:8000/level",category,Category.class);
+        Category category1 = restTemplate.postForObject("http://54.169.60.141:8000/level",category,Category.class);
         return category;
     }
 }

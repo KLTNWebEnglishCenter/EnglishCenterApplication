@@ -15,6 +15,7 @@ import web.english.application.entity.user.Authentication;
 import web.english.application.entity.user.Teacher;
 import web.english.application.entity.user.Users;
 import web.english.application.utils.UsersType;
+import web.english.application.utils.Utils;
 
 import java.util.List;
 
@@ -25,6 +26,8 @@ public class UserDAO {
     @Autowired
     private RestTemplate restTemplate;
 
+    private Utils utils=new Utils();
+
     public UserDAO(RestTemplate restTemplate){
         this.restTemplate = restTemplate;
     }
@@ -32,18 +35,18 @@ public class UserDAO {
     public Users save(Users users){
         users.setFullName(users.getUsername());
 //        log.info(users.toString());
-        Users users1 = restTemplate.postForObject("http://localhost:8000/register",users,Users.class);
+        Users users1 = restTemplate.postForObject("http://54.169.60.141:8000/register",users,Users.class);
         return users;
     }
 
     public Users update(Users users){
-        Users users1 = restTemplate.postForObject("http://localhost:8000/user/update",users,Users.class);
+        Users users1 = restTemplate.postForObject("http://54.169.60.141:8000/user/update",users,Users.class);
         return users1;
     }
 
 
     public Users getUser(int id){
-        Users users = restTemplate.getForObject("http://localhost:8000/user/"+id,Users.class);
+        Users users = restTemplate.getForObject("http://54.169.60.141:8000/user/"+id,Users.class);
         return users;
     }
 
@@ -64,7 +67,7 @@ public class UserDAO {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
-        ResponseEntity<String> response = restTemplate.postForEntity( "http://localhost:8000/api/login", request , String.class );
+        ResponseEntity<String> response = restTemplate.postForEntity( "http://54.169.60.141:8000/api/login", request , String.class );
 //        return response.getBody();
         return response.getHeaders().getFirst("access_token");
     }
@@ -74,7 +77,7 @@ public class UserDAO {
         headers.set("Authorization",token);
 
         HttpEntity<Void> request = new HttpEntity<>(headers);
-        Users users = restTemplate.postForObject("http://localhost:8000/user/fromToken/",request,Users.class);
+        Users users = restTemplate.postForObject("http://54.169.60.141:8000/user/fromToken/",request,Users.class);
         String author = getAuthorFromToken(token);
         users.setRole(author);
         return users;
@@ -84,7 +87,7 @@ public class UserDAO {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization",token);
         HttpEntity<String> request = new HttpEntity<>("body",headers);
-        String author= restTemplate.postForObject("http://localhost:8000/user/author/",request,String.class);
+        String author= restTemplate.postForObject("http://54.169.60.141:8000/user/author/",request,String.class);
         return author;
     }
 
@@ -99,7 +102,7 @@ public class UserDAO {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
-        String rs =  restTemplate.postForObject("http://localhost:8000/user/change/password", request,String.class);
+        String rs =  restTemplate.postForObject("http://54.169.60.141:8000/user/change/password", request,String.class);
 
         return rs;
     }
@@ -139,7 +142,19 @@ public class UserDAO {
     public String checkRequired(String fieldName,String name){
         if(name.equals("") || name == null){
             return fieldName + " chưa nhập dữ liệu";
-        }else
+        }else if(fieldName.equalsIgnoreCase("Username")){
+            if(!utils.checkUsernameFormat(name))
+                return Utils.usernameRequire;
+            else
+                return "";
+        }
+        else if(fieldName.equalsIgnoreCase("Email")){
+            if(!utils.checkEmailFormat(name))
+                return Utils.emailRequire;
+            else
+                return "";
+        }
+        else
             return "";
     }
 
@@ -154,7 +169,7 @@ public class UserDAO {
                 map, headers);
 
         ResponseEntity<String> result = restTemplate.exchange(
-                "http://localhost:8000/user/profile/uploadImg", HttpMethod.POST, requestEntity,
+                "http://54.169.60.141:8000/user/profile/uploadImg", HttpMethod.POST, requestEntity,
                 String.class);
        String rs = result.getBody();
         return rs;

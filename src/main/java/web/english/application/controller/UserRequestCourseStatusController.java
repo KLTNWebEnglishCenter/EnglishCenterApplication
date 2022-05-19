@@ -46,7 +46,7 @@ public class UserRequestCourseStatusController {
         List<UsersCourseRequest> usersCourseRequests=userRequestCourseStatusDAO.findAllUsersCourseRequest();
         model.addAttribute("usersCourseRequests",usersCourseRequests);
 
-        return "/admin/updateStudentRequestCourseStatus/requestcourse";
+        return "admin/updateStudentRequestCourseStatus/requestcourse";
     }
 
     @PostMapping("/requestcourse/status/update")
@@ -66,6 +66,6 @@ public class UserRequestCourseStatusController {
         List<UsersCourseRequest> usersCourseRequests=userRequestCourseStatusDAO.search(courseIdOrName, studentIdOrFullName);
         model.addAttribute("usersCourseRequests",usersCourseRequests);
 
-        return "/admin/updateStudentRequestCourseStatus/requestcourse";
+        return "admin/updateStudentRequestCourseStatus/requestcourse";
     }
 }

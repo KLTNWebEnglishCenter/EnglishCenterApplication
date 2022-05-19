@@ -77,6 +77,7 @@ public class Utils {
      * @return true if dob was matched require, else return false
      */
     public boolean checkDob(LocalDate dob){
+        if(dob==null) return false;
         if(dob.getYear()<1900||dob.getYear()>(LocalDate.now().getYear())-18) return false;
         return true;
     }
