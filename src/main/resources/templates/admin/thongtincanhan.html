@@ -73,13 +73,20 @@
       /*<![CDATA[*/
 
         var msg = /*[[${msg}]]*/ '';
-
+        var success = /*[[${success}]]*/ '';
         function yourfunction() {
           if(msg!=""&&msg!=null){
             Swal.fire({
               icon: 'success',
               title: 'Oke...',
               text: msg,
+             })
+          }
+          if(success!=""&&success!=null){
+            Swal.fire({
+              icon: 'success',
+              title: 'Oke...',
+              text: success,
              })
           }
         }
