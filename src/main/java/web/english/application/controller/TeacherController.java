@@ -103,8 +103,13 @@ public class TeacherController {
         }
 
         teacher.setEnable(true);
-        teacherDAO.saveTeacher(teacher);
-        return "redirect:/admin/teacher";
+        String msg=teacherDAO.saveTeacher(teacher);
+        if(msg.equals(""))
+            return "redirect:/admin/teacher";
+        else{
+            model.addAttribute("msg",msg);
+            return  "admin/teacher/addteacher";
+        }
     }
 
     /**
@@ -162,9 +167,14 @@ public class TeacherController {
         }
 
 
-        teacher.setEnable(true);
-        teacherDAO.saveTeacher(teacher);
-        return "redirect:/admin/teacher";
+//        teacher.setEnable(true);
+        String msg=teacherDAO.updateTeacher(teacher);
+        if(msg.equals(""))
+            return "redirect:/admin/teacher";
+        else{
+            model.addAttribute("msg",msg);
+            return  "admin/teacher/editteacher";
+        }
     }
 
     /**

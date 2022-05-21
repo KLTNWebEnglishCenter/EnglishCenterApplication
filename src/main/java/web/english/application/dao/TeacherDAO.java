@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import web.english.application.entity.schedule.Classroom;
 import web.english.application.entity.user.Teacher;
 import web.english.application.utils.UsersType;
+import web.english.application.utils.Utils;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class TeacherDAO {
     @Autowired
     private RestTemplate restTemplate;
 
+    private Utils utils=new Utils();
     /**
      * @author VQKHANH
      * @return list all teacher
@@ -39,9 +41,35 @@ public class TeacherDAO {
      * @param teacher
      * @return teacher data after saved to db
      */
-    public Teacher saveTeacher(Teacher teacher){
+    public String saveTeacher(Teacher teacher){
+        String msg="";
+        try {
         Teacher teacher1=restTemplate.postForObject("http://54.169.60.141:8000/teacher/save",teacher,Teacher.class);
-        return  teacher1;
+        }catch (Exception exception){
+            log.info(exception.getMessage());
+            msg=utils.extractMessageFromException(exception.getMessage());
+            log.info(msg);
+        }
+
+        return  msg;
+    }
+
+    /**
+     * @author VQKHANH
+     * @param teacher
+     * @return teacher data after saved to db
+     */
+    public String updateTeacher(Teacher teacher){
+        String msg="";
+        try {
+        Teacher teacher1=restTemplate.postForObject("http://54.169.60.141:8000/teacher/update",teacher,Teacher.class);
+        }catch (Exception exception){
+            log.info(exception.getMessage());
+            msg=utils.extractMessageFromException(exception.getMessage());
+            log.info(msg);
+        }
+
+        return  msg;
     }
 
     /**

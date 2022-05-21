@@ -2,6 +2,7 @@ package web.english.application.security.filter;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -60,6 +61,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                                 new UsernamePasswordAuthenticationToken(userDetails, jwt, userDetails.getAuthorities());
                         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                     }
+//                    if(users==null) throw new BadCredentialsException("1000");
 
                     filterChain.doFilter(request, response);
                 }catch (Exception exception){

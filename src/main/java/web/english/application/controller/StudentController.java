@@ -133,8 +133,13 @@ public class StudentController {
 
         student.setEnable(true);
         log.info(student.toString());
-        studentDAO.saveStudent(student);
-        return "redirect:/admin/student";
+        String msg=studentDAO.saveStudent(student);
+        if(msg.equals(""))
+            return "redirect:/admin/student";
+        else{
+            model.addAttribute("msg",msg);
+            return  "admin/student/addstudent";
+        }
     }
 
     /**
@@ -224,11 +229,16 @@ public class StudentController {
         }
 
 
-        student.setEnable(true);
+//        student.setEnable(true);
         log.info(student.toString());
 
-        studentDAO.saveStudent(student);
-        return "redirect:/admin/student";
+        String msg=studentDAO.updateStudent(student);
+        if(msg.equals(""))
+            return "redirect:/admin/student";
+        else{
+            model.addAttribute("msg",msg);
+            return  "admin/student/editstudent";
+        }
     }
 
     /**

@@ -252,6 +252,7 @@
 .classroomOneNotifyLayout{
     margin-top: 10px; 
     width: 95%;
+    border-bottom: solid #e3e3e3;
 }
 .text-display-limit-char{
     text-overflow: ellipsis; 

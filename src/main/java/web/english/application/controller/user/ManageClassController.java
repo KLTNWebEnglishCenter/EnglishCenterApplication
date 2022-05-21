@@ -87,7 +87,7 @@ public class ManageClassController {
         model.addAttribute("scheduleInSaturdays",scheduleInSaturdays);
         model.addAttribute("scheduleInSundays",scheduleInSundays);
 
-        return "/student/studentSchedule";
+        return "student/studentSchedule";
     }
 
     @PostMapping("/schedule/next")
@@ -130,7 +130,7 @@ public class ManageClassController {
         model.addAttribute("scheduleInSaturdays",scheduleInSaturdays);
         model.addAttribute("scheduleInSundays",scheduleInSundays);
 
-        return "/student/studentSchedule";
+        return "student/studentSchedule";
     }
 
     @PostMapping("/schedule/previous")
@@ -174,7 +174,7 @@ public class ManageClassController {
         model.addAttribute("scheduleInSaturdays",scheduleInSaturdays);
         model.addAttribute("scheduleInSundays",scheduleInSundays);
 
-        return "/student/studentSchedule";
+        return "student/studentSchedule";
     }
 
     @GetMapping("/classroom")
@@ -196,7 +196,7 @@ public class ManageClassController {
         model.addAttribute("classrooms",classrooms);
         model.addAttribute("notifications",notifications);
 
-        return "/student/manageClassroom";
+        return "student/manageClassroom";
     }
 
     @GetMapping("/student/classroom/{id}")
@@ -216,7 +216,7 @@ public class ManageClassController {
         model.addAttribute("classrooms",classrooms);
         model.addAttribute("notifications",notifications);
 
-        return "/student/manageClassroom";
+        return "student/manageClassroom";
     }
 
 }

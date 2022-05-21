@@ -78,10 +78,18 @@ public class UserDAO {
         HttpEntity<Void> request = new HttpEntity<>(headers);
 
         Users users = null;
-        users = restTemplate.postForObject("http://54.169.60.141:8000/user/fromToken/",request,Users.class);
+        try {
+            users = restTemplate.postForObject("http://54.169.60.141:8000/user/fromToken/",request,Users.class);
+        }catch (Exception exception){
+            log.info(exception.getMessage());
+            return null;
+        }
 
-        String author = getAuthorFromToken(token);
-        users.setRole(author);
+
+        if(users!=null){
+            String author = getAuthorFromToken(token);
+            users.setRole(author);
+        }
         return users;
     }
 
@@ -110,7 +118,7 @@ public class UserDAO {
     }
 
     public Users updatePassword(Users users){
-        Users users1 = restTemplate.postForObject("http://localhost:8000/user/update/password",users,Users.class);
+        Users users1 = restTemplate.postForObject("http://54.169.60.141:8000/user/update/password",users,Users.class);
         return users1;
     }
 

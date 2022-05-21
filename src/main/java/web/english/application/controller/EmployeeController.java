@@ -105,8 +105,13 @@ public class EmployeeController {
 
 
         employee.setEnable(true);
-        employeeDAO.saveEmployee(employee);
-        return "redirect:/admin/employee";
+        String msg=employeeDAO.saveEmployee(employee);
+        if(msg.equals(""))
+            return "redirect:/admin/employee";
+        else{
+            model.addAttribute("msg",msg);
+            return  "admin/employee/addemployee";
+        }
     }
 
     /**
@@ -165,9 +170,14 @@ public class EmployeeController {
         }
 
 
-        employee.setEnable(true);
-        employeeDAO.saveEmployee(employee);
-        return "redirect:/admin/employee";
+//        employee.setEnable(true);
+        String msg=employeeDAO.updateEmployee(employee);
+        if(msg.equals(""))
+            return "redirect:/admin/employee";
+        else{
+            model.addAttribute("msg",msg);
+            return  "admin/employee/editemployee";
+        }
     }
 
     /**

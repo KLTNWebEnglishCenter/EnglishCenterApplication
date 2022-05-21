@@ -11,7 +11,7 @@ public class Utils {
     public static final String fullNameLength="Họ tên có tối thiểu 6 kí tự, tối đa 50 kí tự";
     public static final String usernameRequire="Username tối thiểu 6 ký tự và không chứa ký tự khoảng trắng";
     public static final String phoneNumberRequire="Số điện thoại gồm 10 chữ số, bắt đầu bằng số 0";
-    public static final String emailRequire="Email chỉ được sử dụng chữ cái (a-z), số (0-9) và ký tự (.)";
+    public static final String emailRequire="Email chỉ được sử dụng chữ cái (a-z), số (0-9) và kí tự (.)";
     public static final String yearRequire="Năm sinh phải trong khoảng: "+(LocalDate.now().getYear()-100)+" <= năm sinh <= "+(LocalDate.now().getYear()-18);
     public static final String maxLengthRequire="Tối đa 255 kí tự";
 
@@ -97,15 +97,21 @@ public class Utils {
         else return true;
     }
 
+
     public boolean checkFullNameLength(String fullName){
         if ( fullName.length() < 6 || fullName.length() > 50) return false;
         else return true;
     }
 
-    public boolean checkPasswordRegex(String password){
-        String reg="^[A-Za-z0-9]{6,50}$";
-        Pattern pattern=Pattern.compile(reg);
-        Matcher matcher=pattern.matcher(password);
+    public boolean checkPasswordRegex(String password) {
+        String reg = "^[A-Za-z0-9]{6,50}$";
+        Pattern pattern = Pattern.compile(reg);
+        Matcher matcher = pattern.matcher(password);
         return matcher.matches();
+    }
+
+    public String extractMessageFromException(String message){
+        String msg = message.substring(message.indexOf("\"message\":")+11,message.lastIndexOf(",\"timeStamp\"")-1);
+        return msg;
     }
 }
