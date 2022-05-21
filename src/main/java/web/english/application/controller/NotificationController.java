@@ -15,6 +15,7 @@ import web.english.application.entity.Notification;
 import web.english.application.entity.user.Users;
 import web.english.application.security.entity.CustomUserDetails;
 import web.english.application.utils.JwtHelper;
+import web.english.application.utils.Utils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -33,6 +34,8 @@ public class NotificationController {
 
     @Autowired
     private UserDAO userDAO;
+
+    private Utils utils=new Utils();
 
     private JwtHelper jwtHelper=new JwtHelper();
 
@@ -105,18 +108,34 @@ public class NotificationController {
      * @return
      */
     @PostMapping("/notification/add")
-    public String saveNotification(HttpServletRequest httpServletRequest, @ModelAttribute Notification notification, int[] selectedClassroom, RedirectAttributes redirectAttributes){
+    public String saveNotification(HttpServletRequest httpServletRequest, @ModelAttribute Notification notification, int[] selectedClassroom, Model model,Authentication authentication,RedirectAttributes redirectAttributes){
+
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
+        if(!utils.checkMaxLength(notification.getTitle())){
+            model.addAttribute("errorTitle",Utils.maxLengthRequire);
+            return "admin/notification/addnotification";
+        }
+        if(!utils.checkMaxLength(notification.getContent())){
+            model.addAttribute("errorContent",Utils.maxLengthRequire);
+            return "admin/notification/addnotification";
+        }
+
         //Cần xử lý thông báo khi người dùng không chọn lớp nào cả
         if(selectedClassroom==null||selectedClassroom.length==0){
-            redirectAttributes.addFlashAttribute("msg","Vui lòng chọn lớp học để đăng thông báo!");
-            return "redirect:/admin/addnotification";
+            model.addAttribute("msg","Vui lòng chọn lớp học để đăng thông báo!");
+            return "admin/notification/addnotification";
         }
 
         String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
         String token=jwtHelper.createToken(jwt);
 
         String msg=notificationDAO.saveNotificationWithListClassroom(notification,selectedClassroom,token);
-
+        if(msg.contains("success"))
+            redirectAttributes.addFlashAttribute("msg","Thêm thông báo thành công!");
+        else if(msg.contains("fail"))
+            redirectAttributes.addFlashAttribute("msg","Thêm thông báo không thành công!");
         return "redirect:/admin/notification";
     }
 
@@ -160,12 +179,26 @@ public class NotificationController {
     }
 
     @PostMapping("/notification/edit")
-    public String editStudent(HttpServletRequest httpServletRequest,@ModelAttribute Notification notification,@RequestParam int classroomId,Model model){
+    public String editNotification(HttpServletRequest httpServletRequest,@ModelAttribute Notification notification,@RequestParam int classroomId,Model model,Authentication authentication){
+
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
+        if(!utils.checkMaxLength(notification.getTitle())){
+            model.addAttribute("errorTitle","Tiêu đề "+Utils.maxLengthRequire);
+            return "admin/notification/editnotification";
+        }
+        if(!utils.checkMaxLength(notification.getContent())){
+            model.addAttribute("errorContent","Nội dung "+Utils.maxLengthRequire);
+            return "admin/notification/editnotification";
+        }
+
         String jwt=jwtHelper.getJwtFromCookie(httpServletRequest);
         String token=jwtHelper.createToken(jwt);
 
         notification.setClassroom(new Classroom(classroomId));
 
+        notificationDAO.saveNotification(notification,token);
         return "redirect:/admin/notification";
     }
 
