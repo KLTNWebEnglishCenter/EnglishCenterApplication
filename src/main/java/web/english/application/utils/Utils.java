@@ -7,10 +7,10 @@ import java.util.regex.Pattern;
 
 public class Utils {
 
-    public static final String fullNameRequire="Họ tên không được chứa ký tự số hoặc ký tự đặc biệt";
-    public static final String usernameRequire="Username tối thiểu 6 ký tự và không chứa ký tự khoảng trắng";
+    public static final String fullNameRequire="Họ tên không được chứa kí tự số hoặc kí tự đặc biệt";
+    public static final String usernameRequire="Username tối thiểu 6 kí tự và không chứa kí tự khoảng trắng";
     public static final String phoneNumberRequire="Số điện thoại gồm 10 chữ số, bắt đầu bằng số 0";
-    public static final String emailRequire="Email chỉ được sử dụng chữ cái (a-z), số (0-9) và ký tự (.)";
+    public static final String emailRequire="Email chỉ được sử dụng chữ cái (a-z), số (0-9) và kí tự (.)";
     public static final String yearRequire="Năm sinh phải trong khoảng: "+(LocalDate.now().getYear()-100)+" <= năm sinh <= "+(LocalDate.now().getYear()-18);
     public static final String maxLengthRequire="Tối đa 255 kí tự";
 
