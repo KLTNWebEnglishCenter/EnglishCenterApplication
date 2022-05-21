@@ -95,4 +95,10 @@ public class Utils {
         if (text.length()>maxLength)return  false;
         else return true;
     }
+
+    public String extractMessageFromException(String message){
+        String msg = message.substring(message.indexOf("\"message\":")+11,message.lastIndexOf(",\"timeStamp\"")-1);
+
+        return msg;
+    }
 }

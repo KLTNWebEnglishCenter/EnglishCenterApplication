@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import web.english.application.entity.user.Employee;
 import web.english.application.entity.user.Student;
 import web.english.application.utils.UsersType;
+import web.english.application.utils.Utils;
 
 import java.util.List;
 @Service
@@ -19,6 +20,7 @@ public class EmployeeDAO {
     @Autowired
     private RestTemplate restTemplate;
 
+    private Utils utils=new Utils();
     /**
      * @author VQKHANH
      * @return
@@ -38,9 +40,35 @@ public class EmployeeDAO {
      * @param employee
      * @return employee data after saved to db
      */
-    public Employee saveEmployee(Employee employee){
-        Employee employee1=restTemplate.postForObject("http://54.169.60.141:8000/employee/save",employee,Employee.class);
-        return  employee1;
+    public String saveEmployee(Employee employee){
+        String msg="";
+        try {
+            Employee employee1=restTemplate.postForObject("http://54.169.60.141:8000/employee/save",employee,Employee.class);
+        }catch (Exception exception){
+            log.info(exception.getMessage());
+            msg=utils.extractMessageFromException(exception.getMessage());
+            log.info(msg);
+        }
+
+        return  msg;
+    }
+
+    /**
+     * @author VQKHANH
+     * @param employee
+     * @return employee data after saved to db
+     */
+    public String updateEmployee(Employee employee){
+        String msg="";
+        try {
+        Employee employee1=restTemplate.postForObject("http://54.169.60.141:8000/employee/update",employee,Employee.class);
+        }catch (Exception exception){
+            log.info(exception.getMessage());
+            msg=utils.extractMessageFromException(exception.getMessage());
+            log.info(msg);
+        }
+
+        return  msg;
     }
 
     /**

@@ -18,6 +18,7 @@ import web.english.application.entity.schedule.Classroom;
 import web.english.application.entity.user.Student;
 import web.english.application.entity.user.Teacher;
 import web.english.application.utils.UsersType;
+import web.english.application.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,8 @@ import java.util.List;
 public class StudentDAO {
     @Autowired
     private RestTemplate restTemplate;
+
+    private Utils utils=new Utils();
 
     /**
      * @author VQKHANH
@@ -47,9 +50,35 @@ public class StudentDAO {
      * @param student
      * @return student data after saved to db
      */
-    public Student saveStudent(Student student){
+    public String saveStudent(Student student){
+        String msg="";
+        try {
         Student student1=restTemplate.postForObject("http://54.169.60.141:8000/student/save",student,Student.class);
-        return  student1;
+        }catch (Exception exception){
+            log.info(exception.getMessage());
+            msg=utils.extractMessageFromException(exception.getMessage());
+            log.info(msg);
+        }
+
+        return  msg;
+    }
+
+    /**
+     * @author VQKHANH
+     * @param student
+     * @return student data after saved to db
+     */
+    public String updateStudent(Student student){
+        String msg="";
+        try {
+            Student student1=restTemplate.postForObject("http://54.169.60.141:8000/student/update",student,Student.class);
+        }catch (Exception exception){
+            log.info(exception.getMessage());
+            msg=utils.extractMessageFromException(exception.getMessage());
+            log.info(msg);
+        }
+
+        return  msg;
     }
 
     /**
