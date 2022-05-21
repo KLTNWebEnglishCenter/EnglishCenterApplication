@@ -92,7 +92,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="input-1">Tên lớp học</label>
-                                    <input type="text" th:field="*{classname}" class="form-control" id="input-1" pattern="[A-Za-z0-9]{3,}" required placeholder="Nhập tên lớp" name="user-name" >
+                                    <input type="text" th:field="*{classname}" class="form-control" id="input-1" pattern="[A-Za-z0-9]{6,50}" required placeholder="Nhập tên lớp" name="user-name" >
                                 </div>
                                 <div class="form-group">
                                     <label for="input-2">Số lượng học viên tối đa</label>
@@ -180,9 +180,13 @@
         var input1 = document.getElementById('input-1');
         var input2 = document.getElementById('input-2');
 
-        input1.oninvalid = function(event) {
-            event.target.setCustomValidity('Nhập tên lớp chỉ gồm kí tự chữ số và chữ cái, phải có tối thiểu 3 kí tự');
-        }
+        input1.addEventListener("invalid", function(event) {
+            if ( ! event.target.validity.valid ) {
+               event.target.setCustomValidity('Nhập tên lớp chỉ gồm kí tự chữ số và chữ cái, phải có tối thiểu 3 kí tự');
+            }else{
+               event.target.setCustomValidity('');
+           }
+        })
         input2.oninvalid = function(event) {
             event.target.setCustomValidity('Nhập giá trị lớn hơn 0');
         }

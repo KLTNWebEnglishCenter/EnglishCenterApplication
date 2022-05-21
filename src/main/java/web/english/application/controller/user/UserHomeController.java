@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Random;
 
 @Controller
 @RequestMapping("/")
@@ -142,12 +143,19 @@ public class UserHomeController {
 
         model.addAttribute("users",user);
 
-        Exam exam = examDAO.getExamById(Utils.exam);
 
+        List<Exam> exams = examDAO.getAll();
+        Random random = new Random();
+        int ran = random.nextInt(exams.size())+1;
+        Exam exam = new Exam();
+        List<Question> questions = new ArrayList<>();
+        try {
+            exam = examDAO.getExamById(ran);
+            questions.addAll(examDAO.getListQuestionByExam(ran));
+        }catch (Exception e){
+
+        }
         model.addAttribute("exam",exam);
-
-        List<Question> questions = examDAO.getListQuestionByExam(Utils.exam);
-
         model.addAttribute("questions",questions);
 
         return "kiemtra";
@@ -159,19 +167,27 @@ public class UserHomeController {
 
         Enumeration<String> parameterNames = httpServletRequest.getParameterNames();
 
+        String id = "";
+
         while (parameterNames.hasMoreElements()) {
 
             String paramName = parameterNames.nextElement();
 
             String[] paramValues = httpServletRequest.getParameterValues(paramName);
             for (int i = 0; i < paramValues.length; i++) {
-                String paramValue = paramValues[i];
-                theUserChoose.add(paramValue);
+                if (paramName.equals("examId")){
+                    id = paramValues[i];
+                }else {
+                    String paramValue = paramValues[i];
+                    theUserChoose.add(paramValue);
+                }
             }
         }
 
-        Exam exam = examDAO.getExamById(Utils.exam);
-        List<Question> questions = examDAO.getListQuestionByExam(Utils.exam);
+        log.info(id);
+
+        Exam exam = examDAO.getExamById(Integer.parseInt(id));
+        List<Question> questions = examDAO.getListQuestionByExam(Integer.parseInt(id));
 
         List<String> theResult = new ArrayList<>();
         questions.forEach(question -> {
@@ -245,6 +261,14 @@ public class UserHomeController {
         List<String> theResult = new ArrayList<>();
         questions.forEach(question -> {
             theResult.add(question.getCorrectAnswer());
+        });
+
+        questions.forEach(e->{
+            log.info(e.toString());
+        });
+
+        theUserChoose.forEach(a->{
+            log.info(a);
         });
 
         int point = utils.checkPoint(theUserChoose,theResult);

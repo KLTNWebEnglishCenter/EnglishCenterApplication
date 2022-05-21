@@ -64,7 +64,7 @@
                     </p>
                     <div class="exam-question-answer">
                         <div><input type="radio" th:name="'answer'+${question.id}" th:value="A"
-                                    class="exam-question-result"><span>A.</span><span th:text="${question.answerA}"></span></div>
+                                    class="exam-question-result" required><span>A.</span><span th:text="${question.answerA}"></span></div>
                         <div><input type="radio" th:name="'answer'+${question.id}" th:value="B"
                                     class="exam-question-result"><span>B.</span><span th:text="${question.answerB}"></span></div>
                         <div th:if="${question.answerC != 'null'}"><input type="radio" th:name="'answer'+${question.id}" th:value="C"

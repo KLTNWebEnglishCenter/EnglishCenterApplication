@@ -10,6 +10,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import web.english.application.dao.UserDAO;
 import web.english.application.entity.user.Users;
 import web.english.application.utils.RoleType;
+import web.english.application.utils.Utils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ public class UserController {
     @Autowired
     private UserDAO userDAO;
 
+    private Utils utils=new Utils();
     private boolean a = false;
 
     @GetMapping("/info/{id}")
@@ -74,6 +76,35 @@ public class UserController {
 
     @PostMapping("/info/update")
     public String updateUser(@ModelAttribute Users users,Model model,@RequestPart(value = "profile") MultipartFile file){
+        model.addAttribute("users",users);
+        
+        if (!utils.checkFullNameLength(users.getFullName())){
+            model.addAttribute("errorFullName", Utils.fullNameLength);
+            return "admin/editthongtincanhan";
+        }
+        if(!utils.checkFullNameFormat(users.getFullName())){
+            model.addAttribute("errorFullName", Utils.fullNameRequire);
+            return "admin/editthongtincanhan";
+        }
+        if(!utils.checkEmailFormat(users.getEmail())){
+            model.addAttribute("errorEmail",Utils.emailRequire);
+            return "admin/editthongtincanhan";
+        }
+        if(!utils.checkPhoneNumberFormat(users.getPhoneNumber())){
+            model.addAttribute("errorPhoneNumber",Utils.phoneNumberRequire);
+            return "admin/editthongtincanhan";
+        }
+
+        if(!utils.checkUsernameFormat(users.getUsername())){
+            model.addAttribute("errorUsername",Utils.usernameRequire);
+            return "admin/editthongtincanhan";
+        }
+
+        if(!utils.checkDob(users.getDob())){
+            model.addAttribute("errorDob",Utils.yearRequire);
+            return  "admin/employee/addemployee";
+        }
+
         if (file.getSize() > 0){
             String url = userDAO.uploadFileProfile(file);
             users.setImg(url);
@@ -100,6 +131,14 @@ public class UserController {
         model.addAttribute("newp",newPass);
         String rs1 = userDAO.updatePassword(userId,oldPass,newPass);
         String rs = userDAO.checkPasswordMatch(newPassCheck,newPass);
+        if (newPass.length() < 6){
+            model.addAttribute("errorMs","Mật khẩu có tối thiểu 6 kí tự");
+            return "admin/doimatkhau";
+        }
+        if (!newPass.matches("[A-Za-z0-9]{6,}")){
+            model.addAttribute("errorMs","Mật khẩu gồm các kí tự hoa, thường và số");
+            return "admin/doimatkhau";
+        }
         if (rs != ""){
             model.addAttribute("errorMs",rs);
             return "admin/doimatkhau";
