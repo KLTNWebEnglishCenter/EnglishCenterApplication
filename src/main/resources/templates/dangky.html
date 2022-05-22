@@ -13,6 +13,9 @@
     <h1>Đăng ký</h1>
     <form method="post" th:action="@{/register}" th:object="${users}">
         <div class="form-control">
+            <small th:text="${errorTotal}"></small>
+        </div>
+        <div class="form-control">
             <input type="text" id="username" name="username" placeholder="Tên đăng nhập" th:field="*{username}"/>
             <span></span>
             <small th:text="${errorUsername}"></small>

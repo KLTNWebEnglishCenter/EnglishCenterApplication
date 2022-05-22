@@ -109,7 +109,11 @@ public class UserController {
             String url = userDAO.uploadFileProfile(file);
             users.setImg(url);
         }
-        Users users1 = userDAO.update(users);
+        String users1 = userDAO.update(users);
+        if (!users1.equals("")){
+            model.addAttribute("errorTotal",users1);
+            return  "admin/employee/addemployee";
+        }
         a = true;
         return "redirect:/user/info/"+users.getId();
     }
@@ -131,11 +135,11 @@ public class UserController {
         model.addAttribute("newp",newPass);
         String rs1 = userDAO.updatePassword(userId,oldPass,newPass);
         String rs = userDAO.checkPasswordMatch(newPassCheck,newPass);
-        if (newPass.length() < 6){
-            model.addAttribute("errorMs","Mật khẩu có tối thiểu 6 kí tự");
+        if (newPass.length() < 6 || newPass.length() > 20){
+            model.addAttribute("errorMs","Mật khẩu có tối thiểu 6 kí tự, tối đa 20 kí tự");
             return "admin/doimatkhau";
         }
-        if (!newPass.matches("[A-Za-z0-9]{6,}")){
+        if (!newPass.matches("[A-Za-z0-9]{6,20}")){
             model.addAttribute("errorMs","Mật khẩu gồm các kí tự hoa, thường và số");
             return "admin/doimatkhau";
         }

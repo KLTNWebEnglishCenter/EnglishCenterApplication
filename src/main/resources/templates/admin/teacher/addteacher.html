@@ -167,8 +167,13 @@
                 </div>
                 <div class="form-group">
                   <label for="input-7">Bằng cấp</label>
-                  <input type="text" class="form-control" id="input-7" placeholder="Bằng cấp" th:field="*{certificate}"
-                         value="" name="teacher-certificate">
+                  <div>
+                    <select id="input-7" class="form-control valid" th:field="*{certificate}" required aria-invalid="false">
+                      <option value="professor">Giáo sư</option>
+                      <option value="doctor">Tiến sĩ</option>
+                      <option value="masters">Thạc sĩ</option>
+                    </select>
+                  </div>
                 </div>
                 <div class="form-group">
                   <button class="btn btn-light"><a th:href="@{/admin/teacher}">Hủy</a></button>

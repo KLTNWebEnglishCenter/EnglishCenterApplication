@@ -8,8 +8,8 @@ import java.util.regex.Pattern;
 public class Utils {
 
     public static final String fullNameRequire="Họ tên không được chứa ký tự số hoặc ký tự đặc biệt";
-    public static final String fullNameLength="Họ tên có tối thiểu 6 kí tự, tối đa 50 kí tự";
-    public static final String usernameRequire="Username tối thiểu 6 ký tự và không chứa ký tự khoảng trắng";
+    public static final String fullNameLength="Họ tên có tối thiểu 6 kí tự, tối đa 255 kí tự";
+    public static final String usernameRequire="Username tối thiểu 6 ký tự, tối đa 255 kí tự và không chứa ký tự khoảng trắng";
     public static final String phoneNumberRequire="Số điện thoại gồm 10 chữ số, bắt đầu bằng số 0";
     public static final String emailRequire="Email chỉ được sử dụng chữ cái (a-z), số (0-9) và kí tự (.)";
     public static final String yearRequire="Năm sinh phải trong khoảng: "+(LocalDate.now().getYear()-100)+" <= năm sinh <= "+(LocalDate.now().getYear()-18);
@@ -38,7 +38,7 @@ public class Utils {
      * @return true if username was matched require, else return false
      */
     public boolean checkUsernameFormat(String username){
-        String reg="^[\\w]{6,}$";
+        String reg="^[\\w]{6,255}$";
         Pattern pattern=Pattern.compile(reg);
         Matcher matcher=pattern.matcher(username);
         return matcher.matches();
@@ -99,12 +99,12 @@ public class Utils {
 
 
     public boolean checkFullNameLength(String fullName){
-        if ( fullName.length() < 6 || fullName.length() > 50) return false;
+        if ( fullName.length() < 6 || fullName.length() > maxLength) return false;
         else return true;
     }
 
     public boolean checkPasswordRegex(String password) {
-        String reg = "^[A-Za-z0-9]{6,50}$";
+        String reg = "^[A-Za-z0-9]{6,20}$";
         Pattern pattern = Pattern.compile(reg);
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();

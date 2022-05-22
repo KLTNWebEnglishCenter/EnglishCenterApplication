@@ -20,6 +20,7 @@ import web.english.application.entity.user.Teacher;
 import web.english.application.entity.user.Users;
 import web.english.application.security.entity.CustomUserDetails;
 import web.english.application.utils.JwtHelper;
+import web.english.application.utils.Utils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -53,7 +54,7 @@ public class ClassroomController {
     @Autowired
     private ScheduleDAO scheduleDAO;
 
-
+    private Utils utils = new Utils();
 
     private JwtHelper jwtHelper=new JwtHelper();
 
@@ -81,6 +82,8 @@ public class ClassroomController {
         model.addAttribute("classroom",classroom);
         model.addAttribute("courses", courses);
         model.addAttribute("teachers",teachers);
+        model.addAttribute("courseName","");
+        model.addAttribute("teacherName","");
         return "admin/classroom/addlophoc";
     }
 
@@ -107,9 +110,42 @@ public class ClassroomController {
     }
 
     @PostMapping("/classroom/add")
-    public String addClassroom(RedirectAttributes redirectAttributes,@ModelAttribute("classroom") Classroom classroom,@RequestParam("course_id") String course_id,@RequestParam("teacher_id") String teacher_id, Model mode){
+    public String addClassroom(Authentication authentication,Model model,RedirectAttributes redirectAttributes,@ModelAttribute("classroom") Classroom classroom,@RequestParam("course_id") String course_id,@RequestParam("teacher_id") String teacher_id, Model mode){
+        List<Course> courses = courseDAO.findAllCourse();
+        List<Teacher> teachers = teacherDAO.findAllTeacher();
+        model.addAttribute("classroom",classroom);
+        model.addAttribute("courses", courses);
+        model.addAttribute("teachers",teachers);
+
         int courseId = Integer.parseInt(course_id);
         int teacherId = Integer.parseInt(teacher_id);
+
+        model.addAttribute("courseName",courseId);
+        model.addAttribute("teacherName",teacherId);
+
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
+        if (!utils.checkMaxLength(classroom.getClassname())){
+            model.addAttribute("errorName","Tên khóa học không qua 255 kí tự");
+            return "admin/classroom/addlophoc";
+        }
+        if (classroom.getMaxMember() <= 0){
+            model.addAttribute("errorMaxNum","Số lượng không nhỏ hơn 0");
+            return "admin/classroom/addlophoc";
+        }
+        if (classroom.getMaxMember() > 100){
+            model.addAttribute("errorMaxNum","Số lượng không quá 100");
+            return "admin/classroom/addlophoc";
+        }
+        if (classroom.getStartDate().isAfter(classroom.getEndDate())){
+            model.addAttribute("errorDateStart","Ngày bắt đầu trước ngày kết thúc");
+            return "admin/classroom/addlophoc";
+        }
+        if (classroom.getStartDate().isBefore(LocalDate.now())){
+            model.addAttribute("errorDateStart","Ngày bắt đầu sau ngày hiện tại");
+            return "admin/classroom/addlophoc";
+        }
 
         classroom.setStatus("Openning");
         classroomDAO.saveClassroom(classroom,teacherId,courseId);
@@ -118,7 +154,32 @@ public class ClassroomController {
     }
 
     @PostMapping("/classroom/update")
-    public String updateClassroom(@ModelAttribute("classroom") Classroom classroom,RedirectAttributes redirectAttributes){
+    public String updateClassroom(Authentication authentication,Model model,@ModelAttribute("classroom") Classroom classroom,RedirectAttributes redirectAttributes){
+        CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
+        model.addAttribute("users",userDetails.getUsers());
+
+        model.addAttribute("classroom",classroom);
+        if (!utils.checkMaxLength(classroom.getClassname())){
+            model.addAttribute("errorName","Tên khóa học không qua 255 kí tự");
+            return "admin/classroom/editlophoc";
+        }
+        if (classroom.getMaxMember() <= 0){
+            model.addAttribute("errorMaxNum","Số lượng không nhỏ hơn 0");
+            return "admin/classroom/editlophoc";
+        }
+        if (classroom.getMaxMember() > 100){
+            model.addAttribute("errorMaxNum","Số lượng không quá 100");
+            return "admin/classroom/editlophoc";
+        }
+        if (classroom.getStartDate().isAfter(classroom.getEndDate())){
+            model.addAttribute("errorDateStart","Ngày bắt đầu trước ngày kết thúc");
+            return "admin/classroom/editlophoc";
+        }
+        if (classroom.getStartDate().isBefore(LocalDate.now())){
+            model.addAttribute("errorDateStart","Ngày bắt đầu sau ngày hiện tại");
+            return "admin/classroom/editlophoc";
+        }
+
         Classroom classroom1 = classroomDAO.getClassroom(classroom.getId());
         classroom.setModifiedDate(LocalDate.now());
         classroom.setStatus("Openning");

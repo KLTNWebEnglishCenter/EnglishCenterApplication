@@ -32,16 +32,39 @@ public class UserDAO {
         this.restTemplate = restTemplate;
     }
 
-    public Users save(Users users){
+    public String save(Users users){
         users.setFullName(users.getUsername());
 //        log.info(users.toString());
-        Users users1 = restTemplate.postForObject("http://54.169.60.141:8000/register",users,Users.class);
-        return users;
+        String msg = "";
+        try{
+            Users users1 = restTemplate.postForObject("http://54.169.60.141:8000/register",users,Users.class);
+        }catch (Exception exception){
+            msg=utils.extractMessageFromException(exception.getMessage());
+            return msg;
+        }
+        return msg;
     }
 
-    public Users update(Users users){
-        Users users1 = restTemplate.postForObject("http://54.169.60.141:8000/user/update",users,Users.class);
-        return users1;
+    public String update(Users users){
+        String msg = "";
+        try{
+            Users users1 = restTemplate.postForObject("http://54.169.60.141:8000/user/update",users,Users.class);
+        }catch (Exception exception){
+            msg=utils.extractMessageFromException(exception.getMessage());
+            return msg;
+        }
+        return msg;
+    }
+
+    public String testBeforeSave(Users users){
+        String msg = "";
+        try{
+            String users1 = restTemplate.postForObject("http://54.169.60.141:8000/user/test",users,String.class);
+        }catch (Exception exception){
+            msg=utils.extractMessageFromException(exception.getMessage());
+            return msg;
+        }
+        return msg;
     }
 
 

@@ -196,6 +196,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <span th:text="${errorTotal}" style="color:red;"></span>
+                                </div>
+                                <div class="form-group">
                                     <button class="btn btn-danger"><a th:href="@{/user/info/{id}(id=${users.id})}">Hủy</a></button>
                                     <button type="submit" class="btn btn-success">Cập nhật</button>
                                     <button type="button" class="btn btn-light" th:onclick="'window.location.href = \'' + @{/user/password/{id}(id=${users.id})} + '\''">Đổi mật khẩu</button>

@@ -83,23 +83,22 @@
                                 <input type="hidden" th:field="*{id}" class="form-control">
                                 <div class="form-group">
                                     <label for="input-1">Tên lớp học</label>
-                                    <input type="text" th:field="*{classname}" class="form-control" id="input-1" pattern="[A-Za-z0-9]{3,}" placeholder="Nhập tên lớp" name="user-name" >
+                                    <input type="text" th:field="*{classname}" class="form-control" id="input-1" placeholder="Nhập tên lớp" name="user-name" >
+                                    <span style="color:red;" th:text="${errorName}"></span>
                                 </div>
                                 <div class="form-group">
                                     <label for="input-2">Số lượng học viên tối đa</label>
-                                    <input type="number" th:field="*{maxMember}" class="form-control" id="input-2" min="1" placeholder="Nhập số lượng học viên tối đa" name="user-email">
+                                    <input type="number" th:field="*{maxMember}" class="form-control" id="input-2" placeholder="Nhập số lượng học viên tối đa" name="user-email">
+                                    <span style="color:red;" th:text="${errorMaxNum}"></span>
                                 </div>
                                 <div class="form-group">
                                     <label for="the-date1">Ngày bắt đầu</label>
                                     <input type="date" th:field="*{startDate}" class="form-control" id="the-date1" placeholder="Ngày bắt đầu học" name="user-created">
+                                    <span style="color:red;" th:text="${errorDateStart}"></span>
                                 </div>
                                 <div class="form-group">
                                     <label for="the-date3">Ngày kết thúc</label>
                                     <input type="date" th:field="*{endDate}" class="form-control" id="the-date3" placeholder="Ngày kết thúc lớp học" name="user-created">
-                                </div>
-                                <div class="form-group">
-                                    <label for="the-date2">Ngày tạo</label>
-                                    <input type="date" th:field="*{createDate}" class="form-control" id="the-date2" placeholder="Ngày tạo" name="user-created">
                                 </div>
                                 <div class="form-group">
                                     <a type="submit" class="btn btn-danger px-5" th:href="@{/admin/classrooms}"><i class="icon-lock"></i>Hủy</a>
@@ -150,29 +149,6 @@
             var c = ayear +"-"+qmonth+"-"+ aday;
             date3.max = b
             date3.min = c
-        }
-    </script>
-    <script>
-        var input1 = document.getElementById('input-1');
-        var input2 = document.getElementById('input-2');
-
-        input1.oninvalid = function(event) {
-            event.target.setCustomValidity('Nhập tên lớp chỉ gồm kí tự chữ số và chữ cái, phải có tối thiểu 3 kí tự');
-        }
-        input2.oninvalid = function(event) {
-            event.target.setCustomValidity('Nhập giá trị lớn hơn 0');
-        }
-
-        const start = document.getElementById('the-date1');
-        const now = document.getElementById('the-date2');
-        const end = document.getElementById('the-date3');
-
-        end.oninvalid = function(event) {
-            event.target.setCustomValidity('Nhập ngày kết thúc không trước ngày bắt đầu');
-        }
-
-        start.oninvalid = function(event) {
-            event.target.setCustomValidity('Nhập ngày bắt đầu không trước ngày hiện tại');
         }
     </script>
     <!-- Body -->

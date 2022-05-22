@@ -61,22 +61,27 @@ public class LoginController {
     @PostMapping("/register")
     public String register(@ModelAttribute("users") Users users, @RequestParam("passwordMatch") String passwordMatch, Model model, RedirectAttributes redirectAttributes){
         String checkEmail = userDAO.checkRequired("Email",users.getEmail());
-        String checkLengthUsername = userDAO.checkLength("Username",users.getUsername(),6,20);
+        String checkLengthUsername = userDAO.checkLength("Username",users.getUsername(),6,255);
         String checkLengthPassword = userDAO.checkLength("Password",users.getPassword(),6,20);
         String checkPasswordMatch = userDAO.checkPasswordMatch(users.getPassword(),passwordMatch);
         String checkRequiredUsername = userDAO.checkRequired("Username",users.getUsername());
         String checkRequiredPassword = userDAO.checkRequired("Password",users.getPassword());
         String checkRequiredEmail = userDAO.checkRequired("Email",users.getEmail());
+        String checkLengthEmail = userDAO.checkLength("Email",users.getEmail(),15,255);
         String checkRequiredPasswordMatch = userDAO.checkRequired("Password Match",passwordMatch);
-
+        String testSave = userDAO.testBeforeSave(users);
         model.addAttribute("users",users);
 
         if(checkRequiredUsername.equals("") && checkRequiredEmail.equals("") && checkRequiredPassword.equals("") && checkRequiredPasswordMatch.equals("")){
-            if(checkLengthUsername.equals("") && checkLengthPassword.equals("")){
+            if(checkLengthUsername.equals("") && checkLengthPassword.equals("") && checkLengthEmail.equals("")){
                 if(checkEmail.equals("") && checkPasswordMatch.equals("")){
-//                    Users users1 = userDAO.save(users);
-                    redirectAttributes.addFlashAttribute("users",users);
-                    return "redirect:/register/generateOtp";
+                    if (testSave.equals("")){
+                        redirectAttributes.addFlashAttribute("users",users);
+                        return "redirect:/register/generateOtp";
+                    }else {
+                        model.addAttribute("errorTotal",testSave);
+                        return "dangky";
+                    }
                 }else{
                     model.addAttribute("errorEmail",checkEmail);
                     model.addAttribute("errorPasswordMatch",checkPasswordMatch);
@@ -85,6 +90,7 @@ public class LoginController {
             }else {
                 model.addAttribute("errorUsername",checkLengthUsername);
                 model.addAttribute("errorPassword",checkLengthPassword);
+                model.addAttribute("errorEmail",checkLengthEmail);
                 return "dangky";
             }
         }else {
@@ -92,9 +98,6 @@ public class LoginController {
             model.addAttribute("errorEmail",checkRequiredEmail);
             model.addAttribute("errorPassword",checkRequiredPassword);
             model.addAttribute("errorPasswordMatch",checkRequiredPasswordMatch);
-
-            Users users1 = userDAO.save(users);
-            log.info(users1.toString());
             return "dangky";
         }
     }

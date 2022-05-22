@@ -13,6 +13,7 @@ import web.english.application.entity.Post;
 import web.english.application.entity.user.Users;
 import web.english.application.security.entity.CustomUserDetails;
 import web.english.application.utils.StatusHelper;
+import web.english.application.utils.Utils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +29,8 @@ public class PostController {
 
     @Autowired
     private UserDAO userDAO;
+
+    private Utils utils = new Utils();
 
     @GetMapping("/posts")
     public String getPostPage(Model model, HttpServletRequest httpServletRequest, @ModelAttribute(name = "msg") String msg, Authentication authentication){
@@ -54,7 +57,37 @@ public class PostController {
     }
 
     @PostMapping("/post/save")
-    public String savePost(@ModelAttribute Post post, @RequestParam("username") String username, RedirectAttributes redirectAttributes){
+    public String savePost(@ModelAttribute Post post, @RequestParam("username") String username, RedirectAttributes redirectAttributes,Model model){
+        model.addAttribute("post",post);
+        if (!utils.checkMaxLength(post.getStatus())){
+            model.addAttribute("errorName","Tên bài đăng không quá 255 kí tự");
+            return "admin/post/addbaidang";
+        }
+        if (!utils.checkMaxLength(post.getContent())){
+            model.addAttribute("errorContent","Nội dung bài đăng không quá 255 kí tự");
+            return "admin/post/addbaidang";
+        }
+
+        Users users = new Users(username);
+        post.setUsers(users);
+        post.setStatus(StatusHelper.STATUS_ACCEPT);
+        postDAO.savePost(post);
+        redirectAttributes.addFlashAttribute("msg","Thêm/Cập nhật bài đăng thành công");
+        return "redirect:/admin/posts";
+    }
+
+    @PostMapping("/post/update")
+    public String update(Model model,@ModelAttribute Post post, @RequestParam("username") String username, RedirectAttributes redirectAttributes){
+        model.addAttribute("post",post);
+        if (!utils.checkMaxLength(post.getStatus())){
+            model.addAttribute("errorName","Tên bài đăng không quá 255 kí tự");
+            return "admin/post/update"+post.getId();
+        }
+        if (!utils.checkMaxLength(post.getContent())){
+            model.addAttribute("errorContent","Nội dung bài đăng không quá 255 kí tự");
+            return "admin/post/update"+post.getId();
+        }
+
         Users users = new Users(username);
         post.setUsers(users);
         post.setStatus(StatusHelper.STATUS_ACCEPT);

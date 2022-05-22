@@ -76,7 +76,7 @@ public class OtpController {
 			if(serverOtp > 0){
 				if(otpnum == serverOtp){
 					otpService.clearOTP(users.getUsername());
-					Users users1 = userDAO.save(users);
+					String users1 = userDAO.save(users);
 					redirectAttributes.addFlashAttribute("success","Đăng ký thành công. Mời bạn đăng nhập.");
 					return "redirect:/login";
 				}else{
