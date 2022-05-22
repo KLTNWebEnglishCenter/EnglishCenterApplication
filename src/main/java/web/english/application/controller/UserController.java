@@ -77,7 +77,7 @@ public class UserController {
     @PostMapping("/info/update")
     public String updateUser(@ModelAttribute Users users,Model model,@RequestPart(value = "profile") MultipartFile file){
         model.addAttribute("users",users);
-        
+
         if (!utils.checkFullNameLength(users.getFullName())){
             model.addAttribute("errorFullName", Utils.fullNameLength);
             return "admin/editthongtincanhan";
@@ -102,7 +102,7 @@ public class UserController {
 
         if(!utils.checkDob(users.getDob())){
             model.addAttribute("errorDob",Utils.yearRequire);
-            return  "admin/employee/addemployee";
+            return  "admin/editthongtincanhan";
         }
 
         if (file.getSize() > 0){
@@ -112,7 +112,7 @@ public class UserController {
         String users1 = userDAO.update(users);
         if (!users1.equals("")){
             model.addAttribute("errorTotal",users1);
-            return  "admin/employee/addemployee";
+            return  "admin/editthongtincanhan";
         }
         a = true;
         return "redirect:/user/info/"+users.getId();

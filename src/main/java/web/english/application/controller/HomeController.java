@@ -2,13 +2,14 @@ package web.english.application.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import web.english.application.dao.UserDAO;
-import web.english.application.entity.user.Authentication;
 import web.english.application.entity.user.Users;
+import web.english.application.security.entity.CustomUserDetails;
 import web.english.application.utils.RoleType;
 
 import javax.servlet.http.Cookie;
@@ -23,7 +24,7 @@ public class HomeController {
 
     @GetMapping("/home")
     public String getIndex(Authentication authentication){
-        String role = authentication.getRole();
+        String role = authentication.getAuthorities().iterator().next().toString();
         if (role.equals(RoleType.EMPLOYEE)){
             return "redirect:/admin/teacher";
         }
