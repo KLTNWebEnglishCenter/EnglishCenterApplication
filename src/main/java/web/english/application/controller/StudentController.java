@@ -107,11 +107,11 @@ public class StudentController {
             return "redirect:/login";
         }
         model.addAttribute("users",user);
-        if(!utils.checkFullNameFormat(student.getFullName())){
+        if(!utils.checkFullNameFormat(student.getFullName())||!utils.checkMaxLength(student.getFullName())){
             model.addAttribute("errorFullName",Utils.fullNameRequire);
             return  "admin/student/addstudent";
         }
-        if(!utils.checkEmailFormat(student.getEmail())){
+        if(!utils.checkEmailFormat(student.getEmail())||!utils.checkMaxLength(student.getEmail())){
             model.addAttribute("errorEmail",Utils.emailRequire);
             return  "admin/student/addstudent";
         }
@@ -205,11 +205,11 @@ public class StudentController {
             return "redirect:/login";
         }
         model.addAttribute("users",user);
-        if(!utils.checkFullNameFormat(student.getFullName())){
+        if(!utils.checkFullNameFormat(student.getFullName())||!utils.checkMaxLength(student.getFullName())){
             model.addAttribute("errorFullName",Utils.fullNameRequire);
             return  "admin/student/editstudent";
         }
-        if(!utils.checkEmailFormat(student.getEmail())){
+        if(!utils.checkEmailFormat(student.getEmail())||!utils.checkMaxLength(student.getEmail())){
             model.addAttribute("errorEmail",Utils.emailRequire);
             return  "admin/student/editstudent";
         }

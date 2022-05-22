@@ -79,11 +79,11 @@ public class TeacherController {
         CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
         model.addAttribute("users",userDetails.getUsers());
 
-        if(!utils.checkFullNameFormat(teacher.getFullName())){
+        if(!utils.checkFullNameFormat(teacher.getFullName())||!utils.checkMaxLength(teacher.getFullName())){
             model.addAttribute("errorFullName",Utils.fullNameRequire);
             return  "admin/teacher/addteacher";
         }
-        if(!utils.checkEmailFormat(teacher.getEmail())){
+        if(!utils.checkEmailFormat(teacher.getEmail())||!utils.checkMaxLength(teacher.getEmail())){
             model.addAttribute("errorEmail",Utils.emailRequire);
             return  "admin/teacher/addteacher";
         }
@@ -143,11 +143,11 @@ public class TeacherController {
         CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
         model.addAttribute("users",userDetails.getUsers());
 
-        if(!utils.checkFullNameFormat(teacher.getFullName())){
+        if(!utils.checkFullNameFormat(teacher.getFullName())||!utils.checkMaxLength(teacher.getFullName())){
             model.addAttribute("errorFullName",Utils.fullNameRequire);
             return  "admin/teacher/editteacher";
         }
-        if(!utils.checkEmailFormat(teacher.getEmail())){
+        if(!utils.checkEmailFormat(teacher.getEmail())||!utils.checkMaxLength(teacher.getEmail())){
             model.addAttribute("errorEmail",Utils.emailRequire);
             return  "admin/teacher/editteacher";
         }

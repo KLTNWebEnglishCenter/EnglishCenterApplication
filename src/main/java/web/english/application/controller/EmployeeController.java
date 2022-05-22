@@ -80,11 +80,11 @@ public class EmployeeController {
         CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
         model.addAttribute("users",userDetails.getUsers());
 
-        if(!utils.checkFullNameFormat(employee.getFullName())){
+        if(!utils.checkFullNameFormat(employee.getFullName())||!utils.checkMaxLength(employee.getFullName())){
             model.addAttribute("errorFullName",Utils.fullNameRequire);
             return  "admin/employee/addemployee";
         }
-        if(!utils.checkEmailFormat(employee.getEmail())){
+        if(!utils.checkEmailFormat(employee.getEmail())||!utils.checkMaxLength(employee.getEmail())){
             model.addAttribute("errorEmail",Utils.emailRequire);
             return  "admin/employee/addemployee";
         }
@@ -146,11 +146,11 @@ public class EmployeeController {
         CustomUserDetails userDetails= (CustomUserDetails) authentication.getPrincipal();
         model.addAttribute("users",userDetails.getUsers());
 
-        if(!utils.checkFullNameFormat(employee.getFullName())){
+        if(!utils.checkFullNameFormat(employee.getFullName())||!utils.checkMaxLength(employee.getFullName())){
             model.addAttribute("errorFullName",Utils.fullNameRequire);
             return  "admin/employee/editemployee";
         }
-        if(!utils.checkEmailFormat(employee.getEmail())){
+        if(!utils.checkEmailFormat(employee.getEmail())||!utils.checkMaxLength(employee.getEmail())){
             model.addAttribute("errorEmail",Utils.emailRequire);
             return  "admin/employee/editemployee";
         }
