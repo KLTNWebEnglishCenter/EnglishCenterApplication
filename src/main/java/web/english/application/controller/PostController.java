@@ -59,7 +59,7 @@ public class PostController {
     @PostMapping("/post/save")
     public String savePost(@ModelAttribute Post post, @RequestParam("username") String username, RedirectAttributes redirectAttributes,Model model){
         model.addAttribute("post",post);
-        if (!utils.checkMaxLength(post.getStatus())){
+        if (!utils.checkMaxLength(post.getTitle())){
             model.addAttribute("errorName","Tên bài đăng không quá 255 kí tự");
             return "admin/post/addbaidang";
         }
@@ -79,7 +79,7 @@ public class PostController {
     @PostMapping("/post/update")
     public String update(Model model,@ModelAttribute Post post, @RequestParam("username") String username, RedirectAttributes redirectAttributes){
         model.addAttribute("post",post);
-        if (!utils.checkMaxLength(post.getStatus())){
+        if (!utils.checkMaxLength(post.getTitle())){
             model.addAttribute("errorName","Tên bài đăng không quá 255 kí tự");
             return "admin/post/update"+post.getId();
         }
