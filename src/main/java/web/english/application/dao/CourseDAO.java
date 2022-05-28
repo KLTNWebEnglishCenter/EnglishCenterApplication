@@ -25,7 +25,7 @@ public class CourseDAO {
 
     public List<Course> findAllCourse() {
         ResponseEntity<List<Course>> responseEntity =
-                restTemplate.exchange("http://localhost:8000/course/",
+                restTemplate.exchange("http://54.169.60.141:8000/course/",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Course>>() {
                         });
         List<Course> courses = responseEntity.getBody();
@@ -35,7 +35,7 @@ public class CourseDAO {
 
     public List<Course> findByCategory(int categoryId) {
         ResponseEntity<List<Course>> responseEntity =
-                restTemplate.exchange("http://localhost:8000/course/find/category/"+categoryId,
+                restTemplate.exchange("http://54.169.60.141:8000/course/find/category/"+categoryId,
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Course>>() {
                         });
         List<Course> courses = responseEntity.getBody();
@@ -45,28 +45,28 @@ public class CourseDAO {
 
 
     public Course getCourse(int id) {
-        Course course = restTemplate.getForObject(("http://localhost:8000/course/" + id), Course.class);
+        Course course = restTemplate.getForObject(("http://54.169.60.141:8000/course/" + id), Course.class);
         return course;
     }
 
     public Course findCourse(int id) {
-        Course course = restTemplate.getForObject(("http://localhost:8000/course/find/" + id), Course.class);
+        Course course = restTemplate.getForObject(("http://54.169.60.141:8000/course/find/" + id), Course.class);
         return course;
     }
 
     public Course saveCourse(Course course, int levelId,int categoryId ){
-        Course course1 = restTemplate.postForObject("http://localhost:8000/course",course,Course.class);
-        Course course2 = restTemplate.getForObject("http://localhost:8000/course/addLevelAndCategoryToCourse/"+course1.getId()+"/"+levelId+"/"+categoryId,Course.class);
+        Course course1 = restTemplate.postForObject("http://54.169.60.141:8000/course",course,Course.class);
+        Course course2 = restTemplate.getForObject("http://54.169.60.141:8000/course/addLevelAndCategoryToCourse/"+course1.getId()+"/"+levelId+"/"+categoryId,Course.class);
         return course2;
     }
 
     public Course disableCourse(Course course){
-        Course course1 = restTemplate.postForObject("http://localhost:8000/course",course,Course.class);
+        Course course1 = restTemplate.postForObject("http://54.169.60.141:8000/course",course,Course.class);
         return course1;
     }
 
     public Course deleteCourse(int id){
-        Course course = restTemplate.getForObject("http://localhost:8000/course/delete/"+id,Course.class);
+        Course course = restTemplate.getForObject("http://54.169.60.141:8000/course/delete/"+id,Course.class);
         return course;
     }
 
@@ -85,7 +85,7 @@ public class CourseDAO {
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
         ResponseEntity<List<Course>> responseEntity =
-                restTemplate.exchange("http://localhost:8000/course/findbyidorcoursename/",
+                restTemplate.exchange("http://54.169.60.141:8000/course/findbyidorcoursename/",
                         HttpMethod.POST, request, new ParameterizedTypeReference<List<Course>>() {
                         });
         List<Course> courses = responseEntity.getBody();
@@ -94,13 +94,13 @@ public class CourseDAO {
 
 
     public UsersCourseRequest signupCourse(UsersCourseRequest usersCourseRequest){
-        UsersCourseRequest request = restTemplate.postForObject("http://localhost:8000/user/signup/course",usersCourseRequest,UsersCourseRequest.class);
+        UsersCourseRequest request = restTemplate.postForObject("http://54.169.60.141:8000/user/signup/course",usersCourseRequest,UsersCourseRequest.class);
         return request;
     }
 
     public List<UsersCourseRequest> getAllSignupCourse(){
         ResponseEntity<List<UsersCourseRequest>> responseEntity =
-                restTemplate.exchange("http://localhost:8000/user/signup/course/list",
+                restTemplate.exchange("http://54.169.60.141:8000/user/signup/course/list",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<UsersCourseRequest>>() {
                         });
         List<UsersCourseRequest> courseRequests = responseEntity.getBody();
@@ -123,7 +123,7 @@ public class CourseDAO {
 
     public List<Course> getListCourseLimit(){
         ResponseEntity<List<Course>> responseEntity =
-                restTemplate.exchange("http://localhost:8000//course/find/limit/4",
+                restTemplate.exchange("http://54.169.60.141:8000//course/find/limit/4",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Course>>() {
                         });
         List<Course> courses = responseEntity.getBody();

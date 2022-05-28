@@ -37,7 +37,7 @@ public class StudentDAO {
      */
     public List<Student> findAllStudent(){
         ResponseEntity<List<Student>> responseEntity =
-                restTemplate.exchange("http://localhost:8000/students/",
+                restTemplate.exchange("http://54.169.60.141:8000/students/",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Student>>() {
                         });
         List<Student> students = responseEntity.getBody();
@@ -53,7 +53,7 @@ public class StudentDAO {
     public String saveStudent(Student student){
         String msg="";
         try {
-        Student student1=restTemplate.postForObject("http://localhost:8000/student/save",student,Student.class);
+        Student student1=restTemplate.postForObject("http://54.169.60.141:8000/student/save",student,Student.class);
         }catch (Exception exception){
             log.info(exception.getMessage());
             msg=utils.extractMessageFromException(exception.getMessage());
@@ -71,7 +71,7 @@ public class StudentDAO {
     public String updateStudent(Student student){
         String msg="";
         try {
-            Student student1=restTemplate.postForObject("http://localhost:8000/student/update",student,Student.class);
+            Student student1=restTemplate.postForObject("http://54.169.60.141:8000/student/update",student,Student.class);
         }catch (Exception exception){
             log.info(exception.getMessage());
             msg=utils.extractMessageFromException(exception.getMessage());
@@ -87,7 +87,7 @@ public class StudentDAO {
      * @return
      */
     public Student findStudentById(int id){
-        Student student=restTemplate.getForObject("http://localhost:8000/student/"+id,Student.class);
+        Student student=restTemplate.getForObject("http://54.169.60.141:8000/student/"+id,Student.class);
         return  student;
     }
 
@@ -109,7 +109,7 @@ public class StudentDAO {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
-        ResponseEntity<List<Student>> responseEntity =  restTemplate.exchange("http://localhost:8000/user/search",HttpMethod.POST, request,new ParameterizedTypeReference<List<Student>>() {
+        ResponseEntity<List<Student>> responseEntity =  restTemplate.exchange("http://54.169.60.141:8000/user/search",HttpMethod.POST, request,new ParameterizedTypeReference<List<Student>>() {
         });
         List<Student> students = responseEntity.getBody();
         return students;
@@ -117,7 +117,7 @@ public class StudentDAO {
 
     public List<Student> findStudentRequestToJoinByCourseId(int courseId){
         ResponseEntity<List<Student>> responseEntity =
-                restTemplate.exchange("http://localhost:8000/student/course/"+courseId,
+                restTemplate.exchange("http://54.169.60.141:8000/student/course/"+courseId,
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Student>>() {
                         });
         List<Student> students=responseEntity.getBody();
@@ -142,9 +142,9 @@ public class StudentDAO {
 
             HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
-            ResponseEntity<UsersCourseRequest> responseEntity =  restTemplate.exchange("http://localhost:8000/student/requestcourse/status/",HttpMethod.POST, request,new ParameterizedTypeReference<UsersCourseRequest>() {
+            ResponseEntity<UsersCourseRequest> responseEntity =  restTemplate.exchange("http://54.169.60.141:8000/student/requestcourse/status/",HttpMethod.POST, request,new ParameterizedTypeReference<UsersCourseRequest>() {
             });
-//           restTemplate.put("http://localhost:8000/student/requestcourse/status/"+studentId+"/"+courseId+"/"+status,null);
+//           restTemplate.put("http://54.169.60.141:8000/student/requestcourse/status/"+studentId+"/"+courseId+"/"+status,null);
            return "Cập nhật thành công";
         }catch (Exception exception){
 //            exception.printStackTrace();
@@ -163,7 +163,7 @@ public class StudentDAO {
         headers.set("Authorization", token);
         HttpEntity<Void> request = new HttpEntity<>(headers);
         ResponseEntity<List<Classroom>> responseEntity =
-                restTemplate.exchange("http://localhost:8000/student/classrooms/",
+                restTemplate.exchange("http://54.169.60.141:8000/student/classrooms/",
                         HttpMethod.GET, request, new ParameterizedTypeReference<List<Classroom>>() {
                         });
         List<Classroom> classrooms = responseEntity.getBody();
@@ -176,7 +176,7 @@ public class StudentDAO {
      * @return
      */
     public Classroom getClassroomOfStudent(int classroomId){
-        Classroom classroom=restTemplate.getForObject("http://localhost:8000/student/classroom/"+classroomId,Classroom.class);
+        Classroom classroom=restTemplate.getForObject("http://54.169.60.141:8000/student/classroom/"+classroomId,Classroom.class);
         return  classroom;
     }
 
@@ -190,7 +190,7 @@ public class StudentDAO {
         headers.set("Authorization", token);
         HttpEntity<Void> request = new HttpEntity<>(headers);
         ResponseEntity<List<Notification>> responseEntity =
-                restTemplate.exchange("http://localhost:8000/student/notifications/",
+                restTemplate.exchange("http://54.169.60.141:8000/student/notifications/",
                         HttpMethod.GET, request, new ParameterizedTypeReference<List<Notification>>() {
                         });
         List<Notification> notifications = responseEntity.getBody();
@@ -199,13 +199,13 @@ public class StudentDAO {
 
     public List<UsersCourseRequest> getCourseRequestOfStudent(int studentId){
         ResponseEntity<List<UsersCourseRequest>> responseEntity =
-                restTemplate.exchange("http://localhost:8000/student/list/course/" + studentId,
+                restTemplate.exchange("http://54.169.60.141:8000/student/list/course/" + studentId,
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<UsersCourseRequest>>() {
                         });
         List<UsersCourseRequest> courseRequests = responseEntity.getBody();
         List<UsersCourseRequest> usersCourseRequests = new ArrayList<>();
         courseRequests.forEach(request -> {
-            Course course = restTemplate.getForObject(("http://localhost:8000/course/find/" + request.getUserRequestCourseKey().getCourseId()), Course.class);
+            Course course = restTemplate.getForObject(("http://54.169.60.141:8000/course/find/" + request.getUserRequestCourseKey().getCourseId()), Course.class);
             UsersCourseRequest usersCourseRequest = new UsersCourseRequest();
             usersCourseRequest.setUserRequestCourseKey(request.getUserRequestCourseKey());
             usersCourseRequest.setCourse(course);
@@ -218,7 +218,7 @@ public class StudentDAO {
 
     public List<UsersExamScores> getScoreOfStudent(int studentId){
         ResponseEntity<List<UsersExamScores>> responseEntity =
-                restTemplate.exchange("http://localhost:8000/student/score/" + studentId,
+                restTemplate.exchange("http://54.169.60.141:8000/student/score/" + studentId,
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<UsersExamScores>>() {
                         });
         List<UsersExamScores> usersExamScores = responseEntity.getBody();
@@ -231,12 +231,12 @@ public class StudentDAO {
         usersExamScores.setUsersExamScoresKey(key);
         usersExamScores.setScores(score);
 
-        UsersExamScores usersExamScores1 = restTemplate.postForObject("http://localhost:8000/student/score/save",usersExamScores,UsersExamScores.class);
+        UsersExamScores usersExamScores1 = restTemplate.postForObject("http://54.169.60.141:8000/student/score/save",usersExamScores,UsersExamScores.class);
         return usersExamScores1;
     }
 
     public Integer getScoreOfStudentByExam(int studentId,int examId){
-        Integer score = restTemplate.getForObject("http://localhost:8000/student/score/get/"+studentId+"/"+examId,Integer.class);
+        Integer score = restTemplate.getForObject("http://54.169.60.141:8000/student/score/get/"+studentId+"/"+examId,Integer.class);
         return score;
     }
 }
