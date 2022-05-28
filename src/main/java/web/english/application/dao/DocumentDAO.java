@@ -29,7 +29,7 @@ public class DocumentDAO {
         headers.set("Authorization", token);
         HttpEntity<Void> request = new HttpEntity<>(headers);
         ResponseEntity<List<Document>> responseEntity =
-                restTemplate.exchange("http://54.169.60.141:8000/documents/",
+                restTemplate.exchange("http://localhost:8000/documents/",
                         HttpMethod.GET, request, new ParameterizedTypeReference<List<Document>>() {
                         });
         List<Document> documents = responseEntity.getBody();
@@ -51,7 +51,7 @@ public class DocumentDAO {
                 map, headers);
 
         ResponseEntity<Document> result = restTemplate.exchange(
-                "http://54.169.60.141:8000/document/uploadFile", HttpMethod.POST, requestEntity,
+                "http://localhost:8000/document/uploadFile", HttpMethod.POST, requestEntity,
                 Document.class);
         Document document=result.getBody();
         return document;
@@ -59,7 +59,7 @@ public class DocumentDAO {
 
     public String deleteFile(int documentId){
         try {
-            restTemplate.delete("http://54.169.60.141:8000/document/deleteFile/"+documentId);
+            restTemplate.delete("http://localhost:8000/document/deleteFile/"+documentId);
             return "Delete success!";
         }catch (Exception exception){
             exception.printStackTrace();
@@ -78,7 +78,7 @@ public class DocumentDAO {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
-        ResponseEntity<List<Document>> responseEntity =  restTemplate.exchange("http://54.169.60.141:8000/document/search",HttpMethod.POST, request,new ParameterizedTypeReference<List<Document>>() {
+        ResponseEntity<List<Document>> responseEntity =  restTemplate.exchange("http://localhost:8000/document/search",HttpMethod.POST, request,new ParameterizedTypeReference<List<Document>>() {
         });
         List<Document> documents = responseEntity.getBody();
         return  documents;

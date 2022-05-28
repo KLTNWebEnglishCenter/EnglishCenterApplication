@@ -30,7 +30,7 @@ public class ClassroomDAO {
 
     public List<Classroom> findAll(){
         ResponseEntity<List<Classroom>> responseEntity =
-                restTemplate.exchange("http://54.169.60.141:8000/classrooms/",
+                restTemplate.exchange("http://localhost:8000/classrooms/",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Classroom>>() {
                         });
         List<Classroom> classrooms = responseEntity.getBody();
@@ -38,24 +38,24 @@ public class ClassroomDAO {
     }
 
     public Classroom saveClassroom(Classroom classroom, int teacher_id,int course_id){
-        Classroom classroom1=restTemplate.postForObject("http://54.169.60.141:8000/classroom/save",classroom,Classroom.class);
-        Classroom classroom2 = restTemplate.getForObject("http://54.169.60.141:8000/classroom/addTeacherAndCourseToClassroom/"+classroom1.getId()+"/"+teacher_id+"/"+course_id,Classroom.class);
+        Classroom classroom1=restTemplate.postForObject("http://localhost:8000/classroom/save",classroom,Classroom.class);
+        Classroom classroom2 = restTemplate.getForObject("http://localhost:8000/classroom/addTeacherAndCourseToClassroom/"+classroom1.getId()+"/"+teacher_id+"/"+course_id,Classroom.class);
         return  classroom2;
     }
 
     public Classroom getClassroom(int id){
-        Classroom classroom = restTemplate.getForObject("http://54.169.60.141:8000/classroom/"+id,Classroom.class);
+        Classroom classroom = restTemplate.getForObject("http://localhost:8000/classroom/"+id,Classroom.class);
         return classroom;
     }
 
     public String deleteClassroom(int id){
-        String rs = restTemplate.getForObject("http://54.169.60.141:8000/classroom/delete/"+id,String.class);
+        String rs = restTemplate.getForObject("http://localhost:8000/classroom/delete/"+id,String.class);
         return rs;
     }
 
     public List<Classroom> findClassroomByCourseId(int courseId){
         ResponseEntity<List<Classroom>> responseEntity =
-                restTemplate.exchange("http://54.169.60.141:8000/classroom/course/"+courseId,
+                restTemplate.exchange("http://localhost:8000/classroom/course/"+courseId,
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Classroom>>() {
                         });
         List<Classroom> classrooms=responseEntity.getBody();
@@ -71,7 +71,7 @@ public class ClassroomDAO {
     public String addStudentToClassroom(int classroomId, List<Student> students){
 //        /classroom/addstudent/{classroomId}
         try {
-        restTemplate.put("http://54.169.60.141:8000/classroom/addstudent/"+classroomId,students);
+            restTemplate.put("http://localhost:8000/classroom/addstudent/"+classroomId,students);
             return "Cập nhật thành công";
         }catch (Exception exception){
             log.info("addStudentToClassroom Error:"+ exception.getMessage());
@@ -88,7 +88,7 @@ public class ClassroomDAO {
 //        HttpEntity<MultiValueMap<String, List<Student>>> request = new HttpEntity<MultiValueMap<String, List<Student>>>(map, headers);
 //
 //        try {
-//            ResponseEntity<Classroom> responseEntity =  restTemplate.exchange("http://54.169.60.141:8000/classroom/addstudent/"+classroomId,HttpMethod.PUT, request,new ParameterizedTypeReference<Classroom>() {
+//            ResponseEntity<Classroom> responseEntity =  restTemplate.exchange("http://localhost:8000/classroom/addstudent/"+classroomId,HttpMethod.PUT, request,new ParameterizedTypeReference<Classroom>() {
 //            });
 //            Classroom classroom=responseEntity.getBody();
 //            log.info("addStudentToClassroomcomplete");
@@ -111,7 +111,7 @@ public class ClassroomDAO {
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
         ResponseEntity<List<Classroom>> responseEntity =
-                restTemplate.exchange("http://54.169.60.141:8000/classroom/findbyidorclassname",
+                restTemplate.exchange("http://localhost:8000/classroom/findbyidorclassname",
                         HttpMethod.POST, request, new ParameterizedTypeReference<List<Classroom>>() {
                         });
         List<Classroom> classrooms = responseEntity.getBody();
@@ -120,7 +120,7 @@ public class ClassroomDAO {
 
     public List<Student> getStudentFromClassroom(int id){
         ResponseEntity<List<Student>> responseEntity =
-                restTemplate.exchange("http://54.169.60.141:8000/classrooms/students/" + id, HttpMethod.GET, null, new ParameterizedTypeReference<List<Student>>() {
+                restTemplate.exchange("http://localhost:8000/classrooms/students/" + id, HttpMethod.GET, null, new ParameterizedTypeReference<List<Student>>() {
                 });
         List<Student> students = responseEntity.getBody();
         return students;
@@ -136,7 +136,7 @@ public class ClassroomDAO {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
-        ResponseEntity<List<ScheduleInfoHolder>> responseEntity=restTemplate.exchange("http://54.169.60.141:8000/classroom/schedule/day",
+        ResponseEntity<List<ScheduleInfoHolder>> responseEntity=restTemplate.exchange("http://localhost:8000/classroom/schedule/day",
                 HttpMethod.POST, request, new ParameterizedTypeReference<List<ScheduleInfoHolder>>() {
                 });
         List<ScheduleInfoHolder> scheduleInfoHolders=responseEntity.getBody();
@@ -145,7 +145,7 @@ public class ClassroomDAO {
 
     public String deleteClassroomSchedule(int classroomId,int scheduleId){
         try {
-            String rs = restTemplate.getForObject("http://54.169.60.141:8000/classroom/schedule/delete/"+classroomId+"/"+scheduleId,String.class);
+            String rs = restTemplate.getForObject("http://localhost:8000/classroom/schedule/delete/"+classroomId+"/"+scheduleId,String.class);
             return rs;
         }catch (Exception e){
             return e.getMessage();

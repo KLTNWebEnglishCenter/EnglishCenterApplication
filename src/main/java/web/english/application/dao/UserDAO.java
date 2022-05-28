@@ -37,7 +37,7 @@ public class UserDAO {
 //        log.info(users.toString());
         String msg = "";
         try{
-            Users users1 = restTemplate.postForObject("http://54.169.60.141:8000/register",users,Users.class);
+            Users users1 = restTemplate.postForObject("http://localhost:8000/register",users,Users.class);
         }catch (Exception exception){
             msg=utils.extractMessageFromException(exception.getMessage());
             return msg;
@@ -48,7 +48,7 @@ public class UserDAO {
     public String update(Users users){
         String msg = "";
         try{
-            Users users1 = restTemplate.postForObject("http://54.169.60.141:8000/user/update",users,Users.class);
+            Users users1 = restTemplate.postForObject("http://localhost:8000/user/update",users,Users.class);
         }catch (Exception exception){
             msg=utils.extractMessageFromException(exception.getMessage());
             return msg;
@@ -59,7 +59,7 @@ public class UserDAO {
     public String testBeforeSave(Users users){
         String msg = "";
         try{
-            String users1 = restTemplate.postForObject("http://54.169.60.141:8000/user/test",users,String.class);
+            String users1 = restTemplate.postForObject("http://localhost:8000/user/test",users,String.class);
         }catch (Exception exception){
             msg=utils.extractMessageFromException(exception.getMessage());
             return msg;
@@ -69,7 +69,7 @@ public class UserDAO {
 
 
     public Users getUser(int id){
-        Users users = restTemplate.getForObject("http://54.169.60.141:8000/user/"+id,Users.class);
+        Users users = restTemplate.getForObject("http://localhost:8000/user/"+id,Users.class);
         return users;
     }
 
@@ -90,7 +90,7 @@ public class UserDAO {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
-        ResponseEntity<String> response = restTemplate.postForEntity( "http://54.169.60.141:8000/api/login", request , String.class );
+        ResponseEntity<String> response = restTemplate.postForEntity( "http://localhost:8000/api/login", request , String.class );
         return response.getHeaders().getFirst("access_token");
     }
 
@@ -102,7 +102,7 @@ public class UserDAO {
 
         Users users = null;
         try {
-            users = restTemplate.postForObject("http://54.169.60.141:8000/user/fromToken/",request,Users.class);
+            users = restTemplate.postForObject("http://localhost:8000/user/fromToken/",request,Users.class);
         }catch (Exception exception){
             log.info(exception.getMessage());
             return null;
@@ -120,7 +120,7 @@ public class UserDAO {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization",token);
         HttpEntity<String> request = new HttpEntity<>("body",headers);
-        String author= restTemplate.postForObject("http://54.169.60.141:8000/user/author/",request,String.class);
+        String author= restTemplate.postForObject("http://localhost:8000/user/author/",request,String.class);
         return author;
     }
 
@@ -135,13 +135,13 @@ public class UserDAO {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
-        String rs =  restTemplate.postForObject("http://54.169.60.141:8000/user/change/password", request,String.class);
+        String rs =  restTemplate.postForObject("http://localhost:8000/user/change/password", request,String.class);
 
         return rs;
     }
 
     public Users updatePassword(Users users){
-        Users users1 = restTemplate.postForObject("http://54.169.60.141:8000/user/update/password",users,Users.class);
+        Users users1 = restTemplate.postForObject("http://localhost:8000/user/update/password",users,Users.class);
         return users1;
     }
 
@@ -207,7 +207,7 @@ public class UserDAO {
                 map, headers);
 
         ResponseEntity<String> result = restTemplate.exchange(
-                "http://54.169.60.141:8000/user/profile/uploadImg", HttpMethod.POST, requestEntity,
+                "http://localhost:8000/user/profile/uploadImg", HttpMethod.POST, requestEntity,
                 String.class);
        String rs = result.getBody();
         return rs;

@@ -21,12 +21,12 @@ public class ExamDAO {
     private RestTemplate restTemplate;
 
     public Exam save(int teacherId,Exam exam){
-        return restTemplate.postForObject("http://54.169.60.141:8000/exam/save/"+teacherId,exam,Exam.class);
+        return restTemplate.postForObject("http://localhost:8000/exam/save/"+teacherId,exam,Exam.class);
     }
 
     public List<Exam> getAll(){
         ResponseEntity<List<Exam>> responseEntity =
-                restTemplate.exchange("http://54.169.60.141:8000/exam",
+                restTemplate.exchange("http://localhost:8000/exam",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Exam>>() {
                         });
         List<Exam> exams = responseEntity.getBody();
@@ -34,19 +34,19 @@ public class ExamDAO {
     }
 
     public Exam addQuestionToExam(int examId, int questionId){
-        Exam exam = restTemplate.getForObject("http://54.169.60.141:8000/exam/"+examId+"/addQuestion/"+questionId,Exam.class);
+        Exam exam = restTemplate.getForObject("http://localhost:8000/exam/"+examId+"/addQuestion/"+questionId,Exam.class);
         return exam;
     }
 
 
     public Exam getExamById(int id){
-        Exam exam = restTemplate.getForObject("http://54.169.60.141:8000/exam/"+id,Exam.class);
+        Exam exam = restTemplate.getForObject("http://localhost:8000/exam/"+id,Exam.class);
         return exam;
     }
 
     public List<Question> getListQuestionByExam(int id){
         ResponseEntity<List<Question>> responseEntity =
-                restTemplate.exchange("http://54.169.60.141:8000/exam/questions/"+id,
+                restTemplate.exchange("http://localhost:8000/exam/questions/"+id,
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Question>>() {
                         });
         List<Question> questions = responseEntity.getBody();

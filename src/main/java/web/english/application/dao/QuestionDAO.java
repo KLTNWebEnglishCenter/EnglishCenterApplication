@@ -22,12 +22,12 @@ public class QuestionDAO {
 
 
     public Question save(Question question){
-        return restTemplate.postForObject("http://54.169.60.141:8000/question",question,Question.class);
+        return restTemplate.postForObject("http://localhost:8000/question",question,Question.class);
     }
 
     public List<Question> getAll(){
         ResponseEntity<List<Question>> responseEntity =
-                restTemplate.exchange("http://54.169.60.141:8000/question",
+                restTemplate.exchange("http://localhost:8000/question",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Question>>() {
                         });
         List<Question> questions = responseEntity.getBody();

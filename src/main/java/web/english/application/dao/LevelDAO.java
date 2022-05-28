@@ -21,7 +21,7 @@ public class LevelDAO {
 
     public List<Level> findAllLevel(){
         ResponseEntity<List<Level>> responseEntity =
-                restTemplate.exchange("http://54.169.60.141:8000/level/",
+                restTemplate.exchange("http://localhost:8000/level/",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Level>>() {
                         });
         List<Level> levels = responseEntity.getBody();
@@ -30,17 +30,17 @@ public class LevelDAO {
     }
 
 //    public Level getCourse(int id){
-//        Level level = restTemplate.getForObject(("http://54.169.60.141:8000/course/"+id),Course.class);
+//        Level level = restTemplate.getForObject(("http://localhost:8000/course/"+id),Course.class);
 //        return level;
 //    }
 
     public Level saveLevel(Level level){
-        Level level1 = restTemplate.postForObject("http://54.169.60.141:8000/level",level,Level.class);
+        Level level1 = restTemplate.postForObject("http://localhost:8000/level",level,Level.class);
         return level1;
     }
 //
 //    public Course deleteCourse(int id){
-//        Course course = restTemplate.getForObject("http://54.169.60.141:8000/course/delete"+id,Course.class);
+//        Course course = restTemplate.getForObject("http://localhost:8000/course/delete"+id,Course.class);
 //        return course;
 //    }
 }

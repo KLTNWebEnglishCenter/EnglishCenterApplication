@@ -21,7 +21,7 @@ public class PostDAO {
 
     public List<Post> getAllPost(){
         ResponseEntity<List<Post>> responseEntity =
-                restTemplate.exchange("http://54.169.60.141:8000/posts",
+                restTemplate.exchange("http://localhost:8000/posts",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Post>>() {
                         });
         List<Post> posts = responseEntity.getBody();
@@ -29,23 +29,23 @@ public class PostDAO {
     }
 
     public Post getPostById(int id){
-        Post post = restTemplate.getForObject("http://54.169.60.141:8000/post/"+id,Post.class);
+        Post post = restTemplate.getForObject("http://localhost:8000/post/"+id,Post.class);
         return post;
     }
 
     public Post savePost(Post post){
-        Post post1 = restTemplate.postForObject("http://54.169.60.141:8000/post/save",post,Post.class);
+        Post post1 = restTemplate.postForObject("http://localhost:8000/post/save",post,Post.class);
         return post1;
     }
 
     public Post deletePost(int id){
-        Post post = restTemplate.getForObject("http://54.169.60.141:8000/post/delete/"+id,Post.class);
+        Post post = restTemplate.getForObject("http://localhost:8000/post/delete/"+id,Post.class);
         return post;
     }
 
     public List<Post> getAllPostWithStatusNoAccept(){
         ResponseEntity<List<Post>> responseEntity =
-                restTemplate.exchange("http://54.169.60.141:8000/post/status/no/accept",
+                restTemplate.exchange("http://localhost:8000/post/status/no/accept",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Post>>() {
                         });
         List<Post> posts = responseEntity.getBody();
@@ -54,7 +54,7 @@ public class PostDAO {
 
     public List<Post> getAllPostWithStatusHasAccept(){
         ResponseEntity<List<Post>> responseEntity =
-                restTemplate.exchange("http://54.169.60.141:8000/post/status/has/accept",
+                restTemplate.exchange("http://localhost:8000/post/status/has/accept",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Post>>() {
                         });
         List<Post> posts = responseEntity.getBody();
@@ -63,7 +63,7 @@ public class PostDAO {
 
     public List<Post> getMyPost(int myId){
         ResponseEntity<List<Post>> responseEntity =
-                restTemplate.exchange("http://54.169.60.141:8000/post/my/"+myId,
+                restTemplate.exchange("http://localhost:8000/post/my/"+myId,
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Post>>() {
                         });
         List<Post> posts = responseEntity.getBody();
@@ -81,7 +81,7 @@ public class PostDAO {
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
         ResponseEntity<List<Post>> responseEntity =
-                restTemplate.exchange("http://54.169.60.141:8000/post/searchByIdOrTitle",
+                restTemplate.exchange("http://localhost:8000/post/searchByIdOrTitle",
                         HttpMethod.POST, request, new ParameterizedTypeReference<List<Post>>() {
                         });
         List<Post> postList = responseEntity.getBody();

@@ -28,7 +28,7 @@ public class TeacherDAO {
      */
     public List<Teacher> findAllTeacher(){
         ResponseEntity<List<Teacher>> responseEntity =
-                restTemplate.exchange("http://54.169.60.141:8000/teachers/",
+                restTemplate.exchange("http://localhost:8000/teachers/",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Teacher>>() {
                         });
         List<Teacher> teachers = responseEntity.getBody();
@@ -44,7 +44,7 @@ public class TeacherDAO {
     public String saveTeacher(Teacher teacher){
         String msg="";
         try {
-        Teacher teacher1=restTemplate.postForObject("http://54.169.60.141:8000/teacher/save",teacher,Teacher.class);
+        Teacher teacher1=restTemplate.postForObject("http://localhost:8000/teacher/save",teacher,Teacher.class);
         }catch (Exception exception){
             log.info(exception.getMessage());
             msg=utils.extractMessageFromException(exception.getMessage());
@@ -62,7 +62,7 @@ public class TeacherDAO {
     public String updateTeacher(Teacher teacher){
         String msg="";
         try {
-        Teacher teacher1=restTemplate.postForObject("http://54.169.60.141:8000/teacher/update",teacher,Teacher.class);
+        Teacher teacher1=restTemplate.postForObject("http://localhost:8000/teacher/update",teacher,Teacher.class);
         }catch (Exception exception){
             log.info(exception.getMessage());
             msg=utils.extractMessageFromException(exception.getMessage());
@@ -78,7 +78,7 @@ public class TeacherDAO {
      * @return
      */
     public Teacher findTeacherById(int id){
-        Teacher teacher=restTemplate.getForObject("http://54.169.60.141:8000/teacher/"+id,Teacher.class);
+        Teacher teacher=restTemplate.getForObject("http://localhost:8000/teacher/"+id,Teacher.class);
         return  teacher;
     }
 
@@ -100,7 +100,7 @@ public class TeacherDAO {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
-        ResponseEntity<List<Teacher>> responseEntity =  restTemplate.exchange("http://54.169.60.141:8000/user/search",HttpMethod.POST, request,new ParameterizedTypeReference<List<Teacher>>() {
+        ResponseEntity<List<Teacher>> responseEntity =  restTemplate.exchange("http://localhost:8000/user/search",HttpMethod.POST, request,new ParameterizedTypeReference<List<Teacher>>() {
             });
         List<Teacher> teachers = responseEntity.getBody();
         return teachers;
@@ -112,7 +112,7 @@ public class TeacherDAO {
      * @return
      */
     public List<Classroom> getAllClassroomOfTeacher(int teacherid){
-        ResponseEntity<List<Classroom>> responseEntity=restTemplate.exchange("http://54.169.60.141:8000/teacher/classrooms/" + teacherid, HttpMethod.GET, null, new ParameterizedTypeReference<List<Classroom>>() {
+        ResponseEntity<List<Classroom>> responseEntity=restTemplate.exchange("http://localhost:8000/teacher/classrooms/" + teacherid, HttpMethod.GET, null, new ParameterizedTypeReference<List<Classroom>>() {
         });
         return responseEntity.getBody();
     }

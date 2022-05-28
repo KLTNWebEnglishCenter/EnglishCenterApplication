@@ -1,10 +1,13 @@
 package web.english.application.utils;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Slf4j
 public class Utils {
 
 
@@ -53,9 +56,11 @@ public class Utils {
      */
     public boolean checkFullNameFormat(String fullName){
 //        String reg="^([a-zA-Z]+\\s?)+$";
-        String reg="^([a-záàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệóòỏõọôốồổỗộơớờởỡợíìỉĩịúùủũụưứừửữựýỳỷỹỵđ]+\\s?)$";
-        Pattern pattern=Pattern.compile(reg,Pattern.UNICODE_CHARACTER_CLASS);
+        String reg="^([a-záàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệóòỏõọôốồổỗộơớờởỡợíìỉĩịúùủũụưứừửữựýỳỷỹỵđ]+\\s?)+$";
+        Pattern pattern=Pattern.compile(reg);
         Matcher matcher=pattern.matcher(fullName.toLowerCase());
+//        log.info(fullName.toLowerCase());
+//        log.info(matcher.matches()+"");
         return matcher.matches();
     }
 
@@ -94,8 +99,14 @@ public class Utils {
     }
 
     public boolean checkMaxLength(String text){
-        if (text.length()>maxLength)return  false;
-        else return true;
+        if (text.length()>maxLength){
+//            log.info("false");
+            return  false;
+        }
+        else{
+//            log.info("true");
+            return true;
+        }
     }
 
 
